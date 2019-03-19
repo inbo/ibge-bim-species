@@ -1,2 +1,3 @@
-# igbe-bim-species
+# ibge-bim-species
+
 Validation of species list of Brussels Environment
