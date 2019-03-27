@@ -20,12 +20,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 # Install software
 
-Before testing connectivity be sure you have installed the following:
-
-1. [PostgreSQL](https://www.postgresql.org/download/)
-2. [psqlodbc driver](https://www.postgresql.org/ftp/odbc/versions/msi/) matching the installed PostgreSQL version
-
-You can find general information about accessing PostgreSQL in RStudio [here](https://db.rstudio.com/databases/postgresql/).
+Before testing connectivity be sure you have installed the [psqlodbc driver](https://www.postgresql.org/ftp/odbc/versions/msi/). We suggest to install the most recent drivers.
 
 ## Load libraries
 
@@ -103,6 +98,8 @@ conn <- dbConnect(odbc::odbc(),
                   pwd = ibge_bim$pwd
 )
 ```
+
+For more information about accessing PostgreSQL in RStudio, click [here](https://db.rstudio.com/databases/postgresql/).
 
 ### Close connection
 

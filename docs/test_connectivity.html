@@ -2790,12 +2790,7 @@ div.tocify {
 
 <div id="install-software" class="section level1">
 <h1><span class="header-section-number">1</span> Install software</h1>
-<p>Before testing connectivity be sure you have installed the following:</p>
-<ol style="list-style-type: decimal">
-<li><a href="https://www.postgresql.org/download/">PostgreSQL</a></li>
-<li><a href="https://www.postgresql.org/ftp/odbc/versions/msi/">psqlodbc driver</a> matching the installed PostgreSQL version</li>
-</ol>
-<p>You can find general information about accessing PostgreSQL in RStudio <a href="https://db.rstudio.com/databases/postgresql/">here</a>.</p>
+<p>Before testing connectivity be sure you have installed the <a href="https://www.postgresql.org/ftp/odbc/versions/msi/">psqlodbc driver</a>. We suggest to install the most recent drivers.</p>
 <div id="load-libraries" class="section level2">
 <h2><span class="header-section-number">1.1</span> Load libraries</h2>
 <pre class="r"><code>library(odbc)</code></pre>
@@ -2852,6 +2847,7 @@ div.tocify {
                   uid = ibge_bim$uid,
                   pwd = ibge_bim$pwd
 )</code></pre>
+<p>For more information about accessing PostgreSQL in RStudio, click <a href="https://db.rstudio.com/databases/postgresql/">here</a>.</p>
 </div>
 <div id="close-connection" class="section level3">
 <h3><span class="header-section-number">2.2.3</span> Close connection</h3>
