@@ -18,9 +18,7 @@ knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding =
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```
 
-# Install software
-
-Before testing connectivity be sure you have installed the [psqlodbc driver](https://www.postgresql.org/ftp/odbc/versions/msi/). We suggest to install the most recent drivers.
+# Setup
 
 ## Load libraries
 
@@ -30,13 +28,15 @@ library(odbc)
 
 ## Check drivers
 
+Before testing connectivity be sure you have installed the psqlodbc drivers. For Windows users, click [here](https://www.postgresql.org/ftp/odbc/versions/msi/). We suggest to install the most recent drivers.
+
 Check the presence of the PostgreSQL drivers by running:
 
 ```{r check-drivers}
 drvs <- odbcListDrivers()
 ```
 
-If you find something like this within data.frame `drvs`, then you ready to connect:
+If you find something like this within data.frame `drvs`, then you are ready to connect:
 
 ```{r echo=FALSE}
 library(stringr)
@@ -49,7 +49,7 @@ drvs %>%
 
 ## Store access informations in configuration file
 
-Database is not public, you need to have access rights. A typical way to store database accesses is to make a `config.yml` file in the parent directory "../" of all repositories where access to databases are required. This file would look like this:
+Database is not public, you need to have access rights. A typical way to store database accesses is to make a `config.yml` file in the parent directory of all repositories where access to databases are required. This file would look like this:
 
 ```r
 default:
@@ -89,7 +89,7 @@ ibge_bim <- config::get("ibge_bim")
 We can then connect to database:
 
 ```{r connect}
-conn <- dbConnect(odbc::odbc(), 
+conn <- dbConnect(odbc(), 
                   driver = ibge_bim$driver,
                   server = ibge_bim$server,
                   database = ibge_bim$database,

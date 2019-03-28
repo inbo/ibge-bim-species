@@ -11,7 +11,7 @@
 
 <meta name="author" content="Damiano Oldoni" />
 
-<meta name="date" content="2019-03-27" />
+<meta name="date" content="2019-03-28" />
 
 <title>How to connect to IBGE - BIM database</title>
 
@@ -2783,23 +2783,23 @@ div.tocify {
 
 <h1 class="title toc-ignore">How to connect to IBGE - BIM database</h1>
 <h4 class="author"><em>Damiano Oldoni</em></h4>
-<h4 class="date"><em>2019-03-27</em></h4>
+<h4 class="date"><em>2019-03-28</em></h4>
 
 </div>
 
 
-<div id="install-software" class="section level1">
-<h1><span class="header-section-number">1</span> Install software</h1>
-<p>Before testing connectivity be sure you have installed the <a href="https://www.postgresql.org/ftp/odbc/versions/msi/">psqlodbc driver</a>. We suggest to install the most recent drivers.</p>
+<div id="setup" class="section level1">
+<h1><span class="header-section-number">1</span> Setup</h1>
 <div id="load-libraries" class="section level2">
 <h2><span class="header-section-number">1.1</span> Load libraries</h2>
 <pre class="r"><code>library(odbc)</code></pre>
 </div>
 <div id="check-drivers" class="section level2">
 <h2><span class="header-section-number">1.2</span> Check drivers</h2>
+<p>Before testing connectivity be sure you have installed the psqlodbc drivers. For Windows users, click <a href="https://www.postgresql.org/ftp/odbc/versions/msi/">here</a>. We suggest to install the most recent drivers.</p>
 <p>Check the presence of the PostgreSQL drivers by running:</p>
 <pre class="r"><code>drvs &lt;- odbcListDrivers()</code></pre>
-<p>If you find something like this within data.frame <code>drvs</code>, then you ready to connect:</p>
+<p>If you find something like this within data.frame <code>drvs</code>, then you are ready to connect:</p>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["attribute"],"name":[2],"type":["chr"],"align":["left"]},{"label":["value"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"PostgreSQL Unicode(x64)","2":"UsageCount","3":"1"},{"1":"PostgreSQL Unicode(x64)","2":"APILevel","3":"1"},{"1":"PostgreSQL Unicode(x64)","2":"ConnectFunctions","3":"YYN"},{"1":"PostgreSQL Unicode(x64)","2":"DriverODBCVer","3":"03.51"},{"1":"PostgreSQL Unicode(x64)","2":"FileUsage","3":"0"},{"1":"PostgreSQL Unicode(x64)","2":"SQLLevel","3":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -2811,7 +2811,7 @@ div.tocify {
 <h1><span class="header-section-number">2</span> Connection to database</h1>
 <div id="store-access-informations-in-configuration-file" class="section level2">
 <h2><span class="header-section-number">2.1</span> Store access informations in configuration file</h2>
-<p>Database is not public, you need to have access rights. A typical way to store database accesses is to make a <code>config.yml</code> file in the parent directory “../” of all repositories where access to databases are required. This file would look like this:</p>
+<p>Database is not public, you need to have access rights. A typical way to store database accesses is to make a <code>config.yml</code> file in the parent directory of all repositories where access to databases are required. This file would look like this:</p>
 <pre class="r"><code>default:
   dbname1:
     driver: &quot;my fantastic driver&quot;
@@ -2839,7 +2839,7 @@ div.tocify {
 <div id="access-to-database" class="section level3">
 <h3><span class="header-section-number">2.2.2</span> Access to database</h3>
 <p>We can then connect to database:</p>
-<pre class="r"><code>conn &lt;- dbConnect(odbc::odbc(), 
+<pre class="r"><code>conn &lt;- dbConnect(odbc(), 
                   driver = ibge_bim$driver,
                   server = ibge_bim$server,
                   database = ibge_bim$database,
