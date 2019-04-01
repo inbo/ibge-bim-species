@@ -1,0 +1,197 @@
+TABLE_CAT	TABLE_SCHEM	TABLE_NAME	TABLE_TYPE	REMARKS
+(null)	biodiv	address	TABLE	A table containing addresses of Persons.
+(null)	biodiv	address_id_seq	SEQUENCE	(null)
+(null)	biodiv	address_pk	INDEX	(null)
+(null)	biodiv	all_ob	MATERIALIZED VIEW	materialized view van alle waarnemingen
+(null)	biodiv	all_obs_eu_ias	MATERIALIZED VIEW	(null)
+(null)	biodiv	all_obsannex21	MATERIALIZED VIEW	alle waarnemingen van de soorten die in de annex 2.1 van de ordonnantie zijn opgenomen
+(null)	biodiv	all_obsannex22	MATERIALIZED VIEW	alle waarnemingen van de soorten die in de annex 2.2 van de ordonnantie zijn opgenomen
+(null)	biodiv	all_obsannex23	MATERIALIZED VIEW	alle waarnemingen van de soorten die in de annex 2.3 van de ordonnantie zijn opgenomen
+(null)	biodiv	all_obsannex24	MATERIALIZED VIEW	alle waarnemingen van de soorten die in de annex 2.4 van de ordonnantie zijn opgenomen
+(null)	biodiv	allowedbehavior	TABLE	A table listing all the behaviors, based on the Natuurpunt waarnemingen.be terminology and extended to fit the needs of BIM. This table has no relationships and is only used as a library.
+(null)	biodiv	allowedbehavior_id_seq	SEQUENCE	(null)
+(null)	biodiv	allowedbehavior_pk	INDEX	(null)
+(null)	biodiv	allowedlifestages	TABLE	A table listing all lifestages a particular taxon can have, based on the Natuurpunt waarnemingen.be terminology and extended to fit the needs of BIM. Examples: butterflies can have caterpillars, flies larvae, birds pulli etc.
+(null)	biodiv	allowedlifestages_pk	INDEX	(null)
+(null)	biodiv	amphibian_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	annex	TABLE	A table listing all annexes currently existing. Annexes are appendices to nature conservation legislation and contain a list of species having a certain conservancy priority.
+(null)	biodiv	annex21	TABLE	20150807 Lijst met alle soorten van Annex II.1 van de Ordonnantie 20120301
+(null)	biodiv	annex21_gid_seq	SEQUENCE	(null)
+(null)	biodiv	annex22	TABLE	20150807 Lijst met alle soorten van Annex II.2 van de Ordonnantie 20120301
+(null)	biodiv	annex22_gid_seq	SEQUENCE	(null)
+(null)	biodiv	annex23	TABLE	20150807 Lijst met alle soorten van Annex II.3 van de Ordonnantie 20120301
+(null)	biodiv	annex23_gid_seq	SEQUENCE	(null)
+(null)	biodiv	annex24	TABLE	20150807 Lijst met alle soorten van Annex II.4 van de Ordonnantie 20120301
+(null)	biodiv	annex24_gid_seq	SEQUENCE	(null)
+(null)	biodiv	annex_pk	INDEX	(null)
+(null)	biodiv	arthropod_other_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	beetle_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	bird_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	butterfly_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	commontaxa	TABLE	A table grouping several Taxon according to informal groups as used on waarnemingen.be. For instance, Insects are separated into Heteroptera, Coleoptera, Diptera, Moths, Butterflies, Ants, Bees & Wasps & finally All other insects.
+(null)	biodiv	commontaxa_id_seq	SEQUENCE	(null)
+(null)	biodiv	commontaxa_pk	INDEX	(null)
+(null)	biodiv	coordinategeneralizationtype	TABLE	A table listing on which original information the calculation of a coordinate was based.
+(null)	biodiv	coordinategeneralizationtype_id_seq	SEQUENCE	(null)
+(null)	biodiv	coordinategeneralizationtype_pk	INDEX	(null)
+(null)	biodiv	coordinatenbermbeheer	TABLE	(null)
+(null)	biodiv	coordinatenbermbeheer_gid_seq	SEQUENCE	(null)
+(null)	biodiv	coordinatenbermbeheerhulptabel	TABLE	(null)
+(null)	biodiv	coordinatenbermbeheerhulptabel_gid_seq	SEQUENCE	(null)
+(null)	biodiv	dataset	TABLE	A table containing datasets of species occurence observations. Not all occurence observations need to be in a dataset. They can be digital (coming from another dataset, excel table,...) or digitized (from old museum collections for instance, and entered by BIM themselves). However, it is estimated that nearly all datasets (will) have a digital origin.
+(null)	biodiv	dataset_pk	INDEX	(null)
+(null)	biodiv	datasethulptabel	TABLE	(null)
+(null)	biodiv	datasethulptabel_datasetid_seq	SEQUENCE	(null)
+(null)	biodiv	datasetvalidated	TABLE	(null)
+(null)	biodiv	diptera_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	distributionstatus	TABLE	A table listing all possible origins a species can have according to species.be. Examples: introduced, native,...
+(null)	biodiv	distributionstatus_pk	INDEX	(null)
+(null)	biodiv	establishmentmeans	TABLE	A table listing how observed occurences established themselves. This table has no relationships and is only used as a library. Values are: escape, managed.
+(null)	biodiv	establishmentmeans_id_seq	SEQUENCE	(null)
+(null)	biodiv	establishmentmeans_pk	INDEX	(null)
+(null)	biodiv	event	TABLE	A table containing species observation events. Two events are the same when they have the same protocol, the same date, the same fieldnumber, the same habitat, AND lead to the same actual species occurence observations. Occurences can be grouped together into Events, but this is not a necessity. Individual Occurences that don't have a specific samplingProtocol can correspond to a single Event each. Event is meant to group together Occurences that have been done in one single sampling sweep (bat transect, plant square,...).
+(null)	biodiv	event_id_seq	SEQUENCE	(null)
+(null)	biodiv	event_pk	INDEX	(null)
+(null)	biodiv	eventid_unique	INDEX	(null)
+(null)	biodiv	fish_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	fish_observations_test	MATERIALIZED VIEW	(null)
+(null)	biodiv	foutekilometerhokken	TABLE	(null)
+(null)	biodiv	foutekilometerhokkentest	TABLE	(null)
+(null)	biodiv	fungi_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	geographicregion	TABLE	A table listing geographic regions to use with Legislation.
+(null)	biodiv	geographicregion_pk	INDEX	(null)
+(null)	biodiv	habitat	TABLE	A table listing all the habitats, based on the Natuurpunt waarnemingen.be terminology and extended to fit the needs of BIM. This table has no relationships and is only used as a library.
+(null)	biodiv	habitat_id_seq	SEQUENCE	(null)
+(null)	biodiv	habitat_pk	INDEX	(null)
+(null)	biodiv	identifiablespecies	TABLE	A table listing all the identifiable species regarded as taxonomic units (including both valid names and synonyms) plus all the entities that are not regarded as taxonomic units; for example collective species, cf. or aff.-identifications, wrongly spelled names... (we use collective species as a group noun for all these cases). Collective species can be species complexes that are hard to identify (no microscope) or impossible by morphological means alone. Such observations cannot be identified down to the species level.
+(null)	biodiv	identifiablespecies_id_seq	SEQUENCE	(null)
+(null)	biodiv	identifiablespecies_pk	INDEX	(null)
+(null)	biodiv	identification	TABLE	A table containing some identification details of exactly one species occurence.
+(null)	biodiv	identification_id_seq	SEQUENCE	(null)
+(null)	biodiv	identification_pk	INDEX	(null)
+(null)	biodiv	identification_unique	INDEX	(null)
+(null)	biodiv	identificationverificationstatus	TABLE	A table listing all possible statuses used to validate the observations of lay people, based on the Natuurpunt waarnemingen.be terminology, and extended to fit the needs of BIM.
+
+Values are: Goedgekeurd op basis van bewijsmateriaal, Goedgekeurd op basis van expertoordeel, Goedgekeurd op basis van kennisregels, In behandeling, Niet te oordelen, Onbehandeld, BIM-intern besproken, BIM-onbehandeld
+(null)	biodiv	identificationverificationstatus_id_seq	SEQUENCE	(null)
+(null)	biodiv	identificationverificationstatus_pk	INDEX	(null)
+(null)	biodiv	idx_annexcode	INDEX	(null)
+(null)	biodiv	import	TABLE	(null)
+(null)	biodiv	import_import_id_seq	SEQUENCE	(null)
+(null)	biodiv	import_pkey	INDEX	(null)
+(null)	biodiv	individualcountestimation	TABLE	A table listing all the possible ways the observer has decided the given value to be the most accurate given the situation. Values are: gezien niet geteld, exact aantal, schatting, geëxtrapoleerd
+(null)	biodiv	individualcountestimation_id_seq_1	SEQUENCE	(null)
+(null)	biodiv	individualcountestimation_pk	INDEX	(null)
+(null)	biodiv	insect_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	legislation	TABLE	A table listing all nature conservation legislation. Example: European Habitats Directive.
+(null)	biodiv	legislation_pk	INDEX	(null)
+(null)	biodiv	lifestage_lifestageid_seq	SEQUENCE	(null)
+(null)	biodiv	list_species_dico	MATERIALIZED VIEW	(null)
+(null)	biodiv	location	TABLE	A table containing points in space, together with supporting data. The chance two entries are identical is negligible.
+(null)	biodiv	location_id_seq	SEQUENCE	(null)
+(null)	biodiv	location_pk	INDEX	(null)
+(null)	biodiv	location_unique	INDEX	(null)
+(null)	biodiv	mammal_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	measurementorfact	TABLE	A table providing extra metrics on an observed occurence. Examples: key: "forofyt"; value:"Ulmus sp.", key:"snow coverage"; value:">50%".
+(null)	biodiv	measurementorfact_id_seq	SEQUENCE	(null)
+(null)	biodiv	measurementorfact_pk	INDEX	(null)
+(null)	biodiv	media	TABLE	A table listing all media associated with a Taxon.
+(null)	biodiv	media_pk	INDEX	(null)
+(null)	biodiv	moss_lichen_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	moss_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	moth_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	motive	TABLE	A table containing motives to make species observation events. Motives needn't necessarily lead to actual species observation events and can stand on their own. A common motive is a complaint of a civilian, for example "fox smell".
+(null)	biodiv	motive_id_seq	SEQUENCE	(null)
+(null)	biodiv	motive_pk	INDEX	(null)
+(null)	biodiv	motivemedium	TABLE	A table that lists all possible ways a Motive reached BIM-IBGE.
+(null)	biodiv	motivemedium_pk	INDEX	(null)
+(null)	biodiv	motivetype	TABLE	A table listing all motive types. Values are: klacht, vraag.
+(null)	biodiv	motivetype_pk	INDEX	(null)
+(null)	biodiv	municipality	TABLE	A table containing Municipalities, including those of the Brussels Capital Region.
+(null)	biodiv	municipality_id_seq	SEQUENCE	(null)
+(null)	biodiv	municipality_pk	INDEX	(null)
+(null)	biodiv	neerpede_zoekzone	TABLE	(null)
+(null)	biodiv	neerpede_zoekzone_gid_seq	SEQUENCE	(null)
+(null)	biodiv	neerpede_zoekzone_pkey	INDEX	(null)
+(null)	biodiv	observer	TABLE	A table containing all natural persons that have recorded and identified species occurence observations .
+
+Nb: this joins DwC recordedBy and identifiedBy.
+(null)	biodiv	observer_id_seq	SEQUENCE	(null)
+(null)	biodiv	observer_pk	INDEX	(null)
+(null)	biodiv	observerlogin	TABLE	A table containing all Observers that can enter data in the manual entry interface.
+(null)	biodiv	observerlogin_pk	INDEX	(null)
+(null)	biodiv	occurence	TABLE	A table containing species occurence observations. 	Two occurences are identical if they are pertaining to the same species, in exactly the same configuration (sex,...), on the same place, by the same person, and during the same event. An identical observation may be recorded more than once in different datasets.
+(null)	biodiv	occurence_id_seq	SEQUENCE	(null)
+(null)	biodiv	occurence_pk	INDEX	(null)
+(null)	biodiv	odonate_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	overzichttaxonomie	TABLE	(null)
+(null)	biodiv	overzichttaxonomie_gid_seq	SEQUENCE	(null)
+(null)	biodiv	parentidnull	TABLE	(null)
+(null)	biodiv	parentidnullchecklist	TABLE	(null)
+(null)	biodiv	parentidnullview	VIEW	(null)
+(null)	biodiv	pasdom_obs_p2000	MATERIALIZED VIEW	materialized view van passer domesticus waarnemingen sinds 1 januari 2000
+(null)	biodiv	pelophylax	TABLE	(null)
+(null)	biodiv	plant_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	plant_observations_test	MATERIALIZED VIEW	(null)
+(null)	biodiv	reproductivecondition	TABLE	A table listing all the reproductive conditions, based on the needs of BIM. This table has no relationships and is only used as a library. Values are: non-breeding, possibly breeding, probably breeding, certainly breeding.
+(null)	biodiv	reproductivecondition_id_seq	SEQUENCE	(null)
+(null)	biodiv	reproductivecondition_pk	INDEX	(null)
+(null)	biodiv	reptile_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	sbz1	TABLE	(null)
+(null)	biodiv	sbz1species	TABLE	20150806
+Lijst met alle soorten en hun toegekende annex voor de SBZ1 (natura 2000)
+(null)	biodiv	sbz1species_gid_seq	SEQUENCE	(null)
+(null)	biodiv	sbz1species_pkey	INDEX	(null)
+(null)	biodiv	sbz2	TABLE	(null)
+(null)	biodiv	sbz2species	TABLE	20150807
+Lijst met alle soorten en hun toegekende annex voor de SBZ2 (natura 2000)
+(null)	biodiv	sbz2species_gid_seq	SEQUENCE	(null)
+(null)	biodiv	sbz2species_pkey	INDEX	(null)
+(null)	biodiv	sbz3	TABLE	(null)
+(null)	biodiv	sbz3species	TABLE	20150807
+Lijst met alle soorten en hun toegekende annex voor de SBZ3 (natura 2000)
+(null)	biodiv	sbz3species_gid_seq	SEQUENCE	(null)
+(null)	biodiv	sbz3species_pkey	INDEX	(null)
+(null)	biodiv	select_all_observations	VIEW	(null)
+(null)	biodiv	sex	TABLE	A table listing all the possible genders. Examples: unknowable, undetermined, female, male.
+(null)	biodiv	sex_pk	INDEX	(null)
+(null)	biodiv	species_4030	MATERIALIZED VIEW	(null)
+(null)	biodiv	species_4030_approved	MATERIALIZED VIEW	(null)
+(null)	biodiv	species_6430bz	MATERIALIZED VIEW	(null)
+(null)	biodiv	species_6430bz_approved	MATERIALIZED VIEW	(null)
+(null)	biodiv	species_9120	MATERIALIZED VIEW	(null)
+(null)	biodiv	species_9120_approved	MATERIALIZED VIEW	(null)
+(null)	biodiv	species_9130	MATERIALIZED VIEW	(null)
+(null)	biodiv	species_9130_approved	MATERIALIZED VIEW	(null)
+(null)	biodiv	species_9190	MATERIALIZED VIEW	(null)
+(null)	biodiv	species_9190_approved	MATERIALIZED VIEW	(null)
+(null)	biodiv	species_soignes_pdg	MATERIALIZED VIEW	(null)
+(null)	biodiv	speciesannex	TABLE	A table that assigns one or more annexes to one or more species. Examples: Alytes obstetricans is on Annex 4 of the European Habitats Directive.
+(null)	biodiv	speciesannex_beid_seq	SEQUENCE	(null)
+(null)	biodiv	speciesannex_pkey	INDEX	(null)
+(null)	biodiv	speciesannexbackup	TABLE	(null)
+(null)	biodiv	speciesannexbackup_beid_seq	SEQUENCE	(null)
+(null)	biodiv	speciesannexbackup_pkey	INDEX	(null)
+(null)	biodiv	spider_observations	MATERIALIZED VIEW	(null)
+(null)	biodiv	street_axes_light	TABLE	(null)
+(null)	biodiv	street_axes_light_gid_seq	SEQUENCE	(null)
+(null)	biodiv	street_axes_light_pkey	INDEX	(null)
+(null)	biodiv	taxon	TABLE	A table listing all the valid and accepted taxa that occur in Belgium. Synonyms are not included. Taxa range from varieties, subspecies, species to phyla. It does not contain informal taxa or collective taxa. It contains the same number of entries as species.be.
+(null)	biodiv	taxon_id_seq	SEQUENCE	(null)
+(null)	biodiv	taxon_pk	INDEX	(null)
+(null)	biodiv	taxoncommontaxa	TABLE	(null)
+(null)	biodiv	taxoncommontaxa_beid_seq	SEQUENCE	(null)
+(null)	biodiv	taxoncommontaxa_pkey	INDEX	(null)
+(null)	biodiv	taxoncorrected	TABLE	overzicht verandering in taxon
+(null)	biodiv	taxoncorrected_gid_seq	SEQUENCE	(null)
+(null)	biodiv	taxonid_unique	INDEX	(null)
+(null)	biodiv	taxonomicstatus	TABLE	A table listing all possible taxonomic statuses according to species.be. Examples: accepted, synonym,...
+(null)	biodiv	taxonomicstatus_pk	INDEX	(null)
+(null)	biodiv	taxonrank	TABLE	A table listing all possible taxon ranks according to species.be. Examples: species, genus, family etc.
+(null)	biodiv	taxonrank_pk	INDEX	(null)
+(null)	biodiv	unique_scientificname	INDEX	(null)
+(null)	biodiv	utm1_update	TABLE	(null)
+(null)	biodiv	vliegendhert	TABLE	(null)
+(null)	biodiv	vliegendhert_beid_seq	SEQUENCE	(null)
+(null)	biodiv	vliegendhert_pkey	INDEX	(null)
+(null)	biodiv	webgis_amphibian_observations	MATERIALIZED VIEW	(null)
