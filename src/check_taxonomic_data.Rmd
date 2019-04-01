@@ -83,3 +83,12 @@ Close connection:
 dbDisconnect(conn)
 ```
 
+## Save taxa
+
+Save taxa as tab separated text file:
+
+```{r save_taxa}
+write_tsv(taxa,
+          path = here("data", "input", "taxa.tsv"))
+```
+
