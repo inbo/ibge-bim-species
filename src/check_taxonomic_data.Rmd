@@ -23,9 +23,10 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ## Load libraries
 
 ```{r load_libs}
-library(odbc)
-library(tidyverse)
-library(rgbif)
+library(odbc)       # To work with database
+library(tidyverse)  # To do data science
+library(here)       # To work with paths
+library(rgbif)      # To work with GBIF
 ```
 
 ## Load access informations
@@ -81,3 +82,4 @@ Close connection:
 ```{r close_connection}
 dbDisconnect(conn)
 ```
+
