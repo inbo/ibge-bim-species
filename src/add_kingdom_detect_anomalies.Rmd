@@ -241,15 +241,3 @@ write_tsv(anomalous_taxa,
           here("data", "interim", "anomalous_taxa.tsv"), 
           na = "")
 ```
-
-## Retrieve parent relationship in GBIF Taxonomy Backbone
-
-We check the correctness of the `id` - `parentid` relationship by retrieving taxonomic information of all taxa from GBIF Taxonomy Backbone where possible. 
-
-Extract accepted names from column `acceptedname`:
-
-```{r get_acceptedNames} 
-```
-
-
-
