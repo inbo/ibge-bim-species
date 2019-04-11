@@ -130,7 +130,7 @@ taxa <-
   mutate(kingdom_id = 0)
 ```
 
-We apply the function `get_keys_higher_levels` to all taxa. If the highest taxonomic level is not equal to `kingdom` or the vector of parent IDs starts with `NA`, `kingdom_id` will be empty:
+We apply the function `get_keys_higher_levels` to all taxa. If the highest taxonomic level pointed by the sequence of parent IDs is not equal to `kingdom` or the vector of parent IDs starts with `NA`, `kingdom_id` will be set to `NA`:
 
 ```{r find_kingdom_id_all_taxa}
 circular_parent_ids <- c()
@@ -193,6 +193,12 @@ taxa %>%
   nrow()
 ```
 
+Some of these ones have parent IDs ending up in a circular sequence. Blindly following the path of parent IDs would then result in an infinite loop:
+
+```{r circular_parent_ids}
+circular_parent_ids
+```
+
 ## Duplicates or homonimy within `taxa`
 
 ### Homonims
@@ -214,7 +220,7 @@ homonims <-
 homonims
 ```
 
-In case of homonimy the information of `scientificnameauthorship` and `kingdom` will be very useful to identify it within the GBIF Backbone.
+In case of homonimy the information of `scientificnameauthorship` and `kingdom` will be very useful to identify the right taxon within the GBIF Backbone.
 
 ### Duplicates or suspicious taxa
 
