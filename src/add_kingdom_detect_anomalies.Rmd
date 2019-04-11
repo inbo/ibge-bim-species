@@ -241,7 +241,18 @@ anomalous_taxa <-
 anomalous_taxa
 ```
 
-We save these taxa as they should be discussed with experts from BIM.
+# Save taxa
+
+We save all taxa in `.\data\interim`:
+
+```{r save_all_taxa}
+write_tsv(taxa, 
+          here("data", "interim", "taxa.tsv"), 
+          na = "")
+warnings(taxa)
+```
+
+Save suspected duplicates apart as they should be discussed with experts from BIM. See issue [issue #7](https://github.com/inbo/ibge-bim-species/issues/7).
 
 ```{r save_duplicates}
 write_tsv(anomalous_taxa, 
