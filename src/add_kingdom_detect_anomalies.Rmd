@@ -249,7 +249,6 @@ We save all taxa in `.\data\interim`:
 write_tsv(taxa, 
           here("data", "interim", "taxa.tsv"), 
           na = "")
-warnings(taxa)
 ```
 
 Save suspected duplicates apart as they should be discussed with experts from BIM. See issue [issue #7](https://github.com/inbo/ibge-bim-species/issues/7).
