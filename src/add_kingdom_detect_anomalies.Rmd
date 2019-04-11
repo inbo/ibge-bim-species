@@ -92,7 +92,7 @@ We will search each taxa within the GBIF Taxonomy Backbone. It is a search *by n
 
 ## Get kingdom 
 
-We write a recursive function, called `get_keys_higher_levels`, to keep track of all keys while *climbing up* to the highest possible level for each taxon. This function uses the parent IDs until no parent ID is found anymore, meaning we arrived at kingdom taxonomic level if no mising parent keys are found.  The function returns a vector containing the sequence of parent IDs. If a taxa is found where `parentid` = `id` or the sequence of parent IDs is circular, the vector contains `NA` at first position.
+We write a recursive function, called `get_keys_higher_levels`, to keep track of all keys while *climbing up* to the highest possible level for each taxon. This function uses the parent IDs until no parent ID is found anymore, meaning we arrived at kingdom taxonomic level if no mising parent keys are found.  The function returns a vector containing the sequence of parent IDs. If a taxa is found where `parentid` = `id` or the sequence of parent IDs is circular, the vector contains `NA` at first position in order to be easily found for further inspection.
 
 ```{r function_get_kingdom}
 #' Function to retrieve all parent taxa up to kingdom recursively via parent ID's.
@@ -109,18 +109,14 @@ get_keys_higher_levels <- function(taxon_id, taxa_df = taxa, parents_vector = NU
     pull(parentid)
   parents_vector <- c(taxon_id, parents_vector)
   if (parent_id %in% parents_vector) {
-      print(paste("Wrong parent IDs ending in a infinite loop",
-                  paste(parents_vector, collapse = ","),
-                  sep = ": "))
       return(c(NA, parents_vector))
   } else {
     if (is.na(parent_id)) {
-      return(taxon_id)
+      return(parents_vector)
     } else {
-      return(c(taxon_id,
-               get_keys_higher_levels(taxon_id = parent_id,
-                                      taxa_df =  taxa_df,
-                                      parents_vector = parents_vector)))
+      return(c(get_keys_higher_levels(taxon_id = parent_id,
+                                        taxa_df =  taxa_df,
+                                        parents_vector = parents_vector)))
     }
   }
 }
@@ -137,19 +133,24 @@ taxa <-
 We apply the function `get_keys_higher_levels` to all taxa. If the highest taxonomic level is not equal to `kingdom` or the vector of parent IDs starts with `NA`, `kingdom_id` will be empty:
 
 ```{r find_kingdom_id_all_taxa}
+circular_parent_ids <- c()
 pb <- txtProgressBar(min = 0, max = nrow(taxa),  style = 3)
 for (t in 1:nrow(taxa)) {
   if (!is.na(taxa$kingdom_id[t]) & taxa$kingdom_id[t] == 0) {
     higher_levels_ids <- get_keys_higher_levels(taxon_id = taxa$id[t], taxa, NULL)
     if (!is.na(higher_levels_ids[1])) {
       taxon_rank_highest_level <-
-        taxa$taxonranken[taxa$id == higher_levels_ids[length(higher_levels_ids)]]
+        taxa$taxonranken[taxa$id == higher_levels_ids[1]]
     } else {
-      taxa$kingdom_id[t] <- NA_real_
+      circular_parent_ids <- c(list(higher_levels_ids[2:length(higher_levels_ids)]),
+                               circular_parent_ids)
+      for (i in higher_levels_ids[2:length(higher_levels_ids)]) {
+        taxa$kingdom_id[taxa$id == i] <- NA_real_
+      }
     }
     for (i in higher_levels_ids) {
       if (taxon_rank_highest_level == "kingdom") {
-        taxa$kingdom_id[taxa$id == i] <- higher_levels_ids[length(higher_levels_ids)]
+        taxa$kingdom_id[taxa$id == i] <- higher_levels_ids[1]
       } else {
         taxa$kingdom_id[taxa$id == i] <- NA_real_
       }
