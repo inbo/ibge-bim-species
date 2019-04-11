@@ -1,0 +1,255 @@
+---
+title: "Taxa: retrieve kingdom IDs and detect anomalies"
+author:
+  - Damiano Oldoni
+  - Lien Reyserhove
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(tidyverse)  # To do data science
+library(here)       # To work with paths
+library(rgbif)      # To work with GBIF
+```
+
+# Read taxa
+
+Read taxa from `./data/input/taxa.tsv`:
+
+```{r read_taxa_from_tsv_file}
+taxa <- read_tsv(here("data", "input", "taxa.tsv"),
+                 col_types = cols(
+                   .default = col_character(),
+                   id = col_double(),
+                   parentid = col_double(),
+                   media = col_logical(),
+                   speciesbeparentid = col_double(),
+                   bruenvi_created = col_date(format = "%Y-%m-%d"),
+                   bruenvi_created = col_date(format = "%Y-%m-%d"))
+)
+```
+
+# Overview ranks and parent IDs
+
+Taxonomy ranks present in `taxa`:
+
+```{r get_taxonranks}
+taxa %>% distinct(taxonranken)
+```
+
+Check the internal validity of parent IDs. Are all parent IDs valid IDs?
+
+```{r check_parent_IDs}
+parent_ids <- taxa %>%
+  filter(!is.na(parentid)) %>%
+  pull(parentid)
+all(parent_ids %in% taxa$id)
+```
+
+Taxon ranks linked to the parent IDs:
+
+```{r taxon_ranks_of_parents}
+taxa %>%
+  filter(id %in% parent_ids) %>%
+  distinct(taxonranken)
+```
+
+This means that the following taxon ranks are not pointed out by any taxa:
+
+```{r}
+taxonranks <- 
+  taxa %>% 
+  distinct(taxonranken)
+not_pointed_out_taxonranks <- 
+  taxonranks %>%
+  anti_join(
+    taxa %>% 
+      filter(id %in% parent_ids) %>%
+      distinct(taxonranken),
+    by = "taxonranken"
+)
+not_pointed_out_taxonranks
+```
+
+This reflects the structure of GBIF Taxonomy backbone (see issue https://github.com/gbif/checklistbank/issues/79) and Catalogue of Life, where no `subfamily`, `superfamily`, `superorder`, `suborder` or `informal group` are present. On the other hand, the fact that `forma` and `subforma` are never parents of other taxa is quite reasonable.
+
+# Search taxa in GBIF Taxonomy Backbone
+
+We will search each taxa within the GBIF Taxonomy Backbone. It is a search *by name*. However, homonyms are present among different kingdoms. For this reason, first we try to assess the kingdom of each taxon by parent IDs. 
+
+## Get kingdom 
+
+We write a recursive function, called `get_keys_higher_levels`, to keep track of all keys while *climbing up* to the highest possible level for each taxon. This function uses the parent IDs until no parent ID is found anymore, meaning we arrived at kingdom taxonomic level if no mising parent keys are found.  The function returns a vector containing the sequence of parent IDs. If a taxa is found where `parentid` = `id` or the sequence of parent IDs is circular, the vector contains `NA` at first position.
+
+```{r function_get_kingdom}
+#' Function to retrieve all parent taxa up to kingdom recursively via parent ID's.
+#' 
+#' @param taxon_id (double) A unique ID identifying taxon in `taxa_df`.
+#' @param taxa_df (tibble) A data.frame containing the taxonomic data. It MUST
+#' contains the following columns: `id` and `parent_id`.
+#' @param parents_vector (double) A vector of parent IDs. It is populated within recursion. Default: NULL.
+#' @return A vector of parent IDs. If a corrupted parent IDs is found, the
+#' vector contains NA at first position.
+get_keys_higher_levels <- function(taxon_id, taxa_df = taxa, parents_vector = NULL) {
+  parent_id <- taxa_df %>%
+    filter(id == taxon_id) %>%
+    pull(parentid)
+  parents_vector <- c(taxon_id, parents_vector)
+  if (parent_id %in% parents_vector) {
+      print(paste("Wrong parent IDs ending in a infinite loop",
+                  paste(parents_vector, collapse = ","),
+                  sep = ": "))
+      return(c(NA, parents_vector))
+  } else {
+    if (is.na(parent_id)) {
+      return(taxon_id)
+    } else {
+      return(c(taxon_id,
+               get_keys_higher_levels(taxon_id = parent_id,
+                                      taxa_df =  taxa_df,
+                                      parents_vector = parents_vector)))
+    }
+  }
+}
+```
+
+We first initialize a new empty column called `kingdom_id` in `taxa`:
+
+```{r initialize_col_kingdom_id_taxa}
+taxa <- 
+  taxa %>%
+  mutate(kingdom_id = 0)
+```
+
+We apply the function `get_keys_higher_levels` to all taxa. If the highest taxonomic level is not equal to `kingdom` or the vector of parent IDs starts with `NA`, `kingdom_id` will be empty:
+
+```{r find_kingdom_id_all_taxa}
+pb <- txtProgressBar(min = 0, max = nrow(taxa),  style = 3)
+for (t in 1:nrow(taxa)) {
+  if (!is.na(taxa$kingdom_id[t]) & taxa$kingdom_id[t] == 0) {
+    higher_levels_ids <- get_keys_higher_levels(taxon_id = taxa$id[t], taxa, NULL)
+    if (!is.na(higher_levels_ids[1])) {
+      taxon_rank_highest_level <-
+        taxa$taxonranken[taxa$id == higher_levels_ids[length(higher_levels_ids)]]
+    } else {
+      taxa$kingdom_id[t] <- NA_real_
+    }
+    for (i in higher_levels_ids) {
+      if (taxon_rank_highest_level == "kingdom") {
+        taxa$kingdom_id[taxa$id == i] <- higher_levels_ids[length(higher_levels_ids)]
+      } else {
+        taxa$kingdom_id[taxa$id == i] <- NA_real_
+      }
+    }
+  }
+  setTxtProgressBar(pb, t)
+}
+```
+
+Kingdoms present in `taxa`:
+
+```{r add_kingdom_names}
+kingdom_df <- 
+  taxa %>%
+  filter(taxonranken == "kingdom") %>%
+  select(id, acceptedname) %>%
+  rename(kingdom = acceptedname)
+kingdom_df
+```
+
+We add `kingdom` to `taxa` for better interpretation of the results:
+
+```{r add_kingdom_column}
+taxa <- 
+  taxa %>%
+  left_join(kingdom_df, by = c("kingdom_id" = "id"))
+```
+
+Preview:
+
+```{r preview_taxa_with_kingdom}
+head(taxa, n = 100)
+```
+
+Number of taxa without `kingdom_id`:
+
+```{r invalid_kingdom_id}
+taxa %>%
+  filter(is.na(kingdom_id)) %>%
+  nrow()
+```
+
+## Duplicates or homonimy within `taxa`
+
+### Homonims
+
+Some accepted names are linked to taxa from different kingdoms. They are *homonims*:
+
+```{r homonimy}
+homonims <- 
+  taxa %>% 
+  filter(!is.na(kingdom_id)) %>%
+  group_by(acceptedname) %>%
+  summarize(n_kingdoms = length(unique(kingdom_id))) %>%
+  filter(n_kingdoms > 1) %>%
+  left_join(taxa, by = "acceptedname") %>%
+  select(id, kingdom_id, 
+         acceptedname, scientificnameauthorship, 
+         taxonranken, kingdom,
+         everything(), -n_kingdoms)
+homonims
+```
+
+In case of homonimy the information of `scientificnameauthorship` and `kingdom` will be very useful to identify it within the GBIF Backbone.
+
+### Duplicates or suspicious taxa
+
+Other taxa are duplicates or suspected duplicates:
+
+```{r show_duplicates_or_suspected_taxa}
+anomalous_taxa <-
+  taxa %>%
+  filter(!id %in% homonims$id) %>%
+  group_by(acceptedname) %>%
+  count() %>%
+  filter(n > 1) %>%
+  left_join(taxa, by = "acceptedname") %>%
+  select(id, kingdom_id, 
+         acceptedname, scientificnameauthorship, 
+         taxonranken, kingdom,
+         everything(), -n)
+anomalous_taxa
+```
+
+We save these taxa as they should be discussed with experts from BIM.
+
+```{r save_duplicates}
+write_tsv(anomalous_taxa, 
+          here("data", "interim", "anomalous_taxa.tsv"), 
+          na = "")
+```
+
+## Retrieve parent relationship in GBIF Taxonomy Backbone
+
+We check the correctness of the `id` - `parentid` relationship by retrieving taxonomic information of all taxa from GBIF Taxonomy Backbone where possible. 
+
+Extract accepted names from column `acceptedname`:
+
+```{r get_acceptedNames} 
+```
+
+
+

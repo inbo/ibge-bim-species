@@ -1,7 +1,8 @@
 ---
-title: "Check correctness parent IDs of taxa"
+title: "Get taxa from database"
 author:
   - Damiano Oldoni
+  - Lien Reyserhove
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -26,7 +27,6 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 library(odbc)       # To work with database
 library(tidyverse)  # To do data science
 library(here)       # To work with paths
-library(rgbif)      # To work with GBIF
 ```
 
 ## Load access informations
@@ -91,50 +91,3 @@ Save taxa as tab separated text file:
 write_tsv(taxa,
           path = here("data", "input", "taxa.tsv"))
 ```
-
-# Build taxonomy
-
-## Get taxonomy structure via parent IDs
-
-Taxonomy ranks present in `taxa`:
-
-```{r get_taxonranks}
-taxa %>% distinct(taxonranken)
-```
-
-Check the internal validity of parent IDs. Are all parent IDs valid IDs?
-
-```{r check_parentIDs}
-parent_ids <- taxa %>%
-  filter(!is.na(parentid)) %>%
-  pull(parentid)
-all(parent_ids %in% taxa$id)
-```
-
-Taxon ranks linked to the parent IDs:
-
-```{r taxon_ranks_of_parents}
-taxa %>%
-  filter(id %in% parent_ids) %>%
-  distinct(taxonranken)
-```
-
-This means that the following taxon ranks are not pointed out by any taxa:
-
-```{r}
-taxonranks <- 
-  taxa %>% 
-  distinct(taxonranken)
-not_pointed_out_taxonranks <- 
-  taxonranks %>%
-  anti_join(
-    taxa %>% 
-      filter(id %in% parent_ids) %>%
-      distinct(taxonranken),
-    by = "taxonranken"
-)
-not_pointed_out_taxonranks
-```
-
-This structure reflects the structure of GBIF Taxonomy backbone (see issue https://github.com/gbif/checklistbank/issues/79). 
-
