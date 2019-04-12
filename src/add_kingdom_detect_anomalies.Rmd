@@ -220,14 +220,13 @@ homonyms <-
   left_join(taxa, by = "acceptedname") %>%
   select(id, kingdom_id, 
          acceptedname, scientificnameauthorship, 
-         taxonranken, kingdom,
-         everything(), -n_kingdoms)
-homonims
+         taxonranken, taxonomicstatusen, kingdom)
+homonyms
 ```
 
-In case of homonimy the information of `scientificnameauthorship` and `kingdom` will be very useful to identify the right taxon within the GBIF Backbone.
+In case of hemihomonymy the information of `scientificnameauthorship` and `kingdom` will be very useful to identify the right taxon within the GBIF Backbone.
 
-### Duplicates or suspicious taxa
+### Duplicates or suspicious records
 
 Other taxa are duplicates or suspected duplicates:
 
@@ -241,8 +240,7 @@ anomalous_taxa <-
   left_join(taxa, by = "acceptedname") %>%
   select(id, kingdom_id, 
          acceptedname, scientificnameauthorship, 
-         taxonranken, kingdom,
-         everything(), -n)
+         taxonranken, taxonomicstatusen, kingdom)
 anomalous_taxa
 ```
 
