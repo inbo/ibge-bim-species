@@ -87,11 +87,11 @@ not_pointed_out_taxonranks <-
 not_pointed_out_taxonranks
 ```
 
-This reflects the structure of GBIF Taxonomy backbone (see issue https://github.com/gbif/checklistbank/issues/79) and Catalogue of Life, where no `subfamily`, `superfamily`, `superorder`, `suborder` or `informal group` are present. On the other hand, the fact that `forma` and `subforma` are never parents of other taxa is quite reasonable.
+This reflects the structure of GBIF Taxonomy backbone (see issue https://github.com/gbif/checklistbank/issues/79) and Catalogue of Life, where no `subfamily`, `superfamily`, `superorder`, `suborder` or `informal group` are present in the upper hierarchy. On the other hand, the fact that `forma` and `subforma` are never parents of other taxa is quite reasonable. In the case of `subforma`, there refer to `species` (and thus not `forma`) as a taxon rank which is ok.  
 
 # Search taxa in GBIF Taxonomy Backbone
 
-We will search each taxa within the GBIF Taxonomy Backbone. It is a search *by name*. However, homonyms are present among different kingdoms. For this reason, first we try to assess the kingdom of each taxon by parent IDs. 
+We will search each taxa within the GBIF Taxonomy Backbone. It is a search *by scientific name*. However, homonyms are present among different kingdoms. This means that a scientific name can occur in different kingdoms, these are so-called hemihomonyms. For example the name _Erica_ has been given to both a genus of spiders, `Erica Peckham & Peckham, 1892` and to a genus of heaths `Erica L.`. To avoid a taxon being misidentified, we first need to retrieve the kingdom of each taxon. 
 
 ## Get kingdom 
 
@@ -182,7 +182,7 @@ taxa <-
   left_join(kingdom_df, by = c("kingdom_id" = "id"))
 ```
 
-Preview:
+Preview of taxa linked to their specific kingdom:
 
 ```{r preview_taxa_with_kingdom}
 taxa %>% 
@@ -204,14 +204,14 @@ Some of these ones have parent IDs ending up in a circular sequence. Blindly fol
 circular_parent_ids
 ```
 
-## Duplicates or homonimy within `taxa`
+## Duplicate records or hemihomonys within `taxa`
 
-### Homonims
+### Homonyms
 
-Some accepted names are linked to taxa from different kingdoms. They are *homonims*:
+Some accepted names are linked to multiple taxa classified under different kingdoms. They are *hemihomonyms*:
 
 ```{r homonimy}
-homonims <- 
+homonyms <- 
   taxa %>% 
   filter(!is.na(kingdom_id)) %>%
   group_by(acceptedname) %>%
@@ -234,7 +234,7 @@ Other taxa are duplicates or suspected duplicates:
 ```{r show_duplicates_or_suspected_taxa}
 anomalous_taxa <-
   taxa %>%
-  filter(!id %in% homonims$id) %>%
+  filter(!id %in% homonyms$id) %>%
   group_by(acceptedname) %>%
   count() %>%
   filter(n > 1) %>%
