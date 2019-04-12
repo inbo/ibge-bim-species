@@ -47,7 +47,9 @@ taxa <- read_tsv(here("data", "input", "taxa.tsv"),
 Taxonomy ranks present in `taxa`:
 
 ```{r get_taxonranks}
-taxa %>% distinct(taxonranken)
+taxa %>% 
+  group_by(taxonranken) %>% 
+  summarize(records = n())
 ```
 
 Check the internal validity of parent IDs. Are all parent IDs valid IDs?
@@ -64,7 +66,8 @@ Taxon ranks linked to the parent IDs:
 ```{r taxon_ranks_of_parents}
 taxa %>%
   filter(id %in% parent_ids) %>%
-  distinct(taxonranken)
+  group_by(taxonranken) %>% 
+  summarize(records = n())
 ```
 
 This means that the following taxon ranks are not pointed out by any taxa:
@@ -182,7 +185,9 @@ taxa <-
 Preview:
 
 ```{r preview_taxa_with_kingdom}
-head(taxa, n = 100)
+taxa %>% 
+  select(acceptedname, kingdom) %>% 
+  head(n = 100)
 ```
 
 Number of taxa without `kingdom_id`:
