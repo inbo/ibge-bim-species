@@ -201,8 +201,12 @@ taxa %>%
 Some of these ones have parent IDs ending up in a circular sequence. Blindly following the path of parent IDs would then result in an infinite loop:
 
 ```{r circular_parent_ids}
-circular_parent_ids
+tibble(id = unlist(circular_parent_ids)) %>%
+  left_join(taxa, by = "id") %>%
+  select(acceptedname, id, parentid)
 ```
+
+In our case the `Salmo trutta fario` refers to itself, `parentid` =  `id`, so anything linking diretly or indirectly to this taxon will not get any step further.
 
 ## Duplicate records or hemihomonys within `taxa`
 
