@@ -243,6 +243,8 @@ anomalous_taxa <-
   count() %>%
   filter(n > 1) %>%
   left_join(taxa, by = "acceptedname") %>%
+  select(-n)
+anomalous_taxa %>%
   select(id, kingdom_id, 
          acceptedname, scientificnameauthorship, 
          taxonranken, taxonomicstatusen, bim_kingdom)
