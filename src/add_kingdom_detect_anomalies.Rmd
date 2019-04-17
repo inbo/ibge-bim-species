@@ -174,19 +174,20 @@ kingdom_df <-
 kingdom_df
 ```
 
-We add `kingdom` to `taxa` for better interpretation of the results:
+We add `kingdom` to `taxa` for better interpretation of the results. We call this column `bim_kingdom` in order to distinct it in the future from the `kingdom` got by GBIF Taxonomy Backbone:
 
 ```{r add_kingdom_column}
 taxa <- 
   taxa %>%
-  left_join(kingdom_df, by = c("kingdom_id" = "id"))
+  left_join(kingdom_df, by = c("kingdom_id" = "id")) %>%
+  rename(bim_kingdom = kingdom)
 ```
 
 Preview of taxa linked to their specific kingdom:
 
 ```{r preview_taxa_with_kingdom}
 taxa %>% 
-  select(acceptedname, kingdom) %>% 
+  select(acceptedname, bim_kingdom) %>% 
   head(n = 100)
 ```
 
@@ -244,8 +245,7 @@ anomalous_taxa <-
   left_join(taxa, by = "acceptedname") %>%
   select(id, kingdom_id, 
          acceptedname, scientificnameauthorship, 
-         taxonranken, taxonomicstatusen, kingdom)
-anomalous_taxa
+         taxonranken, taxonomicstatusen, bim_kingdom)
 ```
 
 # Save taxa
