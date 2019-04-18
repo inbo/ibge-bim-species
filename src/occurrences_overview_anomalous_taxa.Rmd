@@ -1,0 +1,150 @@
+---
+title: "Check number of occurrences linked to anomalous taxa"
+author:
+  - Damiano Oldoni
+  - Lien Reyserhove
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(odbc)       # To work with database
+library(tidyverse)  # To do data science
+library(here)       # To work with paths
+```
+
+## Load access informations
+
+Retrieve access informations from configuration file:
+
+```{r get_access_infos}
+ibge_bim <- config::get("ibge_bim")
+```
+
+# Get occurrence data
+
+## Connect to database
+
+Connect to database:
+
+```{r connect_to_db}
+conn <- dbConnect(odbc(), 
+                  driver = ibge_bim$driver,
+                  server = ibge_bim$server,
+                  database = ibge_bim$database,
+                  port = ibge_bim$port,
+                  uid = ibge_bim$uid,
+                  pwd = ibge_bim$pwd
+)
+```
+
+## Get data from table `occurence`
+
+Table `taxon` contains taxonomic data:
+
+```{r get_occs}
+occurrences <- 
+  dbGetQuery(conn, "SELECT * FROM biodiv.occurence") %>%
+  as_tibble()
+```
+
+Overview:
+
+```{r overview_occs}
+head(occurrences)
+```
+
+Number of taxa:
+
+```{r n_occs}
+nrow(occurrences)
+```
+
+## Close connection
+
+Close connection:
+
+```{r close_connection_occs}
+dbDisconnect(conn)
+```
+
+# Read anomalous taxa
+
+Read anomalous taxa, see [issue #7](https://github.com/inbo/ibge-bim-species/issues/7):
+
+```{r read_anomalous_taxa}
+anomalous_taxa <- read_tsv(
+  here("data", "interim", "anomalous_taxa.tsv"),
+  col_types = cols(
+                   .default = col_character(),
+                   id = col_double(),
+                   parentid = col_double(),
+                   media = col_logical(),
+                   speciesbeparentid = col_double(),
+                   bruenvi_created = col_date(format = "%Y-%m-%d"),
+                   bruenvi_created = col_date(format = "%Y-%m-%d"),
+                   kingdom_id = col_double())
+)
+```
+
+# Number of occurrences related to anomalous taxa
+
+It is important to know how many occurrecences are linked to the anomalous taxa as this can play a role in detecting errors or outdated taxa. It can also give an idea how many species IDs, `identifiablespeciesid`, we should change if we decide to remove erroneous or outdated taxa:
+
+```{r occs_anomalous_taxa}
+occs_anomalous_taxa <- 
+  anomalous_taxa %>%
+  left_join(occurrences %>%
+              rename(occ_id = id,
+                     occ_bruenvi_author = bruenvi_author,
+                     occ_bruenvi_modified = bruenvi_modified,
+                     occ_bruenvi_created = bruenvi_created),
+            by = c("id" = "identifiablespeciesid"))
+```
+
+Preview:
+
+```{r preview_occs_anomalous_taxa}
+occs_anomalous_taxa %>% head(n = 50)
+```
+
+
+Total number of occurrences linked to anomalous taxa:
+
+```{r tot_n_occs_anomalous_taxa}
+nrow(occs_anomalous_taxa)
+```
+
+Count number of occurrences for each anomalous taxa:
+
+```{r count_occs_anomalous_taxa}
+n_occs_anomalous_taxa <-
+  occs_anomalous_taxa %>%
+  group_by(id) %>%
+  count() %>%
+  left_join(anomalous_taxa, 
+            by = "id") %>%
+  select(id, acceptedname, scientificnameauthorship, n, everything()) %>%
+  arrange(desc(n))
+n_occs_anomalous_taxa
+```
+
+Save:
+
+```{r save_count_occs_anomalous_taxa}
+write_tsv(n_occs_anomalous_taxa,
+          path = here("data", "interim", "n_occs_anomalous_taxa.tsv"),
+          na = "")
+```
