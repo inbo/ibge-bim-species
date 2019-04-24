@@ -20,9 +20,18 @@ knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding =
 ## Load libraries
 
 ```{r load_libs}
+library(odbc)       # To work with database
 library(tidyverse)  # To do data science
 library(here)       # To work with paths
 library(inborutils) # To match taxa (rgbif called in background)
+```
+
+## Load access informations
+
+Retrieve access informations from configuration file:
+
+```{r get_access_infos}
+ibge_bim <- config::get("ibge_bim")
 ```
 
 # Read taxa
@@ -42,40 +51,6 @@ taxa <- read_tsv(here("data", "interim", "taxa.tsv"),
                    kingdom_id = col_double()
                    )
 )
-```
-
-Read anomalous taxa, see [issue #7](https://github.com/inbo/ibge-bim-species/issues/7). They will be temporarily removed before searching.
-
-```{r read_anomalous_taxa}
-anomalous_taxa <- read_tsv(
-  here("data", "interim", "anomalous_taxa.tsv"),
-  col_types = cols(
-                   .default = col_character(),
-                   id = col_double(),
-                   parentid = col_double(),
-                   media = col_logical(),
-                   speciesbeparentid = col_double(),
-                   bruenvi_created = col_date(format = "%Y-%m-%d"),
-                   bruenvi_created = col_date(format = "%Y-%m-%d"),
-                   kingdom_id = col_double())
-)
-```
-
-Remove anomalous taxa:
-
-```{r remove_suspected_taxa}
-taxa <- 
-  taxa %>%
-  anti_join(anomalous_taxa,
-            by = c("id", "speciesbeid", 
-                   "colid", "acceptedname", 
-                   "vernacularnamefr", 
-                   "vernacularnamenl", "scientificnameauthorship", 
-                   "parentid", "distributionstatuscode", 
-                   "taxonranken", "media", 
-                   "taxonomicstatusen", "speciesbeparentid", 
-                   "bruenvi_created", "bruenvi_modified", 
-                   "bruenvi_author", "kingdom_id", "kingdom"))
 ```
 
 # Match taxa to GBIF Taxonomy Backbone
@@ -103,12 +78,12 @@ taxa <-
   ))
 ```
 
-We match the names in `name` with GBIF Backbone. We also use the columns containing kingdom information, `bim_kingdom`, and rank, `rank_for_gbif`, and we require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification. This step can take long:
+We match the names in `name_for_gbif` with GBIF Backbone. We also use the columns containing kingdom information, `bim_kingdom`, and rank, `rank_for_gbif`, and we require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification. This step can take long:
 
 ```{r get_name_gbif}
 taxa_gbif <-
   taxa %>%
-  gbif_species_name_match(name = "name",
+  gbif_species_name_match(name = "name_for_gbif",
                           kingdom = "bim_kingdom", 
                           rank = "rank_for_gbif",
                           strict = TRUE)
@@ -121,7 +96,7 @@ taxa_gbif %>%
   head()
 ```
 
-The column `matchType` informs us whether the match has been successful, `EXACT`, doubtful, `FUZZY`, or failed, `NONE`. The column  `confidence` is also informative. Number of taxa for each value of  `matchType`:
+The column `matchType` informs us whether the match has been successful, `matchType` = `EXACT`, doubtful, `matchType` = `FUZZY`, or failed, `matchType` = `NONE`. The column  `confidence` is also informative. Number of taxa for each value of `matchType`:
 
 ```{r overview_n_match}
 taxa_gbif %>%
@@ -129,40 +104,117 @@ taxa_gbif %>%
   count()
 ```
 
+Taxa without exact match:
 
 ```{r not_matched_taxa}
 taxa_gbif %>%
+  filter(matchType != "EXACT")  %>%
+  select(-c(speciesbeid, colid, vernacularnamefr, 
+            vernacularnamenl, parentid, distributionstatuscode, 
+            media, speciesbeparentid, bruenvi_created, bruenvi_author,
+            bruenvi_modified, kingdom_id)
+)
+```
+
+## Count number of occurrences per taxa
+
+It is interesting to know how many occurrences are linked to these unmatched taxa. We retrieve this information by reading the occurrences from database.
+
+### Connect to database
+
+Connect to database:
+
+```{r connect_to_db}
+conn <- dbConnect(odbc(), 
+                  driver = ibge_bim$driver,
+                  server = ibge_bim$server,
+                  database = ibge_bim$database,
+                  port = ibge_bim$port,
+                  uid = ibge_bim$uid,
+                  pwd = ibge_bim$pwd
+)
+```
+
+### Get occurrences from table `occurence`
+
+Table `occurence` contains occurrence data:
+
+```{r get_occs}
+occurrences <- 
+  dbGetQuery(conn, "SELECT * FROM biodiv.occurence") %>%
+  as_tibble()
+```
+
+Overview:
+
+```{r overview_occs}
+head(occurrences)
+```
+
+Number of occurrences:
+
+```{r n_occs}
+nrow(occurrences)
+```
+
+### Close connection
+
+Close connection:
+
+```{r close_connection_occs}
+dbDisconnect(conn)
+```
+
+### Add number of occurrences to taxonomic data
+
+We add a new column called `n_occs` containing the number of occurrences linked to each taxon:
+
+```{r add_n_occs}
+taxa_gbif <- 
+  occurrences %>%
+  group_by(identifiablespeciesid) %>%
+  count() %>%
+  rename(n_occs = n) %>%
+  right_join(taxa_gbif,
+             by = c("identifiablespeciesid" = "id")) %>%
+  rename(id = identifiablespeciesid)
+```
+
+Number of taxa with/without occurrences:
+
+```{r n_taxa_with_without_occs}
+taxa_gbif %>%
+  group_by(!is.na(n_occs)) %>%
+  count() %>%
+  rename("has_occs" = "!is.na(n_occs)")
+```
+
+### Number of occurrences for unmatched taxa
+
+In particular for unmatched taxa:
+
+```{r n_occs_unmatched_taxa}
+taxa_gbif_unmatched <- 
+  taxa_gbif %>%
   filter(matchType != "EXACT") %>%
-  select(acceptedname, scientificnameauthorship, name, ...)
+  select(name_for_gbif, 
+         n_occs, 
+         matchType, 
+         confidence, 
+         status, 
+         everything()) %>%
+  arrange(desc(n_occs))
+taxa_gbif_unmatched
 ```
 
+Unmatched taxa linked to at least one occurrence or not at all:
 
-```{r}
-occurrences_gbif_info %>%
-  filter(is.na(parentid)) %>%
-  distinct(identifiablespeciesid) %>%
-  count()
+```{r unmatched_taxa_count_n_occs}
+taxa_gbif_unmatched %>%
+  group_by(!is.na(n_occs)) %>%
+  count() %>%
+  rename("has_occs" = "!is.na(n_occs)")
 ```
 
-```{r }
-occurrences_gbif_info %>%
-  filter(matchType == "NONE") %>%
-  distinct(identifiablespeciesid) %>%
-  left_join(taxa, by = c("identifiablespeciesid" = "id"))
-```
-
-```{r}
-taxa_gbif %>%
-  filter(matchType == "NONE") %>%
-  write_tsv("taxa_no_match_GBIF_backbone", na = "")
-getwd()
-```
-
-
-```{r} 
-taxa_gbif %>%
-  filter(is.na(parentid)) %>%
-  group_by(matchType) %>%
-  count()
 ```
 
