@@ -52,7 +52,7 @@ conn <- dbConnect(odbc(),
 
 ## Get data from table `occurence`
 
-Table `taxon` contains taxonomic data:
+Table `occurence` contains occurrence data:
 
 ```{r get_occs}
 occurrences <- 
