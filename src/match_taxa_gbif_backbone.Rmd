@@ -185,7 +185,7 @@ taxa_gbif <-
 
 Overview:
 
-```{r }
+```{r overview_matchType}
 taxa_gbif %>%
   group_by(matchType) %>%
   count()
@@ -303,13 +303,15 @@ We save the taxa with the added information from GBIF Taxonomy Backbone:
 
 ```{r save_taxa_gbif}
 write_tsv(taxa_gbif,
-          path = here::here("data", "interim", "taxa_gbif.tsv"))
+          path = here::here("data", "interim", "taxa_gbif.tsv"),
+          na = "")
 ```
 
 We save the subset of the unmatched taxa in a separate file as well for ease consultation. The unmatched taxa are also arrange by decreasing number of occurrences:
 
 ```{r save_unmatched_taxa}
 write_tsv(taxa_gbif_unmatched,
-          path = here::here("data", "interim", "unmatched_taxa_gbif.tsv"))
+          path = here::here("data", "interim", "unmatched_taxa_gbif.tsv"),
+          na = "")
 ```
 
