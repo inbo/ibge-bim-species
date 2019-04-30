@@ -3,6 +3,7 @@ title: "Match taxa with GBIF Taxonomy Backbone"
 author:
   - Damiano Oldoni
   - Lien Reyserhove
+  - Peter Desmet
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -78,7 +79,7 @@ taxa <-
   ))
 ```
 
-We match the names in `name_for_gbif` with GBIF Backbone. We also use the columns containing kingdom information, `bim_kingdom`, and rank, `rank_for_gbif`, and we require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification. This step can take long:
+We match the names in `name_for_gbif` with GBIF Backbone. We also use the columns containing kingdom information, `bim_kingdom`, and rank, `rank_for_gbif`, and we require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification. **Note: This step takes long**:
 
 ```{r get_name_gbif}
 taxa_gbif <-
@@ -104,21 +105,95 @@ taxa_gbif %>%
   count()
 ```
 
-Taxa without exact match:
+We create a new data.frame, `taxa_no_exact_match`, for taxa without exact match:
+
+```{r taxa_no_exact_match}
+taxa_no_exact_match <-
+  taxa_gbif %>%
+  filter(matchType != "EXACT") %>%
+  arrange(id)
+```
+
+Preview (only relevant columns shown):
 
 ```{r not_matched_taxa}
-taxa_gbif %>%
-  filter(matchType != "EXACT")  %>%
+taxa_no_exact_match %>%
   select(-c(speciesbeid, colid, vernacularnamefr, 
             vernacularnamenl, parentid, distributionstatuscode, 
             media, speciesbeparentid, bruenvi_created, bruenvi_author,
-            bruenvi_modified, kingdom_id)
+            bruenvi_modified, kingdom_id)) %>%
+  head()
+```
+
+### Match by `acceptedname` only
+
+Some of the taxa are not matched due to deviating author spellings, e.g.
+
+```{r example_no_match_due_to_author_spelling_deviation}
+taxa_no_exact_match %>%
+  filter(name_for_gbif == "Neosartorya fischeri var. glabra (Fennell & Raper) Malloch & Cain")
+```
+
+while in GBIF Backbone:
+
+```{r}
+rgbif::name_backbone(name = "`Neosartorya fischeri var. glabra Fennell & Raper, 1973`") %>% as_tibble()
+```
+
+Matching without authors can improve matching:
+
+```{r match_acceptedname_only}
+taxa_gbif_acceptedname <-
+  taxa_no_exact_match %>%
+  select(names(taxa), -c(name_for_gbif)) %>%
+  gbif_species_name_match(name = "acceptedname",
+                          kingdom = "bim_kingdom", 
+                          rank = "rank_for_gbif",
+                          strict = TRUE)
+```
+
+Overview match:
+
+```{r summarize_new_match}
+taxa_gbif_acceptedname %>%
+  group_by(matchType) %>%
+  count()
+```
+
+As some of the matches might be wrong, we update `matchType` to `EXACT_WITHOUT_AUTHOR`, `FUZZY_WITHOUT_AUTHOR`:
+
+```{r flag_matchType}
+taxa_gbif_acceptedname <-
+  taxa_gbif_acceptedname %>%
+  mutate(matchType = case_when(
+    matchType == "EXACT" ~ "EXACT_WITHOUT_AUTHOR",
+    matchType == "FUZZY" ~ "FUZZY_WITHOUT_AUTHOR",
+    TRUE ~ matchType)
 )
 ```
 
-## Count number of occurrences per taxa
+Include the results of this second match attempt to `taxa_gbif`:
 
-It is interesting to know how many occurrences are linked to these unmatched taxa. We retrieve this information by reading the occurrences from database.
+```{r join_taxa_gbif_acceptedname}
+taxa_gbif <-
+  taxa_gbif %>%
+  anti_join(taxa_gbif_acceptedname,
+            by = "id") %>%
+  bind_rows(taxa_gbif_acceptedname) %>%
+  arrange(id)
+```
+
+Overview:
+
+```{r }
+taxa_gbif %>%
+  group_by(matchType) %>%
+  count()
+```
+
+## Get number of occurrences per taxa
+
+It is interesting to know how many occurrences are linked to the unmatched taxa. For example, taxa linked to many occurrences could be checked before other ones, thus prioritizing the work of the taxonomists. We retrieve this information by reading the occurrences from database.
 
 ### Connect to database
 
@@ -131,7 +206,8 @@ conn <- dbConnect(odbc(),
                   database = ibge_bim$database,
                   port = ibge_bim$port,
                   uid = ibge_bim$uid,
-                  pwd = ibge_bim$pwd
+                  pwd = ibge_bim$pwd,
+                  encoding = "latin1"
 )
 ```
 
@@ -150,6 +226,8 @@ Overview:
 ```{r overview_occs}
 head(occurrences)
 ```
+
+where `identifiablespeciesid` is the column corresponding to the column `id` of table `biodiv.taxon` where taxonomic data have been retrieved in previous pipeline  `get_taxa_from_db.Rmd`.
 
 Number of occurrences:
 
@@ -174,10 +252,12 @@ taxa_gbif <-
   occurrences %>%
   group_by(identifiablespeciesid) %>%
   count() %>%
+  ungroup() %>%
   rename(n_occs = n) %>%
   right_join(taxa_gbif,
              by = c("identifiablespeciesid" = "id")) %>%
-  rename(id = identifiablespeciesid)
+  rename(id = identifiablespeciesid) %>%
+  arrange(id)
 ```
 
 Number of taxa with/without occurrences:
@@ -189,15 +269,16 @@ taxa_gbif %>%
   rename("has_occs" = "!is.na(n_occs)")
 ```
 
-### Number of occurrences for unmatched taxa
+### Number of occurrences of unmatched taxa
 
-In particular for unmatched taxa:
+In particular, for unmatched taxa (`matchType` not equal to `EXACT`):
 
 ```{r n_occs_unmatched_taxa}
 taxa_gbif_unmatched <- 
   taxa_gbif %>%
   filter(matchType != "EXACT") %>%
-  select(name_for_gbif, 
+  select(acceptedname,
+         scientificnameauthorship,
          n_occs, 
          matchType, 
          confidence, 
@@ -207,7 +288,7 @@ taxa_gbif_unmatched <-
 taxa_gbif_unmatched
 ```
 
-Unmatched taxa linked to at least one occurrence or not at all:
+Number of unmatched taxa linked to at least one occurrence or not at all:
 
 ```{r unmatched_taxa_count_n_occs}
 taxa_gbif_unmatched %>%
@@ -216,5 +297,19 @@ taxa_gbif_unmatched %>%
   rename("has_occs" = "!is.na(n_occs)")
 ```
 
+# Save taxa
+
+We save the taxa with the added information from GBIF Taxonomy Backbone:
+
+```{r save_taxa_gbif}
+write_tsv(taxa_gbif,
+          path = here::here("data", "interim", "taxa_gbif.tsv"))
+```
+
+We save the subset of the unmatched taxa in a separate file as well for ease consultation. The unmatched taxa are also arrange by decreasing number of occurrences:
+
+```{r save_unmatched_taxa}
+write_tsv(taxa_gbif_unmatched,
+          path = here::here("data", "interim", "unmatched_taxa_gbif.tsv"))
 ```
 
