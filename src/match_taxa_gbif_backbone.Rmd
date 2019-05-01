@@ -145,7 +145,7 @@ Matching without authors can improve matching:
 ```{r match_acceptedname_only}
 taxa_gbif_acceptedname <-
   taxa_no_exact_match %>%
-  select(names(taxa), -c(name_for_gbif)) %>%
+  select(names(taxa)) %>%
   gbif_species_name_match(name = "acceptedname",
                           kingdom = "bim_kingdom", 
                           rank = "rank_for_gbif",
@@ -186,6 +186,131 @@ taxa_gbif <-
 Overview:
 
 ```{r overview_matchType}
+taxa_gbif %>%
+  group_by(matchType) %>%
+  count()
+```
+
+### Match without kingdom
+
+Due to errors in parent IDs, some taxa are not matched because they are linked to the wrong kingdom. Examples, the phylum `Xanthophyta`:
+
+```{r example_Xanthophyta}
+taxa_gbif %>% filter(acceptedname == "Xanthophyta")
+```
+
+Its `bim_kingdom` is Plantae based on parentid `45975`, which refers to the internal id of acceptedname `Plantae`, while in GBIF Backbone:
+
+```{r example_Xanthophyta_GBIF_Backbone}
+taxa_gbif %>% 
+  filter(acceptedname == "Xanthophyta") %>%
+  select(acceptedname) %>%
+  gbif_species_name_match(name = "acceptedname")
+```
+
+The taxa with `matchType` not equal to `EXACT` or `EXACT_WITHOUT_AUTHOR` are matched again by using the combination of `acceptedname` and `scientificnameauthorship`. Matching without passing parameter kingdom can improve matching:
+
+```{r match_without_kingdom}
+taxa_gbif_without_kingdom <-
+  taxa_gbif %>%
+  filter(!matchType %in% c("EXACT_WITHOUT_AUTHOR", "EXACT")) %>%
+  select(names(taxa)) %>%
+  gbif_species_name_match(name = "name_for_gbif",
+                          rank = "rank_for_gbif",
+                          strict = TRUE)
+```
+
+Overview match:
+
+```{r summarize_new_match_without_kingdom}
+taxa_gbif_without_kingdom %>%
+  group_by(matchType) %>%
+  count()
+```
+
+As some of the matches might be wrong, we update `matchType` to `EXACT_WITHOUT_KINGDOM`, `FUZZY_WITHOUT_KINGDOM`:
+
+```{r flag_matchType_without_kingdom}
+taxa_gbif_without_kingdom <-
+  taxa_gbif_without_kingdom %>%
+  mutate(matchType = case_when(
+    matchType == "EXACT" ~ "EXACT_WITHOUT_KINGDOM",
+    matchType == "FUZZY" ~ "FUZZY_WITHOUT_KINGDOM",
+    TRUE ~ matchType)
+)
+```
+
+Include the results of this third match attempt to `taxa_gbif`:
+
+```{r join_taxa_gbif_without_kingdom}
+taxa_gbif <-
+  taxa_gbif %>%
+  anti_join(taxa_gbif_without_kingdom,
+            by = "id") %>%
+  bind_rows(taxa_gbif_without_kingdom) %>%
+  arrange(id)
+```
+
+Overview  `matchType`:
+
+```{r overview_matchType_3}
+taxa_gbif %>%
+  group_by(matchType) %>%
+  count()
+```
+
+### Match by  `acceptedname` only and without kingdom
+
+As fourth and final matching attempt, we try matching taxa without `authorship` and without passing kingdom as parameter. Please note that rank is always given to the match function.
+
+The taxa with `matchType` not equal to `EXACT`, `EXACT_WITHOUT_AUTHOR` or `EXACT_WITHOUT_KINGDOM` are matched again by using `acceptedname` only. Matching without passing parameter kingdom can improve matching:
+
+```{r match_without_kingdom_acceptedname_only}
+taxa_gbif_acceptedname_without_kingdom <-
+  taxa_gbif %>%
+  filter(!matchType %in% c("EXACT_WITHOUT_KINGDOM", 
+                           "EXACT_WITHOUT_AUTHOR", 
+                           "EXACT")) %>%
+  select(names(taxa)) %>%
+  gbif_species_name_match(name = "acceptedname",
+                          rank = "rank_for_gbif",
+                          strict = TRUE)
+```
+
+Overview match:
+
+```{r summarize_match_without_kingdom_acceptedname}
+taxa_gbif_acceptedname_without_kingdom %>%
+  group_by(matchType) %>%
+  count()
+```
+
+As some of the matches might be wrong, we update `matchType` to `EXACT_WITHOUT_AUTHOR_WITHOUT_KINGDOM`, `FUZZY_WITHOUT_AUTHOR_WITHOUT_KINGDOM`:
+
+```{r flag_matchType_without_author_and_kingdom}
+taxa_gbif_acceptedname_without_kingdom <-
+  taxa_gbif_acceptedname_without_kingdom %>%
+  mutate(matchType = case_when(
+    matchType == "EXACT" ~ "EXACT_WITHOUT_AUTHOR_WITHOUT_KINGDOM",
+    matchType == "FUZZY" ~ "FUZZY_WITHOUT_AUTHOR_WITHOUT_KINGDOM",
+    TRUE ~ matchType)
+)
+```
+
+Include the results of this fourth match attempt to `taxa_gbif`:
+
+```{r join_taxa_gbif_acceptedname_without_kingdom}
+taxa_gbif <-
+  taxa_gbif %>%
+  anti_join(taxa_gbif_acceptedname_without_kingdom,
+            by = "id") %>%
+  bind_rows(taxa_gbif_acceptedname_without_kingdom) %>%
+  arrange(id)
+```
+
+Overview  `matchType`:
+
+```{r overview_matchType_4}
 taxa_gbif %>%
   group_by(matchType) %>%
   count()
@@ -283,19 +408,55 @@ taxa_gbif_unmatched <-
          matchType, 
          confidence, 
          status, 
-         everything()) %>%
-  arrange(desc(n_occs))
-taxa_gbif_unmatched
+         usageKey,
+         scientificName,
+         canonicalName,
+         rank,
+         kingdom,
+         phylum,
+         class,
+         order,
+         family,
+         genus,
+         species,
+         everything())
+# preview
+taxa_gbif_unmatched %>%
+  head()
 ```
 
-Number of unmatched taxa linked to at least one occurrence or not at all:
+Number of unmatched taxa linked to at least one occurrence or not at all and with or without parent ID:
 
 ```{r unmatched_taxa_count_n_occs}
 taxa_gbif_unmatched %>%
-  group_by(!is.na(n_occs)) %>%
+  group_by(!is.na(parentid), !is.na(n_occs)) %>%
   count() %>%
-  rename("has_occs" = "!is.na(n_occs)")
+  rename("has_parentid" = "!is.na(parentid)",
+         "has_occs" = "!is.na(n_occs)"
+)
 ```
+
+Experts should focus first on taxa without parent ID, `has_parentid = FALSE`. Among these ones priority should be given to taxa with occurrences, `has_occs = TRUE`. To do so, we arrange the taxa by absence of parent ID and decreasing number of occurrences:
+
+```{r taxa_gbif_unmatched_arrange_parentid_n_occs}
+taxa_gbif_unmatched <- 
+  taxa_gbif_unmatched %>%
+  arrange(!is.na(parentid), n_occs)
+```
+
+Finally, it is also important to show the rank of the unmatched taxa:
+
+```{r rank_of_unmatched_taxa}
+taxa_gbif_unmatched %>%
+  group_by(rank_for_gbif) %>%
+  count()
+```
+
+```{r}
+taxa_gbif_unmatched %>%
+  filter(rank_for_gbif == "phylum")
+```
+
 
 # Save taxa
 
@@ -307,11 +468,10 @@ write_tsv(taxa_gbif,
           na = "")
 ```
 
-We save the subset of the unmatched taxa in a separate file as well for ease consultation. The unmatched taxa are also arrange by decreasing number of occurrences:
+We save the subset of the unmatched taxa in a separate file for verification.
 
 ```{r save_unmatched_taxa}
 write_tsv(taxa_gbif_unmatched,
           path = here::here("data", "interim", "unmatched_taxa_gbif.tsv"),
           na = "")
 ```
-
