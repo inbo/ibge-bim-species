@@ -58,11 +58,10 @@ taxa <- read_tsv(here("data", "interim", "taxa.tsv"),
 
 ## Match by `acceptedname` + `scientificnameauthorship`
 
-We try to match by using `acceptedname` + `scientificnameauthorship`.
-First, we prepare `taxa` for matching. In this step:
+We try to match by using `acceptedname` + `scientificnameauthorship`. We also provide kingdom and rank information to the match function. First, we prepare `taxa` for matching. In this step:
 
 1. We create a new column, `name_for_gbif`, where we paste `acceptedname` and `scientificnameauthorship`, if present.
-2. Recode the taxon ranks from `taxonranken` in a new column, `rank_for_gbif`, containing the correct GBIF terms
+2. Recode the taxon ranks from `taxonranken` in a new column, `rank_for_gbif`, containing the correct GBIF terms.
 
 ```{r prepare_taxa_for_matching_backbone}
 taxa <-
