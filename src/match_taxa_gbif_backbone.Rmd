@@ -407,7 +407,7 @@ taxa_gbif_unmatched %>%
 We save the taxa with the added information from GBIF Taxonomy Backbone:
 
 ```{r save_taxa_gbif}
-write_tsv(taxa_gbif$,
+write_tsv(taxa_gbif,
           path = here::here("data", "interim", "taxa_gbif.tsv"),
           na = "")
 ```
