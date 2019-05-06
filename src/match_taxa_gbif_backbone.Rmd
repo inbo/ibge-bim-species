@@ -102,7 +102,7 @@ taxa_gbif %>%
   head()
 ```
 
-The column `matchType` informs us whether the match has been successful, `matchType` = `EXACT`, doubtful, `matchType` = `FUZZY`, or failed, `matchType` = `NONE`. The column  `confidence` is also informative. Number of taxa for each value of `matchType`:
+The column `matchType` informs us whether the match has been successful (`matchType` = `EXACT`), doubtful (`matchType` = `FUZZY`) or failed (`matchType` = `NONE`). The column  `confidence` is also informative. Number of taxa for each value of `matchType`:
 
 ```{r overview_n_match}
 taxa_gbif %>%
@@ -210,73 +210,16 @@ Its `bim_kingdom` is based on parentid `45975`, which refers to the internal id 
 taxa_gbif %>% 
   filter(acceptedname == "Xanthophyta") %>%
   select(acceptedname) %>%
-  gbif_species_name_match(name = "acceptedname")
-```
-
-The taxa with `matchType` not equal to `EXACT` or `EXACT_WITHOUT_AUTHOR` are matched again by using the combination of `acceptedname` and `scientificnameauthorship`. Matching without passing parameter kingdom can improve matching:
-
-```{r match_without_kingdom}
-taxa_gbif_without_kingdom <-
-  taxa_gbif %>%
-  filter(!matchType %in% c("EXACT_WITHOUT_AUTHOR", "EXACT")) %>%
-  select(names(taxa)) %>%
-  gbif_species_name_match(name = "name_for_gbif",
-                          rank = "rank_for_gbif",
-                          strict = TRUE)
-```
-
-Overview match:
-
-```{r summarize_new_match_without_kingdom}
-taxa_gbif_without_kingdom %>%
-  group_by(matchType) %>%
-  count()
-```
-
-As some of the matches might be wrong, we update `matchType` to `EXACT_WITHOUT_KINGDOM`, `FUZZY_WITHOUT_KINGDOM`:
-
-```{r flag_matchType_without_kingdom}
-taxa_gbif_without_kingdom <-
-  taxa_gbif_without_kingdom %>%
-  mutate(matchType = case_when(
-    matchType == "EXACT" ~ "EXACT_WITHOUT_KINGDOM",
-    matchType == "FUZZY" ~ "FUZZY_WITHOUT_KINGDOM",
-    TRUE ~ matchType)
-)
   gbif_species_name_match(name = "acceptedname") %>%
   select(acceptedname,kingdom)
 ```
 
-Include the results of this third match attempt to `taxa_gbif`:
-
-```{r join_taxa_gbif_without_kingdom}
-taxa_gbif <-
-  taxa_gbif %>%
-  anti_join(taxa_gbif_without_kingdom,
-            by = "id") %>%
-  bind_rows(taxa_gbif_without_kingdom) %>%
-  arrange(id)
-```
-
-Overview  `matchType`:
-
-```{r overview_matchType_3}
-taxa_gbif %>%
-  group_by(matchType) %>%
-  count()
-```
-
-### Match by  `acceptedname` only and without kingdom
-
-As fourth and final matching attempt, we try matching taxa without `authorship` and without passing kingdom as parameter. Please note that rank is always given to the match function.
-
-The taxa with `matchType` not equal to `EXACT`, `EXACT_WITHOUT_AUTHOR` or `EXACT_WITHOUT_KINGDOM` are matched again by using `acceptedname` only. Matching without passing parameter kingdom can improve matching:
+The taxa with `matchType` not equal to `EXACT` or `EXACT_WITHOUT_AUTHOR` are matched again. As third and final matching attempt, we try matching taxa without `scientificnameauthorship` and without passing kingdom as parameter. Please note that rank is always given to the match function.
 
 ```{r match_without_kingdom_acceptedname_only}
 taxa_without_author_and_kingdom <-
   taxa_gbif %>%
-  filter(!matchType %in% c("EXACT_WITHOUT_KINGDOM", 
-                           "EXACT_WITHOUT_AUTHOR", 
+  filter(!matchType %in% c("EXACT_WITHOUT_AUTHOR", 
                            "EXACT")) %>%
   select(names(taxa)) %>%
   gbif_species_name_match(name = "acceptedname",
@@ -292,14 +235,14 @@ taxa_without_author_and_kingdom %>%
   count()
 ```
 
-As some of the matches might be wrong, we update `matchType` to `EXACT_WITHOUT_AUTHOR_WITHOUT_KINGDOM`, `FUZZY_WITHOUT_AUTHOR_WITHOUT_KINGDOM`:
+As some of the matches might be wrong, we update `matchType` to `EXACT_WITHOUT_AUTHOR_AND_KINGDOM`, `FUZZY_WITHOUT_AUTHOR_AND_KINGDOM`:
 
 ```{r flag_matchType_without_author_and_kingdom}
 taxa_without_author_and_kingdom <-
   taxa_without_author_and_kingdom %>%
   mutate(matchType = case_when(
-    matchType == "EXACT" ~ "EXACT_WITHOUT_AUTHOR_WITHOUT_KINGDOM",
-    matchType == "FUZZY" ~ "FUZZY_WITHOUT_AUTHOR_WITHOUT_KINGDOM",
+    matchType == "EXACT" ~ "EXACT_WITHOUT_AUTHOR_AND_KINGDOM",
+    matchType == "FUZZY" ~ "FUZZY_WITHOUT_AUTHOR_AND_KINGDOM",
     TRUE ~ matchType)
 )
 ```
