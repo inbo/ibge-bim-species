@@ -130,7 +130,7 @@ taxa_no_exact_match %>%
   head()
 ```
 
-### Match by `acceptedname` only
+## Match by `acceptedname` only
 
 Some of the taxa are not matched due to deviating author spellings, e.g.
 
@@ -196,7 +196,7 @@ taxa_gbif %>%
   count()
 ```
 
-### Match without kingdom
+## Match by `acceptedname` only and without kingdom
 
 Due to errors in parent IDs, some taxa are not matched because they are linked to the wrong kingdom. Examples, the phylum `Xanthophyta`:
 
