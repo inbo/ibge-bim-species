@@ -199,7 +199,7 @@ Due to errors in parent IDs, some taxa are not matched because they are linked t
 taxa_gbif %>% filter(acceptedname == "Xanthophyta")
 ```
 
-Its `bim_kingdom` is Plantae based on parentid `45975`, which refers to the internal id of acceptedname `Plantae`, while in GBIF Backbone:
+Its `bim_kingdom` is based on parentid `45975`, which refers to the internal id of acceptedname `Plantae`, while in GBIF Backbone:
 
 ```{r example_Xanthophyta_GBIF_Backbone}
 taxa_gbif %>% 
@@ -425,7 +425,7 @@ taxa_gbif_unmatched %>%
   head()
 ```
 
-Number of unmatched taxa linked to at least one occurrence or not at all and with or without parent ID:
+Number of unmatched taxa linked to at least one occurrence or none at all _and_ with or without parent ID:
 
 ```{r unmatched_taxa_count_n_occs}
 taxa_gbif_unmatched %>%
