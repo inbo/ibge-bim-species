@@ -56,6 +56,12 @@ taxa <- read_tsv(here("data", "interim", "taxa.tsv"),
 
 # Match taxa to GBIF Taxonomy Backbone
 
+We match taxa to GBIF Taxonomy Backbone in three steps:
+
+1. match by name with authorship + kingdom + rank
+2. match by name without authorship + kingdom + rank
+3. match by name without authorship + rank
+
 ## Match by `acceptedname` + `scientificnameauthorship`
 
 We try to match by using `acceptedname` + `scientificnameauthorship`. We also provide kingdom and rank information to the match function. First, we prepare `taxa` for matching. In this step:
