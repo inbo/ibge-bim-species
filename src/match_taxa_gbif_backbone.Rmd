@@ -79,7 +79,7 @@ taxa <-
   ))
 ```
 
-We match the names in `name_for_gbif` with GBIF Backbone. We also use the columns containing kingdom information, `bim_kingdom`, and rank, `rank_for_gbif`, and we require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification. **Note: This step takes long**:
+We match the names in `name_for_gbif` with GBIF Backbone. We also use the columns containing kingdom information (`bim_kingdom`) and rank (`rank_for_gbif`) and we require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification. **Note: This step takes long**:
 
 ```{r get_name_gbif}
 taxa_gbif <-
