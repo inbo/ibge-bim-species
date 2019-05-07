@@ -52,6 +52,16 @@ taxa %>%
   summarize(records = n())
 ```
 
+Taxa without parent ID:
+
+```{r n_taxa_with_no_parentid}
+taxa %>%
+  group_by(!is.na(parentid)) %>%
+  summarize(records = n()) %>%
+  rename( has_parent = "!is.na(parentid)")
+```
+
+
 Check the internal validity of parent IDs. Are all parent IDs valid IDs?
 
 ```{r check_parent_IDs}
@@ -174,19 +184,20 @@ kingdom_df <-
 kingdom_df
 ```
 
-We add `kingdom` to `taxa` for better interpretation of the results:
+We add `kingdom` to `taxa` for better interpretation of the results. We call this column `bim_kingdom` in order to distinct it in the future from the `kingdom` got by GBIF Taxonomy Backbone:
 
 ```{r add_kingdom_column}
 taxa <- 
   taxa %>%
-  left_join(kingdom_df, by = c("kingdom_id" = "id"))
+  left_join(kingdom_df, by = c("kingdom_id" = "id")) %>%
+  rename(bim_kingdom = kingdom)
 ```
 
 Preview of taxa linked to their specific kingdom:
 
 ```{r preview_taxa_with_kingdom}
 taxa %>% 
-  select(acceptedname, kingdom) %>% 
+  select(acceptedname, bim_kingdom) %>% 
   head(n = 100)
 ```
 
@@ -222,9 +233,13 @@ homonyms <-
   summarize(n_kingdoms = length(unique(kingdom_id))) %>%
   filter(n_kingdoms > 1) %>%
   left_join(taxa, by = "acceptedname") %>%
-  select(id, kingdom_id, 
-         acceptedname, scientificnameauthorship, 
-         taxonranken, taxonomicstatusen, kingdom)
+  select(id, 
+         acceptedname, 
+         scientificnameauthorship, 
+         bim_kingdom, 
+         taxonranken, 
+         taxonomicstatusen,
+         kingdom_id)
 homonyms
 ```
 
@@ -242,10 +257,15 @@ anomalous_taxa <-
   count() %>%
   filter(n > 1) %>%
   left_join(taxa, by = "acceptedname") %>%
-  select(id, kingdom_id, 
-         acceptedname, scientificnameauthorship, 
-         taxonranken, taxonomicstatusen, kingdom)
-anomalous_taxa
+  select(-n)
+anomalous_taxa %>%
+  select(id,
+         acceptedname, 
+         scientificnameauthorship, 
+         bim_kingdom,
+         taxonranken, 
+         taxonomicstatusen, 
+         kingdom_id)
 ```
 
 # Save taxa

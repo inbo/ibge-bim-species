@@ -50,7 +50,8 @@ conn <- dbConnect(odbc(),
                   database = ibge_bim$database,
                   port = ibge_bim$port,
                   uid = ibge_bim$uid,
-                  pwd = ibge_bim$pwd
+                  pwd = ibge_bim$pwd,
+                  encoding = "latin1"
 )
 ```
 
@@ -59,8 +60,8 @@ conn <- dbConnect(odbc(),
 Table `taxon` contains taxonomic data:
 
 ```{r get_taxa}
-taxa <- dbGetQuery(conn, "SELECT * FROM biodiv.taxon") %>%
-    as_tibble()
+taxa <- dbGetQuery(conn, "SELECT * FROM biodiv.taxon") %>% 
+  as_tibble()
 ```
 
 Overview:
@@ -89,5 +90,6 @@ Save taxa as tab separated text file:
 
 ```{r save_taxa}
 write_tsv(taxa,
-          path = here("data", "input", "taxa.tsv"))
+          path = here("data", "input", "taxa.tsv"),
+          na = "")
 ```
