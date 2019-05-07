@@ -64,7 +64,7 @@ We match taxa to GBIF Taxonomy Backbone in three steps:
 
 ## Match by `acceptedname` + `scientificnameauthorship`
 
-We try to match by using `acceptedname` + `scientificnameauthorship`. We also provide kingdom and rank information to the match function. First, we prepare `taxa` for matching. In this step:
+We try to match by using `acceptedname` + `scientificnameauthorship` as name. We also provide kingdom and rank information to the match function. First, we prepare `taxa` for matching. In this step:
 
 1. We create a new column, `name_for_gbif`, where we paste `acceptedname` and `scientificnameauthorship`, if present.
 2. Recode the taxon ranks from `taxonranken` in a new column, `rank_for_gbif`, containing the correct GBIF terms.
@@ -84,29 +84,70 @@ taxa <-
   ))
 ```
 
-We match the names in `name_for_gbif` with GBIF Backbone. We also use the columns containing kingdom information (`bim_kingdom`) and rank (`rank_for_gbif`) and we require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification. **Note: This step takes long**:
+We match the names in `name_for_gbif` with GBIF Backbone and retrieve the following GBIF fields:
+
+```{r gbif_terms}
+gbif_terms <- c("matchType",
+                "confidence", 
+                "rank", 
+                "usageKey", 
+                "scientificName",
+                "canonicalName",
+                "kingdom",
+                "phylum",
+                "order", 
+                "class", 
+                "family",
+                "genus", 
+                "species",
+                "kingdomKey",
+                "phylumKey",
+                "classKey",
+                "orderKey",
+                "familyKey",
+                "genusKey",
+                "speciesKey",
+                "status",
+                "synonym", 
+                "acceptedUsageKey")
+```
+
+We also use the columns containing kingdom information (`bim_kingdom`) and rank (`rank_for_gbif`) and we require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification. **Note: This step takes long**:
 
 ```{r get_name_gbif}
 taxa_gbif <-
   taxa %>%
   gbif_species_name_match(name = "name_for_gbif",
                           kingdom = "bim_kingdom", 
-                          rank = "rank_for_gbif",
+                          rank = "rank_for_gbif", 
+                          gbif_terms = gbif_terms,
                           strict = TRUE)
 ```
 
-Some columns containing GBIF data have been added. Preview:
+We add the prefix `gbif_` to the columns coming from GBIF Backbone:
+
+```{r add_gbif_prefix}
+taxa_gbif <- 
+  taxa_gbif %>%
+  select(gbif_terms) %>%
+  setNames(paste0('gbif_', names(.))) %>%
+  bind_cols(taxa_gbif %>%
+              select(-gbif_terms)) %>%
+  select(-contains("gbif_"), everything())
+```
+
+Preview:
 
 ```{r overview}
 taxa_gbif %>%
   head()
 ```
 
-The column `matchType` informs us whether the match has been successful (`matchType` = `EXACT`), doubtful (`matchType` = `FUZZY`) or failed (`matchType` = `NONE`). The column  `confidence` is also informative. Number of taxa for each value of `matchType`:
+The column `gbif_matchType` informs us whether the match has been successful (`gbif_matchType` = `EXACT`), doubtful (`gbif_matchType` = `FUZZY`) or failed (`gbif_matchType` = `NONE`). The column  `confidence` is also informative. Number of taxa for each value of `gbif_matchType`:
 
 ```{r overview_n_match}
 taxa_gbif %>%
-  group_by(matchType) %>%
+  group_by(gbif_matchType) %>%
   count()
 ```
 
@@ -115,7 +156,7 @@ We create a new data.frame, `taxa_no_exact_match`, for taxa without exact match:
 ```{r taxa_no_exact_match}
 taxa_no_exact_match <-
   taxa_gbif %>%
-  filter(matchType != "EXACT") %>%
+  filter(gbif_matchType != "EXACT") %>%
   arrange(id)
 ```
 
@@ -154,26 +195,35 @@ taxa_without_author <-
   gbif_species_name_match(name = "acceptedname",
                           kingdom = "bim_kingdom", 
                           rank = "rank_for_gbif",
+                          gbif_terms = gbif_terms,
                           strict = TRUE)
+# add prefix gbif_
+taxa_without_author <-
+  taxa_without_author %>% 
+  select(gbif_terms) %>%
+  setNames(paste0('gbif_', names(.))) %>%
+  bind_cols(taxa_without_author %>%
+              select(-gbif_terms)) %>%
+  select(-contains("gbif_"), everything())
 ```
 
 Overview match:
 
 ```{r summarize_new_match}
 taxa_without_author %>%
-  group_by(matchType) %>%
+  group_by(gbif_matchType) %>%
   count()
 ```
 
-As some of the matches might be wrong, we update `matchType` to `EXACT_WITHOUT_AUTHOR`, `FUZZY_WITHOUT_AUTHOR`:
+As some of the matches might be wrong, we update `gbif_matchType` to `EXACT_WITHOUT_AUTHOR`, `FUZZY_WITHOUT_AUTHOR`:
 
 ```{r flag_matchType}
 taxa_without_author <-
   taxa_without_author %>%
-  mutate(matchType = case_when(
-    matchType == "EXACT" ~ "EXACT_WITHOUT_AUTHOR",
-    matchType == "FUZZY" ~ "FUZZY_WITHOUT_AUTHOR",
-    TRUE ~ matchType)
+  mutate(gbif_matchType = case_when(
+    gbif_matchType == "EXACT" ~ "EXACT_WITHOUT_AUTHOR",
+    gbif_matchType == "FUZZY" ~ "FUZZY_WITHOUT_AUTHOR",
+    TRUE ~ gbif_matchType)
 )
 ```
 
@@ -192,7 +242,7 @@ Overview:
 
 ```{r overview_matchType}
 taxa_gbif %>%
-  group_by(matchType) %>%
+  group_by(gbif_matchType) %>%
   count()
 ```
 
@@ -211,43 +261,52 @@ taxa_gbif %>%
   filter(acceptedname == "Xanthophyta") %>%
   select(acceptedname) %>%
   gbif_species_name_match(name = "acceptedname") %>%
-  select(acceptedname,kingdom)
+  select(acceptedname, kingdom) %>%
+  rename(gbif_kingdom = kingdom)
 ```
 
-The taxa with `matchType` not equal to `EXACT` or `EXACT_WITHOUT_AUTHOR` are matched again. As third and final matching attempt, we try matching taxa without `scientificnameauthorship` and without passing kingdom as parameter. Please note that rank is always given to the match function.
+The taxa with `gbif_matchType` not equal to `EXACT` or `EXACT_WITHOUT_AUTHOR` are matched again. As third and final matching attempt, we try matching taxa without `scientificnameauthorship` and without passing kingdom as parameter. Please note that rank is always given to the match function.
 
 ```{r match_without_kingdom_acceptedname_only}
 taxa_without_author_and_kingdom <-
   taxa_gbif %>%
-  filter(!matchType %in% c("EXACT_WITHOUT_AUTHOR", 
+  filter(!gbif_matchType %in% c("EXACT_WITHOUT_AUTHOR", 
                            "EXACT")) %>%
   select(names(taxa)) %>%
   gbif_species_name_match(name = "acceptedname",
                           rank = "rank_for_gbif",
+                          gbif_terms = gbif_terms,
                           strict = TRUE)
+taxa_without_author_and_kingdom <-
+  taxa_without_author_and_kingdom %>%
+  select(gbif_terms) %>%
+  setNames(paste0('gbif_', names(.))) %>%
+  bind_cols(taxa_without_author_and_kingdom %>%
+              select(-gbif_terms)) %>%
+  select(-contains("gbif_"), everything())
 ```
 
 Overview match:
 
 ```{r summarize_match_without_kingdom_acceptedname}
 taxa_without_author_and_kingdom %>%
-  group_by(matchType) %>%
+  group_by(gbif_matchType) %>%
   count()
 ```
 
-As some of the matches might be wrong, we update `matchType` to `EXACT_WITHOUT_AUTHOR_AND_KINGDOM`, `FUZZY_WITHOUT_AUTHOR_AND_KINGDOM`:
+As some of the matches might be wrong, we update `gbif_matchType` to `EXACT_WITHOUT_AUTHOR_AND_KINGDOM`, `FUZZY_WITHOUT_AUTHOR_AND_KINGDOM`:
 
 ```{r flag_matchType_without_author_and_kingdom}
 taxa_without_author_and_kingdom <-
   taxa_without_author_and_kingdom %>%
-  mutate(matchType = case_when(
-    matchType == "EXACT" ~ "EXACT_WITHOUT_AUTHOR_AND_KINGDOM",
-    matchType == "FUZZY" ~ "FUZZY_WITHOUT_AUTHOR_AND_KINGDOM",
-    TRUE ~ matchType)
+  mutate(gbif_matchType = case_when(
+    gbif_matchType == "EXACT" ~ "EXACT_WITHOUT_AUTHOR_AND_KINGDOM",
+    gbif_matchType == "FUZZY" ~ "FUZZY_WITHOUT_AUTHOR_AND_KINGDOM",
+    TRUE ~ gbif_matchType)
 )
 ```
 
-Include the results of this fourth match attempt to `taxa_gbif`:
+Include the results of this third match attempt to `taxa_gbif`:
 
 ```{r join_taxa_without_author_and_kingdom}
 taxa_gbif <-
@@ -258,11 +317,11 @@ taxa_gbif <-
   arrange(id)
 ```
 
-Overview  `matchType`:
+Overview  `gbif_matchType`:
 
-```{r overview_matchType_4}
+```{r overview_matchType_3}
 taxa_gbif %>%
-  group_by(matchType) %>%
+  group_by(gbif_matchType) %>%
   count()
 ```
 
@@ -346,29 +405,29 @@ taxa_gbif %>%
 
 ### Number of occurrences of unmatched taxa
 
-In particular, for unmatched taxa (`matchType` not equal to `EXACT`):
+In particular, for unmatched taxa (`gbif_matchType` not equal to `EXACT`):
 
 ```{r n_occs_unmatched_taxa}
 taxa_gbif_unmatched <- 
   taxa_gbif %>%
-  filter(matchType != "EXACT") %>%
+  filter(gbif_matchType != "EXACT") %>%
   select(acceptedname,
          scientificnameauthorship,
          n_occs, 
-         matchType, 
-         confidence, 
-         status, 
-         usageKey,
-         scientificName,
-         canonicalName,
-         rank,
-         kingdom,
-         phylum,
-         class,
-         order,
-         family,
-         genus,
-         species,
+         gbif_matchType, 
+         gbif_confidence, 
+         gbif_status, 
+         gbif_usageKey,
+         gbif_scientificName,
+         gbif_canonicalName,
+         gbif_rank,
+         gbif_kingdom,
+         gbif_phylum,
+         gbif_class,
+         gbif_order,
+         gbif_family,
+         gbif_genus,
+         gbif_species,
          everything())
 # preview
 taxa_gbif_unmatched %>%
