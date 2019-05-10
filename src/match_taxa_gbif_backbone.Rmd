@@ -410,6 +410,31 @@ identifiable_species %>%
   select(names(identifiable_species))
 ```
 
+Notice how these rows can contain synonyms only. 
+
+Example: taxa linked to  `taxonid` 79:
+
+```{r example_synonyms_only}
+identifiable_species %>%
+  filter(taxonid == 79) %>%
+  select(id, taxonid, taxonomicstatusen)
+```
+
+The acepted taxon is the following:
+
+```{r accepted_taxon_exmaple} 
+taxa_gbif %>%
+  filter(id == 79) %>%
+  select(id, acceptedname, scientificnameauthorship, taxonomicstatusen)
+```
+
+There also accepted taxa not present in `identifiable_species`:
+
+```{r taxa_not_in_identifiable_species}
+taxa_gbif %>%
+  filter(!id %in% identifiable_species$taxonid)
+```
+
 We add `taxonid` column to `identifiable_species_id` data.frame:
 
 ```{r}
