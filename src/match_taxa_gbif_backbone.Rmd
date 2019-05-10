@@ -114,7 +114,7 @@ gbif_terms <- c("matchType",
 
 We also use the columns containing kingdom information (`bim_kingdom`) and rank (`rank_for_gbif`) and we require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification. **Note: This step takes long**:
 
-```{r get_name_gbif}
+```{r get_name_gbif, cache=TRUE}
 taxa_gbif <-
   taxa %>%
   gbif_species_name_match(name = "name_for_gbif",
@@ -188,7 +188,7 @@ rgbif::name_backbone(name = "`Neosartorya fischeri var. glabra Fennell & Raper, 
 
 Matching without authors can improve matching:
 
-```{r match_acceptedname_only}
+```{r match_acceptedname_only, cache=TRUE}
 taxa_without_author <-
   taxa_no_exact_match %>%
   select(names(taxa)) %>%
@@ -267,7 +267,7 @@ taxa_gbif %>%
 
 The taxa with `gbif_matchType` not equal to `EXACT` or `EXACT_WITHOUT_AUTHOR` are matched again. As third and final matching attempt, we try matching taxa without `scientificnameauthorship` and without passing kingdom as parameter. Please note that rank is always given to the match function.
 
-```{r match_without_kingdom_acceptedname_only}
+```{r match_without_kingdom_acceptedname_only, cache=TRUE}
 taxa_without_author_and_kingdom <-
   taxa_gbif %>%
   filter(!gbif_matchType %in% c("EXACT_WITHOUT_AUTHOR", 
