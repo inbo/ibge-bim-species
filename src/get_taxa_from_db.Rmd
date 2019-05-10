@@ -51,7 +51,7 @@ conn <- dbConnect(odbc(),
                   port = ibge_bim$port,
                   uid = ibge_bim$uid,
                   pwd = ibge_bim$pwd,
-                  encoding = "latin1"
+                  encoding = "Windows-1252"
 )
 ```
 
