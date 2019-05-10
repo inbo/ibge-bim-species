@@ -138,7 +138,7 @@ taxa_gbif <-
 
 Preview:
 
-```{r overview}
+```{r overview_taxa_gbif}
 taxa_gbif %>%
   head()
 ```
@@ -182,7 +182,7 @@ taxa_no_exact_match %>%
 
 while in GBIF Backbone:
 
-```{r}
+```{r show_version_on_gbif}
 rgbif::name_backbone(name = "`Neosartorya fischeri var. glabra Fennell & Raper, 1973`") %>% as_tibble()
 ```
 
@@ -437,7 +437,7 @@ taxa_gbif %>%
 
 We add `taxonid` column to `identifiable_species_id` data.frame:
 
-```{r}
+```{r add_taxonid}
 identifiable_species_id <-
   identifiable_species_id %>%
   left_join(identifiable_species %>% select(id, taxonid),
@@ -448,7 +448,7 @@ So, we got a data.frame containing the accepted taxon ID of each occurrence.
 
 Number of acceted taxa linked to at least one occurrence:
 
-```{r}
+```{r n_accepted_taxa}
 identifiable_species_id %>%
   distinct(taxonid) %>%
   nrow()
