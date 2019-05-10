@@ -347,26 +347,86 @@ conn <- dbConnect(odbc(),
 
 ### Get occurrences from table `occurence`
 
-Table `occurence` contains occurrence data:
+Table `occurence` contains occurrence data. It is linked to taxa in table `taxon` via intermediate table `identifiablespecies`, which takes care of synonym relations. We retrieve first the column `identifiablespeciesid` from table `occurence`:
 
-```{r get_occs}
-occurrences <- 
-  dbGetQuery(conn, "SELECT * FROM biodiv.occurence") %>%
+```{r get_identifiable_species_ids}
+identifiable_species_id <- 
+  dbGetQuery(conn, "SELECT identifiablespeciesid FROM biodiv.occurence") %>%
   as_tibble()
 ```
 
-Overview:
-
-```{r overview_occs}
-head(occurrences)
-```
-
-where `identifiablespeciesid` is the column corresponding to the column `id` of table `biodiv.taxon` where taxonomic data have been retrieved in previous pipeline  `get_taxa_from_db.Rmd`.
-
 Number of occurrences:
 
-```{r n_occs}
-nrow(occurrences)
+```{r}
+nrow(identifiable_species_id)
+```
+
+Number of unique IDs, i.e. number of taxa (synonyms or accepted by BIM) linked to at least one occurrence:
+
+```{r n_taxa_in_occs}
+identifiable_species_id %>%
+  distinct(identifiablespeciesid) %>%
+  nrow()
+```
+
+The IDs in `identifiable_species_id` are linked to column `id` in table `identifiablespecies`:
+ 
+```{r get_identifiable_species}
+identifiable_species <- 
+  dbGetQuery(conn, "SELECT * FROM biodiv.identifiablespecies") %>%
+  as_tibble()
+```
+
+Preview:
+
+```{r overview_identifiable_species}
+head(identifiable_species)
+```
+
+Column `taxonid` contains the taxon identifiers corresponding to column `id` of table `biodiv.taxon`.
+
+Number of taxa in this intermediate table:
+
+```{r n_taxa_identifiable_species}
+nrow(identifiable_species)
+```
+
+Number of distinct accepted taxa:
+
+```{r n_unique_taxa}
+identifiable_species %>%
+  distinct(taxonid) %>%
+  nrow()
+```
+
+Taxa linked to multiple IDs, thus collecting synonyms:
+
+```{r multiple_IDs}
+identifiable_species %>%
+  group_by(taxonid) %>%
+  count() %>%
+  filter(n > 1) %>%
+  left_join(identifiable_species, by = "taxonid") %>%
+  select(names(identifiable_species))
+```
+
+We add `taxonid` column to `identifiable_species_id` data.frame:
+
+```{r}
+identifiable_species_id <-
+  identifiable_species_id %>%
+  left_join(identifiable_species %>% select(id, taxonid),
+            by = c("identifiablespeciesid" = "id"))
+```
+
+So, we got a data.frame containing the accepted taxon ID of each occurrence.
+
+Number of acceted taxa linked to at least one occurrence:
+
+```{r}
+identifiable_species_id %>%
+  distinct(taxonid) %>%
+  nrow()
 ```
 
 ### Close connection
@@ -383,14 +443,14 @@ We add a new column called `n_occs` containing the number of occurrences linked 
 
 ```{r add_n_occs}
 taxa_gbif <- 
-  occurrences %>%
-  group_by(identifiablespeciesid) %>%
+  identifiable_species_id %>%
+  group_by(taxonid) %>%
   count() %>%
   ungroup() %>%
   rename(n_occs = n) %>%
   right_join(taxa_gbif,
-             by = c("identifiablespeciesid" = "id")) %>%
-  rename(id = identifiablespeciesid) %>%
+             by = c("taxonid" = "id")) %>%
+  rename(id = taxonid) %>%
   arrange(id)
 ```
 
