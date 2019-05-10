@@ -219,55 +219,6 @@ tibble(id = unlist(circular_parent_ids)) %>%
 
 In our case the `Salmo trutta fario` refers to itself, `parentid` =  `id`, so anything linking diretly or indirectly to this taxon will not get any step further.
 
-## Duplicate records or hemihomonys within `taxa`
-
-### Homonyms
-
-Some accepted names are linked to multiple taxa classified under different kingdoms. They are *hemihomonyms*:
-
-```{r homonimy}
-homonyms <- 
-  taxa %>% 
-  filter(!is.na(kingdom_id)) %>%
-  group_by(acceptedname) %>%
-  summarize(n_kingdoms = length(unique(kingdom_id))) %>%
-  filter(n_kingdoms > 1) %>%
-  left_join(taxa, by = "acceptedname") %>%
-  select(id, 
-         acceptedname, 
-         scientificnameauthorship, 
-         bim_kingdom, 
-         taxonranken, 
-         taxonomicstatusen,
-         kingdom_id)
-homonyms
-```
-
-In case of hemihomonymy the information of `scientificnameauthorship` and `kingdom` will be very useful to identify the right taxon within the GBIF Backbone.
-
-### Duplicates or suspicious records
-
-Other taxa are duplicates or suspected duplicates:
-
-```{r show_duplicates_or_suspected_taxa}
-anomalous_taxa <-
-  taxa %>%
-  filter(!id %in% homonyms$id) %>%
-  group_by(acceptedname) %>%
-  count() %>%
-  filter(n > 1) %>%
-  left_join(taxa, by = "acceptedname") %>%
-  select(-n)
-anomalous_taxa %>%
-  select(id,
-         acceptedname, 
-         scientificnameauthorship, 
-         bim_kingdom,
-         taxonranken, 
-         taxonomicstatusen, 
-         kingdom_id)
-```
-
 # Save taxa
 
 We save all taxa in `.\data\interim`:
@@ -275,13 +226,5 @@ We save all taxa in `.\data\interim`:
 ```{r save_all_taxa}
 write_tsv(taxa, 
           here("data", "interim", "taxa.tsv"), 
-          na = "")
-```
-
-Save suspected duplicates apart as they should be discussed with experts from BIM. See issue [issue #7](https://github.com/inbo/ibge-bim-species/issues/7).
-
-```{r save_duplicates}
-write_tsv(anomalous_taxa, 
-          here("data", "interim", "anomalous_taxa.tsv"), 
           na = "")
 ```
