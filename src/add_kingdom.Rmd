@@ -82,7 +82,7 @@ taxa %>%
 
 This means that the following taxon ranks are not pointed out by any taxa:
 
-```{r}
+```{r not_pointed_out_ranks}
 taxonranks <- 
   taxa %>% 
   distinct(taxonranken)
@@ -145,7 +145,7 @@ taxa <-
 
 We apply the function `get_keys_higher_levels` to all taxa. If the highest taxonomic level pointed by the sequence of parent IDs is not equal to `kingdom` or the vector of parent IDs starts with `NA`, `kingdom_id` will be set to `NA`:
 
-```{r find_kingdom_id_all_taxa}
+```{r find_kingdom_id_all_taxa, cache=TRUE}
 circular_parent_ids <- c()
 pb <- txtProgressBar(min = 0, max = nrow(taxa),  style = 3)
 for (t in 1:nrow(taxa)) {
