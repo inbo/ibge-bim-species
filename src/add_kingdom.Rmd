@@ -22,7 +22,6 @@ knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding =
 ```{r load_libs}
 library(tidyverse)  # To do data science
 library(here)       # To work with paths
-library(rgbif)      # To work with GBIF
 ```
 
 # Read taxa
