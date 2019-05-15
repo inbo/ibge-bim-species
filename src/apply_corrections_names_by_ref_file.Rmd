@@ -1,0 +1,164 @@
+---
+title: "Apply corrections on names, authors and rank"
+author:
+  - Damiano Oldoni
+  - Lien Reyserhove
+  - Peter Desmet
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(tidyverse)  # To do data science
+library(here)       # To work with paths
+```
+
+# Read taxonomic data
+
+## Read used taxa
+
+We read the taxa which we will further use to build the improved  `taxa` table:
+
+```{r read_used_taxa}
+used_taxa <- read_tsv(here("data", "interim", "used_taxa.tsv"),
+                      col_types = cols(
+                        .default = col_character(),
+                        id = col_double(),
+                        parentid = col_double(),
+                        media = col_logical(),
+                        speciesbeparentid = col_double(),
+                        bruenvi_created = col_date(format = "%Y-%m-%d"),
+                        bruenvi_modified = col_date(format = "%Y-%m-%d"))
+)
+```
+
+## Read taxa with GBIF information
+
+We read the full `taxa` after applying the first attempts to match taxa  with GBIF Taxonomy Backbone:
+
+```{r read_taxa_table_with_GBIF}
+taxa_gbif <- read_tsv(here("data", "interim", "taxa_gbif.tsv"),
+                      col_types = cols(
+                        .default = col_character(),
+                        id = col_double(),
+                        n_occs = col_double(),
+                        parentid = col_double(),
+                        media = col_logical(),
+                        speciesbeparentid = col_double(),
+                        bruenvi_created = col_date(format = "%Y-%m-%d"),
+                        bruenvi_modified = col_date(format = "%Y-%m-%d"),
+                        kingdom_id = col_double(),
+                        gbif_usageKey = col_double(),
+                        gbif_confidence = col_double(),
+                        gbif_kingdomKey = col_double(),
+                        gbif_phylumKey = col_double(),
+                        gbif_classKey = col_double(),
+                        gbif_orderKey = col_double(),
+                        gbif_familyKey = col_double(),
+                        gbif_genusKey = col_double(),
+                        gbif_synonym = col_logical(),
+                        gbif_acceptedUsageKey = col_double(),
+                        gbif_speciesKey = col_double())
+)
+```
+
+## Read reference file
+
+The unmatched taxa have been previously saved in a reference file called `corrected_taxa.tsv`. This file has been manually screened by an expert which added the corrected informations where needed:
+
+```{r read_corrected_taxa.tsv}
+corrected_taxa <- read_tsv(here("references", "corrected_taxa.tsv"),
+                           na = "",
+                           col_types = cols(
+                             .default = col_character(),
+                             id = col_double())
+)
+```
+
+Preview:
+
+```{r corrected_taxa_preview}
+corrected_taxa %>%
+  head()
+```
+
+The columns ending with suffix `_corrected` contain the corrected information where corrections have been applied. For example, in excerpt shown above we can see that the taxon canonical name `Teucrium chamaedrys germanicum` has been corrected as `Teucrium chamaedrys subsp. germanicum`, taxon canonical name `Sagina apetala erecta` has been corrected as `Sagina apetala subsp. erecta`.
+
+# Apply corrections
+
+Based on `corrected_taxa` we apply taxonomic corrections to `used_taxa`. Number of used taxa whose taxonomic information will be corrected:
+
+```{r n_used_taxa_to_correct}
+corrected_taxa %>%
+  inner_join(used_taxa,
+            by = c("id", 
+                   "acceptedname", 
+                   "scientificnameauthorship", 
+                   "taxonranken")) %>%
+  nrow()
+```
+
+Apply corrections on columns `acceptedname`, `scientificnameauthorship`, `taxonranken` and `bim_kingdom`:
+
+```{r correct_used_taxa}
+corrected_used_taxa <-
+  used_taxa %>%
+  
+  # add kingdom based on BIM parent IDs
+  left_join(taxa_gbif,
+            by = names(used_taxa)) %>%
+  select(-starts_with("gbif_")) %>%
+  
+  # add column with corrections
+  left_join(corrected_taxa,
+            by = c("id",
+                   "acceptedname",
+                   "scientificnameauthorship",
+                   "taxonranken",
+                   "bim_kingdom")) %>%
+  
+  # apply corrections
+  mutate(acceptedname = if_else(!is.na(acceptedname_corrected),
+                                acceptedname_corrected,
+                                acceptedname),
+         scientificnameauthorship = if_else(!is.na(scientificnameauthorship_corrected),
+                                            scientificnameauthorship_corrected,
+                                            scientificnameauthorship),
+         taxonranken = if_else(!is.na(taxonranken_corrected),
+                               taxonranken_corrected,
+                               taxonranken),
+         bim_kingdom = if_else(!is.na(bim_kingdom_corrected),
+                               bim_kingdom_corrected,
+                               bim_kingdom)) %>%
+    
+  # add column corrected as flag
+  mutate(corrected = if_else(!is.na(acceptedname_corrected) |
+                               !is.na(scientificnameauthorship_corrected) |
+                               !is.na(taxonranken_corrected) | 
+                               !is.na(bim_kingdom_corrected), TRUE, FALSE)) %>%
+  
+  # remove `*_corrected` columns
+  select(-ends_with("_corrected"))
+```
+
+# Save corrected used taxa
+
+Save the used taxa after applying corrections:
+
+```{r save_corrected_used_taxa}
+write_tsv(corrected_used_taxa, 
+          path = here("data", "interim", "corrected_used_taxa.tsv"),
+          na = "")
+```

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Damiano Oldoni" />
+<meta name="author" content="Lien Reyserhove" />
+<meta name="author" content="Peter Desmet" />
+
+<meta name="date" content="2019-05-13" />
+
+<title>Match taxa with GBIF Taxonomy Backbone</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">BIM taxonomic data</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Workflow
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="get_taxa_from_db.html">Get taxa from database</a>
+    </li>
+    <li>
+      <a href="detect_unused_taxa.html">Find unused taxa</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Appendix 1. Build taxonomic reference file
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="add_kingdom.html">Add kingdom based on parent IDs</a>
+    </li>
+    <li>
+      <a href="match_taxa_gbif_backbone.html">Match taxa to GBIF Taxonomy Backbone</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/inbo/ibge-bim-species">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Match taxa with GBIF Taxonomy Backbone</h1>
+<h4 class="author">Damiano Oldoni</h4>
+<h4 class="author">Lien Reyserhove</h4>
+<h4 class="author">Peter Desmet</h4>
+<h4 class="date">2019-05-13</h4>
+
+</div>
+
+
+<div id="setup" class="section level1">
+<h1><span class="header-section-number">1</span> Setup</h1>
+<div id="load-libraries" class="section level2">
+<h2><span class="header-section-number">1.1</span> Load libraries</h2>
+<pre class="r"><code>library(odbc)       # To work with database
+library(tidyverse)  # To do data science
+library(here)       # To work with paths
+library(inborutils) # To match taxa (rgbif called in background)</code></pre>
+</div>
+<div id="load-access-informations" class="section level2">
+<h2><span class="header-section-number">1.2</span> Load access informations</h2>
+<p>Retrieve access informations from configuration file:</p>
+<pre class="r"><code>ibge_bim &lt;- config::get(&quot;ibge_bim&quot;)</code></pre>
+</div>
+</div>
+<div id="read-taxa" class="section level1">
+<h1><span class="header-section-number">2</span> Read taxa</h1>
+<p>Read taxa from <code>./data/interim/taxa.tsv</code>:</p>
+<pre class="r"><code>taxa &lt;- read_tsv(here(&quot;data&quot;, &quot;interim&quot;, &quot;taxa.tsv&quot;),
+                 col_types = cols(
+                   .default = col_character(),
+                   id = col_double(),
+                   parentid = col_double(),
+                   media = col_logical(),
+                   speciesbeparentid = col_double(),
+                   bruenvi_created = col_date(format = &quot;%Y-%m-%d&quot;),
+                   bruenvi_created = col_date(format = &quot;%Y-%m-%d&quot;),
+                   kingdom_id = col_double()
+                   )
+)</code></pre>
+</div>
+<div id="match-taxa-to-gbif-taxonomy-backbone" class="section level1">
+<h1><span class="header-section-number">3</span> Match taxa to GBIF Taxonomy Backbone</h1>
+<p>We match taxa to GBIF Taxonomy Backbone in three steps:</p>
+<ol style="list-style-type: decimal">
+<li>match by name with authorship + kingdom + rank</li>
+<li>match by name without authorship + kingdom + rank</li>
+<li>match by name without authorship + rank</li>
+</ol>
+<div id="match-by-acceptedname-scientificnameauthorship" class="section level2">
+<h2><span class="header-section-number">3.1</span> Match by <code>acceptedname</code> + <code>scientificnameauthorship</code></h2>
+<p>We try to match by using <code>acceptedname</code> + <code>scientificnameauthorship</code> as name. We also provide kingdom and rank information to the match function. First, we prepare <code>taxa</code> for matching. In this step:</p>
+<ol style="list-style-type: decimal">
+<li>We create a new column, <code>name_for_gbif</code>, where we paste <code>acceptedname</code> and <code>scientificnameauthorship</code>, if present.</li>
+<li>Recode the taxon ranks from <code>taxonranken</code> in a new column, <code>rank_for_gbif</code>, containing the correct GBIF terms.</li>
+</ol>
+<pre class="r"><code>taxa &lt;-
+  taxa %&gt;%
+  mutate(name_for_gbif = if_else(
+    !is.na(scientificnameauthorship),
+    paste(acceptedname, scientificnameauthorship),
+    acceptedname
+  )) %&gt;%
+  mutate(rank_for_gbif = recode(taxonranken,
+    &quot;forma&quot; = &quot;form&quot;,
+    &quot;subforma&quot; = &quot;subform&quot;,
+    &quot;informal group&quot; = NA_character_
+  ))</code></pre>
+<p>We match the names in <code>name_for_gbif</code> with GBIF Backbone and retrieve the following GBIF fields:</p>
+<pre class="r"><code>gbif_terms &lt;- c(&quot;matchType&quot;,
+                &quot;confidence&quot;, 
+                &quot;rank&quot;, 
+                &quot;usageKey&quot;, 
+                &quot;scientificName&quot;,
+                &quot;canonicalName&quot;,
+                &quot;kingdom&quot;,
+                &quot;phylum&quot;,
+                &quot;order&quot;, 
+                &quot;class&quot;, 
+                &quot;family&quot;,
+                &quot;genus&quot;, 
+                &quot;species&quot;,
+                &quot;kingdomKey&quot;,
+                &quot;phylumKey&quot;,
+                &quot;classKey&quot;,
+                &quot;orderKey&quot;,
+                &quot;familyKey&quot;,
+                &quot;genusKey&quot;,
+                &quot;speciesKey&quot;,
+                &quot;status&quot;,
+                &quot;synonym&quot;, 
+                &quot;acceptedUsageKey&quot;)</code></pre>
+<p>We also use the columns containing kingdom information (<code>bim_kingdom</code>) and rank (<code>rank_for_gbif</code>) and we require a strict match, <code>strict = TRUE</code> to avoid fuzzy match with higher classification. <strong>Note: This step takes long</strong>:</p>
+<pre class="r"><code>taxa_gbif &lt;-
+  taxa %&gt;%
+  gbif_species_name_match(name = &quot;name_for_gbif&quot;,
+                          kingdom = &quot;bim_kingdom&quot;, 
+                          rank = &quot;rank_for_gbif&quot;, 
+                          gbif_terms = gbif_terms,
+                          strict = TRUE)</code></pre>
+<pre><code>## [1] &quot;All column names present&quot;</code></pre>
+<p>We add the prefix <code>gbif_</code> to the columns coming from GBIF Backbone:</p>
+<pre class="r"><code>taxa_gbif &lt;- 
+  taxa_gbif %&gt;%
+  select(gbif_terms) %&gt;%
+  setNames(paste0(&#39;gbif_&#39;, names(.))) %&gt;%
+  bind_cols(taxa_gbif %&gt;%
+              select(-gbif_terms)) %&gt;%
+  select(-contains(&quot;gbif_&quot;), everything())</code></pre>
+<p>Preview:</p>
+<pre class="r"><code>taxa_gbif %&gt;%
+  head()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["speciesbeid"],"name":[2],"type":["chr"],"align":["left"]},{"label":["colid"],"name":[3],"type":["chr"],"align":["left"]},{"label":["acceptedname"],"name":[4],"type":["chr"],"align":["left"]},{"label":["vernacularnamefr"],"name":[5],"type":["chr"],"align":["left"]},{"label":["vernacularnamenl"],"name":[6],"type":["chr"],"align":["left"]},{"label":["scientificnameauthorship"],"name":[7],"type":["chr"],"align":["left"]},{"label":["parentid"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["distributionstatuscode"],"name":[9],"type":["chr"],"align":["left"]},{"label":["taxonranken"],"name":[10],"type":["chr"],"align":["left"]},{"label":["media"],"name":[11],"type":["lgl"],"align":["right"]},{"label":["taxonomicstatusen"],"name":[12],"type":["chr"],"align":["left"]},{"label":["speciesbeparentid"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["bruenvi_created"],"name":[14],"type":["date"],"align":["right"]},{"label":["bruenvi_modified"],"name":[15],"type":["chr"],"align":["left"]},{"label":["bruenvi_author"],"name":[16],"type":["chr"],"align":["left"]},{"label":["kingdom_id"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["bim_kingdom"],"name":[18],"type":["chr"],"align":["left"]},{"label":["name_for_gbif"],"name":[19],"type":["chr"],"align":["left"]},{"label":["rank_for_gbif"],"name":[20],"type":["chr"],"align":["left"]},{"label":["gbif_matchType"],"name":[21],"type":["chr"],"align":["left"]},{"label":["gbif_confidence"],"name":[22],"type":["int"],"align":["right"]},{"label":["gbif_rank"],"name":[23],"type":["chr"],"align":["left"]},{"label":["gbif_usageKey"],"name":[24],"type":["int"],"align":["right"]},{"label":["gbif_scientificName"],"name":[25],"type":["chr"],"align":["left"]},{"label":["gbif_canonicalName"],"name":[26],"type":["chr"],"align":["left"]},{"label":["gbif_kingdom"],"name":[27],"type":["chr"],"align":["left"]},{"label":["gbif_phylum"],"name":[28],"type":["chr"],"align":["left"]},{"label":["gbif_order"],"name":[29],"type":["chr"],"align":["left"]},{"label":["gbif_class"],"name":[30],"type":["chr"],"align":["left"]},{"label":["gbif_family"],"name":[31],"type":["chr"],"align":["left"]},{"label":["gbif_genus"],"name":[32],"type":["chr"],"align":["left"]},{"label":["gbif_species"],"name":[33],"type":["chr"],"align":["left"]},{"label":["gbif_kingdomKey"],"name":[34],"type":["int"],"align":["right"]},{"label":["gbif_phylumKey"],"name":[35],"type":["int"],"align":["right"]},{"label":["gbif_classKey"],"name":[36],"type":["int"],"align":["right"]},{"label":["gbif_orderKey"],"name":[37],"type":["int"],"align":["right"]},{"label":["gbif_familyKey"],"name":[38],"type":["int"],"align":["right"]},{"label":["gbif_genusKey"],"name":[39],"type":["int"],"align":["right"]},{"label":["gbif_speciesKey"],"name":[40],"type":["int"],"align":["right"]},{"label":["gbif_status"],"name":[41],"type":["chr"],"align":["left"]},{"label":["gbif_synonym"],"name":[42],"type":["lgl"],"align":["right"]},{"label":["gbif_acceptedUsageKey"],"name":[43],"type":["int"],"align":["right"]}],"data":[{"1":"3638","2":"63699","3":"NA","4":"Narcine","5":"NA","6":"NA","7":"NA","8":"48959","9":"NA","10":"genus","11":"NA","12":"accepted","13":"62741","14":"2015-04-29","15":"NA","16":"NA","17":"NA","18":"NA","19":"Narcine","20":"genus","21":"EXACT","22":"96","23":"GENUS","24":"8405394","25":"Narcine Henle, 1834","26":"Narcine","27":"Animalia","28":"Chordata","29":"Torpediniformes","30":"Elasmobranchii","31":"Narcinidae","32":"Narcine","33":"NA","34":"1","35":"44","36":"121","37":"881","38":"2183","39":"8405394","40":"NA","41":"ACCEPTED","42":"FALSE","43":"NA"},{"1":"8962","2":"_63727","3":"NA","4":"Bison priscus","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"species","11":"NA","12":"accepted","13":"NA","14":"2015-04-29","15":"NA","16":"NA","17":"NA","18":"NA","19":"Bison priscus","20":"species","21":"EXACT","22":"99","23":"SPECIES","24":"4970769","25":"Bison priscus Bojanus, 1825","26":"Bison priscus","27":"Animalia","28":"Chordata","29":"Artiodactyla","30":"Mammalia","31":"Bovidae","32":"Bos","33":"Bos priscus","34":"1","35":"44","36":"359","37":"731","38":"9614","39":"2441017","40":"8162832","41":"SYNONYM","42":"TRUE","43":"8162832"},{"1":"13482","2":"55210","3":"NA","4":"Conostroma","5":"NA","6":"NA","7":"NA","8":"45965","9":"NA","10":"genus","11":"NA","12":"to determine","13":"59172","14":"2015-04-29","15":"NA","16":"NA","17":"3902","18":"Fungi","19":"Conostroma","20":"genus","21":"EXACT","22":"99","23":"GENUS","24":"2579836","25":"Conostroma Moesz","26":"Conostroma","27":"Fungi","28":"Ascomycota","29":"Rhytismatales","30":"Leotiomycetes","31":"Rhytismataceae","32":"Conostroma","33":"NA","34":"5","35":"95","36":"179","37":"1278","38":"8281","39":"2579836","40":"NA","41":"ACCEPTED","42":"FALSE","43":"NA"},{"1":"13597","2":"55211","3":"NA","4":"Coprotrichum","5":"NA","6":"NA","7":"NA","8":"45965","9":"NA","10":"genus","11":"NA","12":"to determine","13":"59172","14":"2015-04-29","15":"NA","16":"NA","17":"3902","18":"Fungi","19":"Coprotrichum","20":"genus","21":"EXACT","22":"99","23":"GENUS","24":"7245128","25":"Coprotrichum Bonord.","26":"Coprotrichum","27":"Fungi","28":"Ascomycota","29":"Pezizales","30":"Pezizomycetes","31":"Pyronemataceae","32":"Sporendonema","33":"NA","34":"5","35":"95","36":"316","37":"1057","38":"4131","39":"5236924","40":"NA","41":"SYNONYM","42":"TRUE","43":"5236924"},{"1":"15812","2":"55367","3":"NA","4":"Dermatium","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"genus","11":"NA","12":"to determine","13":"59179","14":"2015-04-29","15":"NA","16":"NA","17":"NA","18":"NA","19":"Dermatium","20":"genus","21":"EXACT","22":"95","23":"GENUS","24":"4652133","25":"Dermatium Trouessart & Neumann, 1888","26":"Dermatium","27":"Animalia","28":"Arthropoda","29":"Sarcoptiformes","30":"Arachnida","31":"Dermationidae","32":"Dermation","33":"NA","34":"1","35":"54","36":"367","37":"542","38":"4547704","39":"4547711","40":"NA","41":"SYNONYM","42":"TRUE","43":"4547711"},{"1":"17594","2":"55417","3":"NA","4":"Discosia","5":"NA","6":"NA","7":"NA","8":"45965","9":"NA","10":"genus","11":"NA","12":"to determine","13":"59172","14":"2015-04-29","15":"NA","16":"NA","17":"3902","18":"Fungi","19":"Discosia","20":"genus","21":"EXACT","22":"98","23":"GENUS","24":"2566562","25":"Discosia Lib.","26":"Discosia","27":"Fungi","28":"Ascomycota","29":"Amphisphaeriales","30":"Sordariomycetes","31":"Discosiaceae","32":"Discosia","33":"NA","34":"5","35":"95","36":"320","37":"9705438","38":"9714866","39":"2566562","40":"NA","41":"ACCEPTED","42":"FALSE","43":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The column <code>gbif_matchType</code> informs us whether the match has been successful (<code>gbif_matchType</code> = <code>EXACT</code>), doubtful (<code>gbif_matchType</code> = <code>FUZZY</code>) or failed (<code>gbif_matchType</code> = <code>NONE</code>). The column <code>confidence</code> is also informative. Number of taxa for each value of <code>gbif_matchType</code>:</p>
+<pre class="r"><code>taxa_gbif %&gt;%
+  group_by(gbif_matchType) %&gt;%
+  count()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"50628"},{"1":"FUZZY","2":"410"},{"1":"NONE","2":"795"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We create a new data.frame, <code>taxa_no_exact_match</code>, for taxa without exact match:</p>
+<pre class="r"><code>taxa_no_exact_match &lt;-
+  taxa_gbif %&gt;%
+  filter(gbif_matchType != &quot;EXACT&quot;) %&gt;%
+  arrange(id)</code></pre>
+<p>Preview (only relevant columns shown):</p>
+<pre class="r"><code>taxa_no_exact_match %&gt;%
+  select(-c(speciesbeid, colid, vernacularnamefr, 
+            vernacularnamenl, parentid, distributionstatuscode, 
+            media, speciesbeparentid, bruenvi_created, bruenvi_author,
+            bruenvi_modified, kingdom_id)) %&gt;%
+  head()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["acceptedname"],"name":[2],"type":["chr"],"align":["left"]},{"label":["scientificnameauthorship"],"name":[3],"type":["chr"],"align":["left"]},{"label":["taxonranken"],"name":[4],"type":["chr"],"align":["left"]},{"label":["taxonomicstatusen"],"name":[5],"type":["chr"],"align":["left"]},{"label":["bim_kingdom"],"name":[6],"type":["chr"],"align":["left"]},{"label":["name_for_gbif"],"name":[7],"type":["chr"],"align":["left"]},{"label":["rank_for_gbif"],"name":[8],"type":["chr"],"align":["left"]},{"label":["gbif_matchType"],"name":[9],"type":["chr"],"align":["left"]},{"label":["gbif_confidence"],"name":[10],"type":["int"],"align":["right"]},{"label":["gbif_rank"],"name":[11],"type":["chr"],"align":["left"]},{"label":["gbif_usageKey"],"name":[12],"type":["int"],"align":["right"]},{"label":["gbif_scientificName"],"name":[13],"type":["chr"],"align":["left"]},{"label":["gbif_canonicalName"],"name":[14],"type":["chr"],"align":["left"]},{"label":["gbif_kingdom"],"name":[15],"type":["chr"],"align":["left"]},{"label":["gbif_phylum"],"name":[16],"type":["chr"],"align":["left"]},{"label":["gbif_order"],"name":[17],"type":["chr"],"align":["left"]},{"label":["gbif_class"],"name":[18],"type":["chr"],"align":["left"]},{"label":["gbif_family"],"name":[19],"type":["chr"],"align":["left"]},{"label":["gbif_genus"],"name":[20],"type":["chr"],"align":["left"]},{"label":["gbif_species"],"name":[21],"type":["chr"],"align":["left"]},{"label":["gbif_kingdomKey"],"name":[22],"type":["int"],"align":["right"]},{"label":["gbif_phylumKey"],"name":[23],"type":["int"],"align":["right"]},{"label":["gbif_classKey"],"name":[24],"type":["int"],"align":["right"]},{"label":["gbif_orderKey"],"name":[25],"type":["int"],"align":["right"]},{"label":["gbif_familyKey"],"name":[26],"type":["int"],"align":["right"]},{"label":["gbif_genusKey"],"name":[27],"type":["int"],"align":["right"]},{"label":["gbif_speciesKey"],"name":[28],"type":["int"],"align":["right"]},{"label":["gbif_status"],"name":[29],"type":["chr"],"align":["left"]},{"label":["gbif_synonym"],"name":[30],"type":["lgl"],"align":["right"]},{"label":["gbif_acceptedUsageKey"],"name":[31],"type":["int"],"align":["right"]}],"data":[{"1":"2","2":"Phoma acuta phlogis","3":"(Roum.) Boerema et al., 1994","4":"subforma","5":"accepted","6":"Fungi","7":"Phoma acuta phlogis (Roum.) Boerema et al., 1994","8":"subform","9":"NONE","10":"100","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"NA","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"FALSE","31":"NA"},{"1":"5","2":"Aecidium rumicis form. acetosae","3":"Oudem.","4":"forma","5":"anamorph","6":"Fungi","7":"Aecidium rumicis form. acetosae Oudem.","8":"form","9":"NONE","10":"99","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"NA","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"FALSE","31":"NA"},{"1":"17","2":"Conocybe lactea form. lactea","3":"NA","4":"forma","5":"accepted","6":"Fungi","7":"Conocybe lactea form. lactea","8":"form","9":"NONE","10":"100","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"NA","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"FALSE","31":"NA"},{"1":"22","2":"Cytospora friesii form. douglasii","3":"Oudem.","4":"forma","5":"accepted","6":"Fungi","7":"Cytospora friesii form. douglasii Oudem.","8":"form","9":"NONE","10":"100","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"NA","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"FALSE","31":"NA"},{"1":"50","2":"Galerina vittaeformis form. tetraspora","3":"NA","4":"forma","5":"accepted","6":"Fungi","7":"Galerina vittaeformis form. tetraspora","8":"form","9":"NONE","10":"100","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"NA","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"FALSE","31":"NA"},{"1":"51","2":"Galerina vittaeformis form. bispora","3":"NA","4":"forma","5":"accepted","6":"Fungi","7":"Galerina vittaeformis form. bispora","8":"form","9":"NONE","10":"100","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"NA","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"FALSE","31":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="match-without-scientificnameauthorship-only" class="section level2">
+<h2><span class="header-section-number">3.2</span> Match without <code>scientificnameauthorship</code> only</h2>
+<p>Some of the taxa are not matched due to deviating author spellings, e.g.</p>
+<pre class="r"><code>taxa_no_exact_match %&gt;%
+  filter(name_for_gbif == &quot;Neosartorya fischeri var. glabra (Fennell &amp; Raper) Malloch &amp; Cain&quot;)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["speciesbeid"],"name":[2],"type":["chr"],"align":["left"]},{"label":["colid"],"name":[3],"type":["chr"],"align":["left"]},{"label":["acceptedname"],"name":[4],"type":["chr"],"align":["left"]},{"label":["vernacularnamefr"],"name":[5],"type":["chr"],"align":["left"]},{"label":["vernacularnamenl"],"name":[6],"type":["chr"],"align":["left"]},{"label":["scientificnameauthorship"],"name":[7],"type":["chr"],"align":["left"]},{"label":["parentid"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["distributionstatuscode"],"name":[9],"type":["chr"],"align":["left"]},{"label":["taxonranken"],"name":[10],"type":["chr"],"align":["left"]},{"label":["media"],"name":[11],"type":["lgl"],"align":["right"]},{"label":["taxonomicstatusen"],"name":[12],"type":["chr"],"align":["left"]},{"label":["speciesbeparentid"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["bruenvi_created"],"name":[14],"type":["date"],"align":["right"]},{"label":["bruenvi_modified"],"name":[15],"type":["chr"],"align":["left"]},{"label":["bruenvi_author"],"name":[16],"type":["chr"],"align":["left"]},{"label":["kingdom_id"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["bim_kingdom"],"name":[18],"type":["chr"],"align":["left"]},{"label":["name_for_gbif"],"name":[19],"type":["chr"],"align":["left"]},{"label":["rank_for_gbif"],"name":[20],"type":["chr"],"align":["left"]},{"label":["gbif_matchType"],"name":[21],"type":["chr"],"align":["left"]},{"label":["gbif_confidence"],"name":[22],"type":["int"],"align":["right"]},{"label":["gbif_rank"],"name":[23],"type":["chr"],"align":["left"]},{"label":["gbif_usageKey"],"name":[24],"type":["int"],"align":["right"]},{"label":["gbif_scientificName"],"name":[25],"type":["chr"],"align":["left"]},{"label":["gbif_canonicalName"],"name":[26],"type":["chr"],"align":["left"]},{"label":["gbif_kingdom"],"name":[27],"type":["chr"],"align":["left"]},{"label":["gbif_phylum"],"name":[28],"type":["chr"],"align":["left"]},{"label":["gbif_order"],"name":[29],"type":["chr"],"align":["left"]},{"label":["gbif_class"],"name":[30],"type":["chr"],"align":["left"]},{"label":["gbif_family"],"name":[31],"type":["chr"],"align":["left"]},{"label":["gbif_genus"],"name":[32],"type":["chr"],"align":["left"]},{"label":["gbif_species"],"name":[33],"type":["chr"],"align":["left"]},{"label":["gbif_kingdomKey"],"name":[34],"type":["int"],"align":["right"]},{"label":["gbif_phylumKey"],"name":[35],"type":["int"],"align":["right"]},{"label":["gbif_classKey"],"name":[36],"type":["int"],"align":["right"]},{"label":["gbif_orderKey"],"name":[37],"type":["int"],"align":["right"]},{"label":["gbif_familyKey"],"name":[38],"type":["int"],"align":["right"]},{"label":["gbif_genusKey"],"name":[39],"type":["int"],"align":["right"]},{"label":["gbif_speciesKey"],"name":[40],"type":["int"],"align":["right"]},{"label":["gbif_status"],"name":[41],"type":["chr"],"align":["left"]},{"label":["gbif_synonym"],"name":[42],"type":["lgl"],"align":["right"]},{"label":["gbif_acceptedUsageKey"],"name":[43],"type":["int"],"align":["right"]}],"data":[{"1":"629","2":"1209","3":"NA","4":"Neosartorya fischeri var. glabra","5":"NA","6":"NA","7":"(Fennell & Raper) Malloch & Cain","8":"30685","9":"1a","10":"variety","11":"NA","12":"accepted","13":"39041","14":"2015-04-29","15":"NA","16":"NA","17":"3902","18":"Fungi","19":"Neosartorya fischeri var. glabra (Fennell & Raper) Malloch & Cain","20":"variety","21":"NONE","22":"99","23":"NA","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"NA","31":"NA","32":"NA","33":"NA","34":"NA","35":"NA","36":"NA","37":"NA","38":"NA","39":"NA","40":"NA","41":"NA","42":"FALSE","43":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>while in GBIF Backbone:</p>
+<pre class="r"><code>rgbif::name_backbone(name = &quot;`Neosartorya fischeri var. glabra Fennell &amp; Raper, 1973`&quot;) %&gt;% as_tibble()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["usageKey"],"name":[1],"type":["int"],"align":["right"]},{"label":["acceptedUsageKey"],"name":[2],"type":["int"],"align":["right"]},{"label":["scientificName"],"name":[3],"type":["chr"],"align":["left"]},{"label":["canonicalName"],"name":[4],"type":["chr"],"align":["left"]},{"label":["rank"],"name":[5],"type":["chr"],"align":["left"]},{"label":["status"],"name":[6],"type":["chr"],"align":["left"]},{"label":["confidence"],"name":[7],"type":["int"],"align":["right"]},{"label":["matchType"],"name":[8],"type":["chr"],"align":["left"]},{"label":["kingdom"],"name":[9],"type":["chr"],"align":["left"]},{"label":["phylum"],"name":[10],"type":["chr"],"align":["left"]},{"label":["order"],"name":[11],"type":["chr"],"align":["left"]},{"label":["family"],"name":[12],"type":["chr"],"align":["left"]},{"label":["genus"],"name":[13],"type":["chr"],"align":["left"]},{"label":["species"],"name":[14],"type":["chr"],"align":["left"]},{"label":["kingdomKey"],"name":[15],"type":["int"],"align":["right"]},{"label":["phylumKey"],"name":[16],"type":["int"],"align":["right"]},{"label":["classKey"],"name":[17],"type":["int"],"align":["right"]},{"label":["orderKey"],"name":[18],"type":["int"],"align":["right"]},{"label":["familyKey"],"name":[19],"type":["int"],"align":["right"]},{"label":["genusKey"],"name":[20],"type":["int"],"align":["right"]},{"label":["speciesKey"],"name":[21],"type":["int"],"align":["right"]},{"label":["synonym"],"name":[22],"type":["lgl"],"align":["right"]},{"label":["class"],"name":[23],"type":["chr"],"align":["left"]}],"data":[{"1":"2597187","2":"5259791","3":"Neosartorya fischeri var. glabra Fennell & Raper, 1973","4":"Neosartorya fischeri glabra","5":"VARIETY","6":"SYNONYM","7":"100","8":"EXACT","9":"Fungi","10":"Ascomycota","11":"Eurotiales","12":"Trichocomaceae","13":"Aspergillus","14":"Aspergillus fischeri","15":"5","16":"95","17":"178","18":"1040","19":"8324","20":"8884233","21":"5259791","22":"TRUE","23":"Eurotiomycetes"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Matching without authors can improve matching:</p>
+<pre class="r"><code>taxa_without_author &lt;-
+  taxa_no_exact_match %&gt;%
+  select(names(taxa)) %&gt;%
+  gbif_species_name_match(name = &quot;acceptedname&quot;,
+                          kingdom = &quot;bim_kingdom&quot;, 
+                          rank = &quot;rank_for_gbif&quot;,
+                          gbif_terms = gbif_terms,
+                          strict = TRUE)</code></pre>
+<pre><code>## [1] &quot;All column names present&quot;</code></pre>
+<pre class="r"><code># add prefix gbif_
+taxa_without_author &lt;-
+  taxa_without_author %&gt;% 
+  select(gbif_terms) %&gt;%
+  setNames(paste0(&#39;gbif_&#39;, names(.))) %&gt;%
+  bind_cols(taxa_without_author %&gt;%
+              select(-gbif_terms)) %&gt;%
+  select(-contains(&quot;gbif_&quot;), everything())</code></pre>
+<p>Overview match:</p>
+<pre class="r"><code>taxa_without_author %&gt;%
+  group_by(gbif_matchType) %&gt;%
+  count()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"177"},{"1":"FUZZY","2":"398"},{"1":"NONE","2":"630"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>As some of the matches might be wrong, we update <code>gbif_matchType</code> to <code>EXACT_WITHOUT_AUTHOR</code>, <code>FUZZY_WITHOUT_AUTHOR</code>:</p>
+<pre class="r"><code>taxa_without_author &lt;-
+  taxa_without_author %&gt;%
+  mutate(gbif_matchType = case_when(
+    gbif_matchType == &quot;EXACT&quot; ~ &quot;EXACT_WITHOUT_AUTHOR&quot;,
+    gbif_matchType == &quot;FUZZY&quot; ~ &quot;FUZZY_WITHOUT_AUTHOR&quot;,
+    TRUE ~ gbif_matchType)
+)</code></pre>
+<p>Include the results of this second match attempt to <code>taxa_gbif</code>:</p>
+<pre class="r"><code>taxa_gbif &lt;-
+  taxa_gbif %&gt;%
+  anti_join(taxa_without_author,
+            by = &quot;id&quot;) %&gt;%
+  bind_rows(taxa_without_author) %&gt;%
+  arrange(id)</code></pre>
+<p>Overview:</p>
+<pre class="r"><code>taxa_gbif %&gt;%
+  group_by(gbif_matchType) %&gt;%
+  count()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"50628"},{"1":"EXACT_WITHOUT_AUTHOR","2":"177"},{"1":"FUZZY_WITHOUT_AUTHOR","2":"398"},{"1":"NONE","2":"630"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="match-without-authorship-and-without-kingdom" class="section level2">
+<h2><span class="header-section-number">3.3</span> Match without authorship and without kingdom</h2>
+<p>Due to errors in parent IDs, some taxa are not matched because they are linked to the wrong kingdom. Examples, the phylum <code>Xanthophyta</code>:</p>
+<pre class="r"><code>taxa_gbif %&gt;% filter(acceptedname == &quot;Xanthophyta&quot;)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["speciesbeid"],"name":[2],"type":["chr"],"align":["left"]},{"label":["colid"],"name":[3],"type":["chr"],"align":["left"]},{"label":["acceptedname"],"name":[4],"type":["chr"],"align":["left"]},{"label":["vernacularnamefr"],"name":[5],"type":["chr"],"align":["left"]},{"label":["vernacularnamenl"],"name":[6],"type":["chr"],"align":["left"]},{"label":["scientificnameauthorship"],"name":[7],"type":["chr"],"align":["left"]},{"label":["parentid"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["distributionstatuscode"],"name":[9],"type":["chr"],"align":["left"]},{"label":["taxonranken"],"name":[10],"type":["chr"],"align":["left"]},{"label":["media"],"name":[11],"type":["lgl"],"align":["right"]},{"label":["taxonomicstatusen"],"name":[12],"type":["chr"],"align":["left"]},{"label":["speciesbeparentid"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["bruenvi_created"],"name":[14],"type":["date"],"align":["right"]},{"label":["bruenvi_modified"],"name":[15],"type":["chr"],"align":["left"]},{"label":["bruenvi_author"],"name":[16],"type":["chr"],"align":["left"]},{"label":["kingdom_id"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["bim_kingdom"],"name":[18],"type":["chr"],"align":["left"]},{"label":["name_for_gbif"],"name":[19],"type":["chr"],"align":["left"]},{"label":["rank_for_gbif"],"name":[20],"type":["chr"],"align":["left"]},{"label":["gbif_matchType"],"name":[21],"type":["chr"],"align":["left"]},{"label":["gbif_confidence"],"name":[22],"type":["int"],"align":["right"]},{"label":["gbif_rank"],"name":[23],"type":["chr"],"align":["left"]},{"label":["gbif_usageKey"],"name":[24],"type":["int"],"align":["right"]},{"label":["gbif_scientificName"],"name":[25],"type":["chr"],"align":["left"]},{"label":["gbif_canonicalName"],"name":[26],"type":["chr"],"align":["left"]},{"label":["gbif_kingdom"],"name":[27],"type":["chr"],"align":["left"]},{"label":["gbif_phylum"],"name":[28],"type":["chr"],"align":["left"]},{"label":["gbif_order"],"name":[29],"type":["chr"],"align":["left"]},{"label":["gbif_class"],"name":[30],"type":["chr"],"align":["left"]},{"label":["gbif_family"],"name":[31],"type":["chr"],"align":["left"]},{"label":["gbif_genus"],"name":[32],"type":["chr"],"align":["left"]},{"label":["gbif_species"],"name":[33],"type":["chr"],"align":["left"]},{"label":["gbif_kingdomKey"],"name":[34],"type":["int"],"align":["right"]},{"label":["gbif_phylumKey"],"name":[35],"type":["int"],"align":["right"]},{"label":["gbif_classKey"],"name":[36],"type":["int"],"align":["right"]},{"label":["gbif_orderKey"],"name":[37],"type":["int"],"align":["right"]},{"label":["gbif_familyKey"],"name":[38],"type":["int"],"align":["right"]},{"label":["gbif_genusKey"],"name":[39],"type":["int"],"align":["right"]},{"label":["gbif_speciesKey"],"name":[40],"type":["int"],"align":["right"]},{"label":["gbif_status"],"name":[41],"type":["chr"],"align":["left"]},{"label":["gbif_synonym"],"name":[42],"type":["lgl"],"align":["right"]},{"label":["gbif_acceptedUsageKey"],"name":[43],"type":["int"],"align":["right"]}],"data":[{"1":"45964","2":"59171","3":"NA","4":"Xanthophyta","5":"xanthophytes","6":"xanthofyten","7":"NA","8":"45975","9":"NA","10":"phylum","11":"NA","12":"to determine","13":"59184","14":"2015-04-29","15":"NA","16":"NA","17":"45975","18":"Plantae","19":"Xanthophyta","20":"phylum","21":"NONE","22":"99","23":"NA","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"NA","31":"NA","32":"NA","33":"NA","34":"NA","35":"NA","36":"NA","37":"NA","38":"NA","39":"NA","40":"NA","41":"NA","42":"FALSE","43":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Its <code>bim_kingdom</code> is based on parentid <code>45975</code>, which refers to the internal id of acceptedname <code>Plantae</code>, while the kingdom according to GBIF Backbone is <code>Chromista</code>:</p>
+<pre class="r"><code>taxa_gbif %&gt;% 
+  filter(acceptedname == &quot;Xanthophyta&quot;) %&gt;%
+  select(acceptedname) %&gt;%
+  gbif_species_name_match(name = &quot;acceptedname&quot;) %&gt;%
+  select(acceptedname, kingdom) %&gt;%
+  rename(gbif_kingdom = kingdom)</code></pre>
+<pre><code>## [1] &quot;All column names present&quot;</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["acceptedname"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gbif_kingdom"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Xanthophyta","2":"Chromista"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The taxa with <code>gbif_matchType</code> not equal to <code>EXACT</code> or <code>EXACT_WITHOUT_AUTHOR</code> are matched again. As third and final matching attempt, we try matching taxa without <code>scientificnameauthorship</code> and without passing kingdom as parameter. Please note that rank is always given to the match function.</p>
+<pre class="r"><code>taxa_without_author_and_kingdom &lt;-
+  taxa_gbif %&gt;%
+  filter(!gbif_matchType %in% c(&quot;EXACT_WITHOUT_AUTHOR&quot;, 
+                           &quot;EXACT&quot;)) %&gt;%
+  select(names(taxa)) %&gt;%
+  gbif_species_name_match(name = &quot;acceptedname&quot;,
+                          rank = &quot;rank_for_gbif&quot;,
+                          gbif_terms = gbif_terms,
+                          strict = TRUE)</code></pre>
+<pre><code>## [1] &quot;All column names present&quot;</code></pre>
+<pre class="r"><code>taxa_without_author_and_kingdom &lt;-
+  taxa_without_author_and_kingdom %&gt;%
+  select(gbif_terms) %&gt;%
+  setNames(paste0(&#39;gbif_&#39;, names(.))) %&gt;%
+  bind_cols(taxa_without_author_and_kingdom %&gt;%
+              select(-gbif_terms)) %&gt;%
+  select(-contains(&quot;gbif_&quot;), everything())</code></pre>
+<p>Overview match:</p>
+<pre class="r"><code>taxa_without_author_and_kingdom %&gt;%
+  group_by(gbif_matchType) %&gt;%
+  count()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"95"},{"1":"FUZZY","2":"398"},{"1":"NONE","2":"535"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>As some of the matches might be wrong, we update <code>gbif_matchType</code> to <code>EXACT_WITHOUT_AUTHOR_AND_KINGDOM</code>, <code>FUZZY_WITHOUT_AUTHOR_AND_KINGDOM</code>:</p>
+<pre class="r"><code>taxa_without_author_and_kingdom &lt;-
+  taxa_without_author_and_kingdom %&gt;%
+  mutate(gbif_matchType = case_when(
+    gbif_matchType == &quot;EXACT&quot; ~ &quot;EXACT_WITHOUT_AUTHOR_AND_KINGDOM&quot;,
+    gbif_matchType == &quot;FUZZY&quot; ~ &quot;FUZZY_WITHOUT_AUTHOR_AND_KINGDOM&quot;,
+    TRUE ~ gbif_matchType)
+)</code></pre>
+<p>Include the results of this third match attempt to <code>taxa_gbif</code>:</p>
+<pre class="r"><code>taxa_gbif &lt;-
+  taxa_gbif %&gt;%
+  anti_join(taxa_without_author_and_kingdom,
+            by = &quot;id&quot;) %&gt;%
+  bind_rows(taxa_without_author_and_kingdom) %&gt;%
+  arrange(id)</code></pre>
+<p>Overview <code>gbif_matchType</code>:</p>
+<pre class="r"><code>taxa_gbif %&gt;%
+  group_by(gbif_matchType) %&gt;%
+  count()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"50628"},{"1":"EXACT_WITHOUT_AUTHOR","2":"177"},{"1":"EXACT_WITHOUT_AUTHOR_AND_KINGDOM","2":"95"},{"1":"FUZZY_WITHOUT_AUTHOR_AND_KINGDOM","2":"398"},{"1":"NONE","2":"535"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="get-number-of-occurrences-per-taxa" class="section level2">
+<h2><span class="header-section-number">3.4</span> Get number of occurrences per taxa</h2>
+<p>It is interesting to know how many occurrences are linked to the unmatched taxa: taxa linked to many occurrences should be checked before other ones, thus prioritizing the work of the taxonomists. We retrieve this information by reading the occurrences from text file:</p>
+<pre class="r"><code>occurrences &lt;- read_tsv(here(&quot;data&quot;, &quot;input&quot;, &quot;occurrences.tsv&quot;), 
+                        na = &quot;&quot;,
+                        col_types = cols(
+                          .default = col_character(),
+                          id = col_double(),
+                          locationid = col_double(),
+                          identificationid = col_double(),
+                          identifiablespeciesid = col_double(),
+                          observerid = col_double(),
+                          eventid = col_double(),
+                          individualcount = col_double(),
+                          individualcountestimationid = col_double(),
+                          dateentered = col_date(format = &quot;&quot;),
+                          bbd_id = col_double(),
+                          bruenvi_created = col_date(format = &quot;%Y-%m-%d&quot;),
+                          bruenvi_modified = col_date(format = &quot;%Y-%m-%d&quot;))
+)</code></pre>
+<p>The link to <code>taxa</code> has been made by intermediate table <code>identifiablespecies</code> containing all identifiable species and linking synonyms to accepted taxa. We read it by file:</p>
+<pre class="r"><code>identifiable_species &lt;- read_tsv(here(&quot;data&quot;, 
+                                      &quot;input&quot;, 
+                                      &quot;identifiable_species.tsv&quot;), 
+                                 na = &quot;&quot;,
+                                 col_types = cols(
+                                   .default = col_character(),
+                                   id = col_double(),
+                                   taxonid = col_double(),
+                                   bruenvi_created = col_date(format = &quot;%Y-%m-%d&quot;),
+                                   bruenvi_modified = col_date(format = &quot;%Y-%m-%d&quot;))
+)</code></pre>
+<p>Link observations to taxonomic ID of accepted taxa in <code>taxa</code>:</p>
+<pre class="r"><code>occurrences &lt;- 
+  occurrences %&gt;%
+  left_join(identifiable_species %&gt;%
+              select(id, taxonid),
+            by = c(&quot;identifiablespeciesid&quot; = &quot;id&quot;))</code></pre>
+<div id="add-number-of-occurrences-to-taxonomic-data" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> Add number of occurrences to taxonomic data</h3>
+<p>We add a new column called <code>n_occs</code> containing the number of occurrences linked to each taxon:</p>
+<pre class="r"><code>taxa_gbif &lt;- 
+  occurrences %&gt;%
+  group_by(taxonid) %&gt;%
+  count() %&gt;%
+  ungroup() %&gt;%
+  rename(n_occs = n) %&gt;%
+  right_join(taxa_gbif,
+             by = c(&quot;taxonid&quot; = &quot;id&quot;)) %&gt;%
+  rename(id = taxonid) %&gt;%
+  arrange(id)</code></pre>
+<p>Number of taxa with/without occurrences:</p>
+<pre class="r"><code>taxa_gbif %&gt;%
+  group_by(!is.na(n_occs)) %&gt;%
+  count() %&gt;%
+  rename(&quot;has_occs&quot; = &quot;!is.na(n_occs)&quot;)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["has_occs"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"43636"},{"1":"TRUE","2":"8197"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="number-of-occurrences-of-unmatched-taxa" class="section level3">
+<h3><span class="header-section-number">3.4.2</span> Number of occurrences of unmatched taxa</h3>
+<p>In particular, for unmatched taxa (<code>gbif_matchType</code> not equal to <code>EXACT</code>):</p>
+<pre class="r"><code>taxa_gbif_unmatched &lt;- 
+  taxa_gbif %&gt;%
+  filter(gbif_matchType != &quot;EXACT&quot;) %&gt;%
+  select(acceptedname,
+         scientificnameauthorship,
+         n_occs, 
+         gbif_matchType, 
+         gbif_confidence, 
+         gbif_status, 
+         gbif_usageKey,
+         gbif_scientificName,
+         gbif_canonicalName,
+         gbif_rank,
+         gbif_kingdom,
+         gbif_phylum,
+         gbif_class,
+         gbif_order,
+         gbif_family,
+         gbif_genus,
+         gbif_species,
+         everything())
+# preview
+taxa_gbif_unmatched %&gt;%
+  head()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["acceptedname"],"name":[1],"type":["chr"],"align":["left"]},{"label":["scientificnameauthorship"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n_occs"],"name":[3],"type":["int"],"align":["right"]},{"label":["gbif_matchType"],"name":[4],"type":["chr"],"align":["left"]},{"label":["gbif_confidence"],"name":[5],"type":["int"],"align":["right"]},{"label":["gbif_status"],"name":[6],"type":["chr"],"align":["left"]},{"label":["gbif_usageKey"],"name":[7],"type":["int"],"align":["right"]},{"label":["gbif_scientificName"],"name":[8],"type":["chr"],"align":["left"]},{"label":["gbif_canonicalName"],"name":[9],"type":["chr"],"align":["left"]},{"label":["gbif_rank"],"name":[10],"type":["chr"],"align":["left"]},{"label":["gbif_kingdom"],"name":[11],"type":["chr"],"align":["left"]},{"label":["gbif_phylum"],"name":[12],"type":["chr"],"align":["left"]},{"label":["gbif_class"],"name":[13],"type":["chr"],"align":["left"]},{"label":["gbif_order"],"name":[14],"type":["chr"],"align":["left"]},{"label":["gbif_family"],"name":[15],"type":["chr"],"align":["left"]},{"label":["gbif_genus"],"name":[16],"type":["chr"],"align":["left"]},{"label":["gbif_species"],"name":[17],"type":["chr"],"align":["left"]},{"label":["id"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["speciesbeid"],"name":[19],"type":["chr"],"align":["left"]},{"label":["colid"],"name":[20],"type":["chr"],"align":["left"]},{"label":["vernacularnamefr"],"name":[21],"type":["chr"],"align":["left"]},{"label":["vernacularnamenl"],"name":[22],"type":["chr"],"align":["left"]},{"label":["parentid"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["distributionstatuscode"],"name":[24],"type":["chr"],"align":["left"]},{"label":["taxonranken"],"name":[25],"type":["chr"],"align":["left"]},{"label":["media"],"name":[26],"type":["lgl"],"align":["right"]},{"label":["taxonomicstatusen"],"name":[27],"type":["chr"],"align":["left"]},{"label":["speciesbeparentid"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["bruenvi_created"],"name":[29],"type":["date"],"align":["right"]},{"label":["bruenvi_modified"],"name":[30],"type":["chr"],"align":["left"]},{"label":["bruenvi_author"],"name":[31],"type":["chr"],"align":["left"]},{"label":["kingdom_id"],"name":[32],"type":["dbl"],"align":["right"]},{"label":["bim_kingdom"],"name":[33],"type":["chr"],"align":["left"]},{"label":["name_for_gbif"],"name":[34],"type":["chr"],"align":["left"]},{"label":["rank_for_gbif"],"name":[35],"type":["chr"],"align":["left"]},{"label":["gbif_kingdomKey"],"name":[36],"type":["int"],"align":["right"]},{"label":["gbif_phylumKey"],"name":[37],"type":["int"],"align":["right"]},{"label":["gbif_classKey"],"name":[38],"type":["int"],"align":["right"]},{"label":["gbif_orderKey"],"name":[39],"type":["int"],"align":["right"]},{"label":["gbif_familyKey"],"name":[40],"type":["int"],"align":["right"]},{"label":["gbif_genusKey"],"name":[41],"type":["int"],"align":["right"]},{"label":["gbif_speciesKey"],"name":[42],"type":["int"],"align":["right"]},{"label":["gbif_synonym"],"name":[43],"type":["lgl"],"align":["right"]},{"label":["gbif_acceptedUsageKey"],"name":[44],"type":["int"],"align":["right"]}],"data":[{"1":"Phoma acuta phlogis","2":"(Roum.) Boerema et al., 1994","3":"NA","4":"NONE","5":"100","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"2","19":"29","20":"NA","21":"NA","22":"NA","23":"31133","24":"1a","25":"subforma","26":"NA","27":"accepted","28":"40262","29":"2015-04-29","30":"NA","31":"NA","32":"3902","33":"Fungi","34":"Phoma acuta phlogis (Roum.) Boerema et al., 1994","35":"subform","36":"NA","37":"NA","38":"NA","39":"NA","40":"NA","41":"NA","42":"NA","43":"FALSE","44":"NA"},{"1":"Aecidium rumicis form. acetosae","2":"Oudem.","3":"NA","4":"EXACT_WITHOUT_AUTHOR","5":"100","6":"DOUBTFUL","7":"3374678","8":"Aecidium rumicis f. acetosae Sacc.","9":"Aecidium rumicis acetosae","10":"FORM","11":"Fungi","12":"Basidiomycota","13":"Pucciniomycetes","14":"Pucciniales","15":"Pucciniaceae","16":"Aecidium","17":"Aecidium rumicis","18":"5","19":"40","20":"NA","21":"NA","22":"NA","23":"26679","24":"1a","25":"forma","26":"NA","27":"anamorph","28":"29850","29":"2015-04-29","30":"NA","31":"NA","32":"3902","33":"Fungi","34":"Aecidium rumicis form. acetosae Oudem.","35":"form","36":"5","37":"34","38":"270","39":"1126","40":"3251","41":"2513143","42":"9284750","43":"FALSE","44":"NA"},{"1":"Conocybe lactea form. lactea","2":"NA","3":"NA","4":"NONE","5":"100","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"17","19":"81","20":"NA","21":"NA","22":"NA","23":"27726","24":"1a","25":"forma","26":"NA","27":"accepted","28":"32604","29":"2015-04-29","30":"NA","31":"NA","32":"3902","33":"Fungi","34":"Conocybe lactea form. lactea","35":"form","36":"NA","37":"NA","38":"NA","39":"NA","40":"NA","41":"NA","42":"NA","43":"FALSE","44":"NA"},{"1":"Cytospora friesii form. douglasii","2":"Oudem.","3":"NA","4":"NONE","5":"100","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"22","19":"98","20":"NA","21":"NA","22":"NA","23":"28155","24":"1a","25":"forma","26":"NA","27":"accepted","28":"33559","29":"2015-04-29","30":"NA","31":"NA","32":"3902","33":"Fungi","34":"Cytospora friesii form. douglasii Oudem.","35":"form","36":"NA","37":"NA","38":"NA","39":"NA","40":"NA","41":"NA","42":"NA","43":"FALSE","44":"NA"},{"1":"Galerina vittaeformis form. tetraspora","2":"NA","3":"NA","4":"NONE","5":"100","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"50","19":"147","20":"NA","21":"NA","22":"NA","23":"441","24":"1a","25":"forma","26":"NA","27":"accepted","28":"894","29":"2015-04-29","30":"NA","31":"NA","32":"3902","33":"Fungi","34":"Galerina vittaeformis form. tetraspora","35":"form","36":"NA","37":"NA","38":"NA","39":"NA","40":"NA","41":"NA","42":"NA","43":"FALSE","44":"NA"},{"1":"Galerina vittaeformis form. bispora","2":"NA","3":"NA","4":"NONE","5":"100","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"51","19":"148","20":"NA","21":"NA","22":"NA","23":"441","24":"1a","25":"forma","26":"NA","27":"accepted","28":"894","29":"2015-04-29","30":"NA","31":"NA","32":"3902","33":"Fungi","34":"Galerina vittaeformis form. bispora","35":"form","36":"NA","37":"NA","38":"NA","39":"NA","40":"NA","41":"NA","42":"NA","43":"FALSE","44":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Number of unmatched taxa linked to at least one occurrence <em>or</em> none at all <strong>and</strong> with <em>or</em> without parent ID:</p>
+<pre class="r"><code>taxa_gbif_unmatched %&gt;%
+  group_by(!is.na(parentid), !is.na(n_occs)) %&gt;%
+  count() %&gt;%
+  rename(&quot;has_parentid&quot; = &quot;!is.na(parentid)&quot;,
+         &quot;has_occs&quot; = &quot;!is.na(n_occs)&quot;
+)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["has_parentid"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["has_occs"],"name":[2],"type":["lgl"],"align":["right"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"FALSE","3":"112"},{"1":"FALSE","2":"TRUE","3":"69"},{"1":"TRUE","2":"FALSE","3":"964"},{"1":"TRUE","2":"TRUE","3":"60"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Experts should focus first on taxa without parent ID, <code>has_parentid = FALSE</code>. Among these ones priority should be given to taxa with occurrences, <code>has_occs = TRUE</code>. To do so, we arrange the taxa by absence of parent ID and decreasing number of occurrences:</p>
+<pre class="r"><code>taxa_gbif_unmatched &lt;- 
+  taxa_gbif_unmatched %&gt;%
+  arrange(!is.na(parentid), n_occs)</code></pre>
+<p>Finally, it is also important to show the rank of the unmatched taxa:</p>
+<pre class="r"><code>taxa_gbif_unmatched %&gt;%
+  group_by(rank_for_gbif) %&gt;%
+  count()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["rank_for_gbif"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"NA","2":"1"},{"1":"class","2":"15"},{"1":"family","2":"19"},{"1":"form","2":"37"},{"1":"genus","2":"138"},{"1":"order","2":"86"},{"1":"phylum","2":"6"},{"1":"species","2":"731"},{"1":"subfamily","2":"4"},{"1":"subform","2":"1"},{"1":"suborder","2":"3"},{"1":"subspecies","2":"104"},{"1":"superfamily","2":"1"},{"1":"superorder","2":"2"},{"1":"unranked","2":"4"},{"1":"variety","2":"53"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<div id="save-taxa" class="section level1">
+<h1><span class="header-section-number">4</span> Save taxa</h1>
+<p>We save the taxa with the added information from GBIF Taxonomy Backbone:</p>
+<pre class="r"><code>write_tsv(taxa_gbif,
+          path = here::here(&quot;data&quot;, &quot;interim&quot;, &quot;taxa_gbif.tsv&quot;),
+          na = &quot;&quot;)</code></pre>
+<p>We save the subset of the unmatched taxa in a separate file for verification.</p>
+<pre class="r"><code>write_tsv(taxa_gbif_unmatched,
+          path = here::here(&quot;data&quot;, &quot;interim&quot;, &quot;unmatched_taxa_gbif.tsv&quot;),
+          na = &quot;&quot;)</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

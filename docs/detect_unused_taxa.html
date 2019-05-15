@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Damiano Oldoni" />
+<meta name="author" content="Lien Reyserhove" />
+<meta name="author" content="Peter Desmet" />
+
+<meta name="date" content="2019-05-13" />
+
+<title>Detect unused taxa</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">BIM taxonomic data</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Workflow
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="get_taxa_from_db.html">Get taxa from database</a>
+    </li>
+    <li>
+      <a href="detect_unused_taxa.html">Find unused taxa</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Appendix 1. Build taxonomic reference file
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="add_kingdom.html">Add kingdom based on parent IDs</a>
+    </li>
+    <li>
+      <a href="match_taxa_gbif_backbone.html">Match taxa to GBIF Taxonomy Backbone</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/inbo/ibge-bim-species">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Detect unused taxa</h1>
+<h4 class="author">Damiano Oldoni</h4>
+<h4 class="author">Lien Reyserhove</h4>
+<h4 class="author">Peter Desmet</h4>
+<h4 class="date">2019-05-13</h4>
+
+</div>
+
+
+<div id="setup" class="section level1">
+<h1><span class="header-section-number">1</span> Setup</h1>
+<div id="load-libraries" class="section level2">
+<h2><span class="header-section-number">1.1</span> Load libraries</h2>
+<pre class="r"><code>library(odbc)       # To work with database
+library(tidyverse)  # To do data science
+library(here)       # To work with paths
+library(inborutils) # To match taxa (rgbif called in background)</code></pre>
+</div>
+<div id="load-access-informations" class="section level2">
+<h2><span class="header-section-number">1.2</span> Load access informations</h2>
+<p>Retrieve access informations from configuration file:</p>
+<pre class="r"><code>ibge_bim &lt;- config::get(&quot;ibge_bim&quot;)</code></pre>
+</div>
+<div id="connect-to-database" class="section level2">
+<h2><span class="header-section-number">1.3</span> Connect to database</h2>
+<p>Connect to database:</p>
+</div>
+<div id="connect-to-database-1" class="section level2">
+<h2><span class="header-section-number">1.4</span> Connect to database</h2>
+<p>Connect to database:</p>
+<pre class="r"><code>conn &lt;- dbConnect(odbc(), 
+                  driver = ibge_bim$driver,
+                  server = ibge_bim$server,
+                  database = ibge_bim$database,
+                  port = ibge_bim$port,
+                  uid = ibge_bim$uid,
+                  pwd = ibge_bim$pwd,
+                  encoding = &quot;Windows-1252&quot;
+)</code></pre>
+</div>
+</div>
+<div id="read-data" class="section level1">
+<h1><span class="header-section-number">2</span> Read data</h1>
+<p>We read first taxonomic information from file <code>taxa</code> containing a copy of table <code>taxon</code>. Next, we retrieve information from the tables which are linked to these taxa:</p>
+<ol style="list-style-type: decimal">
+<li>table <code>identifiablespecies</code></li>
+<li>table <code>speciesannex</code></li>
+<li>table <code>media</code></li>
+<li>table <code>taxoncommontaxa</code></li>
+</ol>
+<p>We also retrieve occurrences from table <code>occurence</code> in order to assess which taxa are not linked to any occurrence.</p>
+<div id="read-taxonomic-data" class="section level2">
+<h2><span class="header-section-number">2.1</span> Read taxonomic data</h2>
+<p>We read taxa. They were previously saved as text file:</p>
+<pre class="r"><code>taxa &lt;- read_tsv(here(&quot;data&quot;, &quot;input&quot;, &quot;taxa.tsv&quot;),
+                 col_types = cols(
+                   .default = col_character(),
+                   id = col_double(),
+                   parentid = col_double(),
+                   media = col_logical(),
+                   speciesbeparentid = col_double(),
+                   bruenvi_created = col_date(format = &quot;%Y-%m-%d&quot;),
+                   bruenvi_modified = col_date(format = &quot;%Y-%m-%d&quot;))
+)</code></pre>
+</div>
+<div id="read-occurrence-related-data" class="section level2">
+<h2><span class="header-section-number">2.2</span> Read occurrence related data</h2>
+<div id="read-occurrences" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Read occurrences</h3>
+<p>Read table <code>occurence</code> containing occurrence data:</p>
+<pre class="r"><code>occurrences &lt;- 
+  dbGetQuery(conn, &quot;SELECT * FROM biodiv.occurence&quot;) %&gt;%
+  as_tibble()</code></pre>
+<p>Preview:</p>
+<pre class="r"><code>head(occurrences)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["locationid"],"name":[2],"type":["int"],"align":["right"]},{"label":["identificationid"],"name":[3],"type":["int"],"align":["right"]},{"label":["identifiablespeciesid"],"name":[4],"type":["int"],"align":["right"]},{"label":["observerid"],"name":[5],"type":["int"],"align":["right"]},{"label":["eventid"],"name":[6],"type":["int"],"align":["right"]},{"label":["sexcode"],"name":[7],"type":["chr"],"align":["left"]},{"label":["datasetname"],"name":[8],"type":["chr"],"align":["left"]},{"label":["individualcount"],"name":[9],"type":["int"],"align":["right"]},{"label":["individualcountrange"],"name":[10],"type":["chr"],"align":["left"]},{"label":["individualcountestimationid"],"name":[11],"type":["int"],"align":["right"]},{"label":["occurenceremarks"],"name":[12],"type":["chr"],"align":["left"]},{"label":["catalognumber"],"name":[13],"type":["chr"],"align":["left"]},{"label":["establishmentmeans"],"name":[14],"type":["chr"],"align":["left"]},{"label":["behavior"],"name":[15],"type":["chr"],"align":["left"]},{"label":["lifestage"],"name":[16],"type":["chr"],"align":["left"]},{"label":["reproductivecondition"],"name":[17],"type":["chr"],"align":["left"]},{"label":["basisofrecord"],"name":[18],"type":["chr"],"align":["left"]},{"label":["dateentered"],"name":[19],"type":["date"],"align":["right"]},{"label":["bbd_id"],"name":[20],"type":["int"],"align":["right"]},{"label":["bruenvi_created"],"name":[21],"type":["date"],"align":["right"]},{"label":["bruenvi_modified"],"name":[22],"type":["date"],"align":["right"]},{"label":["bruenvi_author"],"name":[23],"type":["chr"],"align":["left"]}],"data":[{"1":"453200","2":"721489","3":"1851519","4":"812","5":"642","6":"691488","7":"NA","8":"Atlas Paddenstoelen 201110(Overeenkomst Natuurpunt Studie)","9":"NA","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"humanObservation","19":"2013-06-27","20":"NA","21":"2015-04-29","22":"<NA>","23":"NA"},{"1":"453201","2":"825008","3":"1594222","4":"24170","5":"474","6":"791444","7":"NA","8":"Losse waarnemingen 2012 (Overeenkomst Natuurpunt Studie)","9":"500","10":"NA","11":"1","12":"NA","13":"NA","14":"NA","15":"ter plaatse","16":"bloeiend","17":"NA","18":"humanObservation","19":"2013-06-17","20":"NA","21":"2015-04-29","22":"<NA>","23":"NA"},{"1":"453202","2":"728958","3":"1858988","4":"812","5":"728","6":"698957","7":"NA","8":"Atlas Paddenstoelen 201110(Overeenkomst Natuurpunt Studie)","9":"NA","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"humanObservation","19":"2013-06-27","20":"NA","21":"2015-04-29","22":"<NA>","23":"NA"},{"1":"453203","2":"790852","3":"1921007","4":"24170","5":"673","6":"757288","7":"NA","8":"Atlas Hogere Planten 2003-2005 (Overeenkomst Plantentuin)","9":"NA","10":"NA","11":"NA","12":"NA","13":"INBO:FLORA:01675928","14":"NA","15":"NA","16":"NA","17":"NA","18":"humanObservation","19":"2011-10-12","20":"NA","21":"2015-04-29","22":"<NA>","23":"NA"},{"1":"453204","2":"721497","3":"1851527","4":"812","5":"642","6":"691496","7":"NA","8":"Atlas Paddenstoelen 201110(Overeenkomst Natuurpunt Studie)","9":"NA","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","15":"NA","16":"NA","17":"NA","18":"humanObservation","19":"2013-06-27","20":"NA","21":"2015-04-29","22":"<NA>","23":"NA"},{"1":"453205","2":"790871","3":"1921026","4":"24170","5":"23","6":"757307","7":"NA","8":"Atlas Hogere Planten 2003-2005 (Overeenkomst Plantentuin)","9":"NA","10":"NA","11":"NA","12":"NA","13":"INBO:FLORA:01675962","14":"NA","15":"NA","16":"NA","17":"NA","18":"humanObservation","19":"2011-10-12","20":"NA","21":"2015-04-29","22":"<NA>","23":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="read-intermediate-table-identifiablespecies" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Read intermediate table <code>identifiablespecies</code></h3>
+<p>The taxonomic information of occurrences is linked to taxa via intermediate table <code>identifiablespecies</code> where a many-to-one relation occurs. This is the way synonym relations are handled. Read data from <code>identifiablespecies</code>:</p>
+<pre class="r"><code>identifiable_species &lt;- 
+  dbGetQuery(conn, &quot;SELECT * FROM biodiv.identifiablespecies&quot;) %&gt;%
+  as_tibble()</code></pre>
+<p>Preview:</p>
+<pre class="r"><code>head(identifiable_species)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["taxonid"],"name":[2],"type":["int"],"align":["right"]},{"label":["scientificname"],"name":[3],"type":["chr"],"align":["left"]},{"label":["identificationqualifier"],"name":[4],"type":["chr"],"align":["left"]},{"label":["taxonomicstatusen"],"name":[5],"type":["chr"],"align":["left"]},{"label":["bruenvi_created"],"name":[6],"type":["date"],"align":["right"]},{"label":["bruenvi_modified"],"name":[7],"type":["date"],"align":["right"]},{"label":["bruenvi_author"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"1","2":"21221","3":"×Calammophila baltica","4":"NA","5":"accepted","6":"2015-04-29","7":"<NA>","8":"NA"},{"1":"2","2":"25424","3":"Abacoproeces saltuum","4":"NA","5":"accepted","6":"2015-04-29","7":"<NA>","8":"NA"},{"1":"3","2":"16395","3":"Abax ater","4":"NA","5":"synonym","6":"2015-04-29","7":"<NA>","8":"NA"},{"1":"4","2":"16393","3":"Abax carinatus","4":"NA","5":"accepted","6":"2015-04-29","7":"<NA>","8":"NA"},{"1":"5","2":"1008","3":"Abax carinatus porcatus","4":"NA","5":"accepted","6":"2015-04-29","7":"<NA>","8":"NA"},{"1":"6","2":"16394","3":"Abax ovalis","4":"NA","5":"accepted","6":"2015-04-29","7":"<NA>","8":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The <code>id</code> column contains values present in <code>occurrences$identifiablespeciesid</code>, while <code>taxonid</code> contains values present in <code>taxa$id</code>.</p>
+<p>Notice the many-to-one relation. Example: <code>taxonid</code> 79:</p>
+<pre class="r"><code>identifiable_species %&gt;%
+  filter(taxonid == 79)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["taxonid"],"name":[2],"type":["int"],"align":["right"]},{"label":["scientificname"],"name":[3],"type":["chr"],"align":["left"]},{"label":["identificationqualifier"],"name":[4],"type":["chr"],"align":["left"]},{"label":["taxonomicstatusen"],"name":[5],"type":["chr"],"align":["left"]},{"label":["bruenvi_created"],"name":[6],"type":["date"],"align":["right"]},{"label":["bruenvi_modified"],"name":[7],"type":["date"],"align":["right"]},{"label":["bruenvi_author"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"28445","2":"79","3":"Mucor circinelloides form. circinelloides","4":"NA","5":"accepted","6":"2015-04-29","7":"<NA>","8":"NA"},{"1":"28453","2":"79","3":"Mucor dubius","4":"NA","5":"synonym","6":"2015-04-29","7":"<NA>","8":"NA"},{"1":"28464","2":"79","3":"Mucor griseoroseus","4":"NA","5":"synonym","6":"2015-04-29","7":"<NA>","8":"NA"},{"1":"28477","2":"79","3":"Mucor javanicus","4":"NA","5":"synonym","6":"2015-04-29","7":"<NA>","8":"NA"},{"1":"28481","2":"79","3":"Mucor mandshuricus","4":"NA","5":"synonym","6":"2015-04-29","7":"<NA>","8":"NA"},{"1":"28502","2":"79","3":"Mucor prainii","4":"NA","5":"synonym","6":"2015-04-29","7":"<NA>","8":"NA"},{"1":"28510","2":"79","3":"Mucor ramificus","4":"NA","5":"synonym","6":"2015-04-29","7":"<NA>","8":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div id="read-annex-data" class="section level2">
+<h2><span class="header-section-number">2.3</span> Read annex data</h2>
+<pre class="r"><code>annex &lt;- 
+  dbGetQuery(conn, &quot;SELECT * FROM biodiv.speciesannex&quot;) %&gt;%
+  as_tibble()</code></pre>
+<p>Preview:</p>
+<pre class="r"><code>head(annex)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["annexcode"],"name":[1],"type":["chr"],"align":["left"]},{"label":["taxonid"],"name":[2],"type":["int"],"align":["right"]},{"label":["bruenvi_created"],"name":[3],"type":["date"],"align":["right"]},{"label":["bruenvi_modified"],"name":[4],"type":["date"],"align":["right"]},{"label":["bruenvi_author"],"name":[5],"type":["chr"],"align":["left"]},{"label":["beid"],"name":[6],"type":["int"],"align":["right"]}],"data":[{"1":"BXL-ORD-2012_Annex II.1","2":"2031","3":"2015-04-29","4":"<NA>","5":"NA","6":"1"},{"1":"BXL-ORD-2012_Annex II.1","2":"2859","3":"2015-04-29","4":"<NA>","5":"NA","6":"2"},{"1":"BXL-ORD-2012_Annex II.1","2":"2968","3":"2015-04-29","4":"<NA>","5":"NA","6":"3"},{"1":"BXL-ORD-2012_Annex II.1","2":"3435","3":"2015-04-29","4":"<NA>","5":"NA","6":"4"},{"1":"BXL-ORD-2012_Annex II.1","2":"3482","3":"2015-04-29","4":"<NA>","5":"NA","6":"5"},{"1":"BXL-ORD-2012_Annex II.1","2":"3501","3":"2015-04-29","4":"<NA>","5":"NA","6":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Taxonomic information is saved in column <code>taxonid</code>.</p>
+</div>
+<div id="read-media-data" class="section level2">
+<h2><span class="header-section-number">2.4</span> Read media data</h2>
+<p>Read media from table <code>media</code>:</p>
+<pre class="r"><code>media &lt;- 
+  dbGetQuery(conn, &quot;SELECT * FROM biodiv.media&quot;) %&gt;%
+  as_tibble()</code></pre>
+<p>Preview:</p>
+<pre class="r"><code>head(media)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["url"],"name":[2],"type":["chr"],"align":["left"]},{"label":["mediatype"],"name":[3],"type":["chr"],"align":["left"]},{"label":["taxonid"],"name":[4],"type":["int"],"align":["right"]},{"label":["bruenvi_created"],"name":[5],"type":["date"],"align":["right"]},{"label":["bruenvi_modified"],"name":[6],"type":["date"],"align":["right"]},{"label":["bruenvi_author"],"name":[7],"type":["chr"],"align":["left"]}],"data":[],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="read-common-taxa" class="section level2">
+<h2><span class="header-section-number">2.5</span> Read common taxa</h2>
+<p>Read common taxa from table <code>taxoncommontaxa</code>:</p>
+<pre class="r"><code>taxon_common_taxa &lt;- 
+  dbGetQuery(conn, &quot;SELECT * FROM biodiv.taxoncommontaxa&quot;) %&gt;%
+  as_tibble()</code></pre>
+<p>Preview:</p>
+<pre class="r"><code>head(taxon_common_taxa)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["commontaxaid"],"name":[1],"type":["int"],"align":["right"]},{"label":["taxonid"],"name":[2],"type":["int"],"align":["right"]},{"label":["bruenvi_created"],"name":[3],"type":["date"],"align":["right"]},{"label":["bruenvi_modified"],"name":[4],"type":["date"],"align":["right"]},{"label":["bruenvi_author"],"name":[5],"type":["chr"],"align":["left"]},{"label":["beid"],"name":[6],"type":["int"],"align":["right"]}],"data":[{"1":"17","2":"42806","3":"2015-04-29","4":"<NA>","5":"NA","6":"1"},{"1":"17","2":"43214","3":"2015-04-29","4":"<NA>","5":"NA","6":"2"},{"1":"17","2":"44032","3":"2015-04-29","4":"<NA>","5":"NA","6":"3"},{"1":"17","2":"44061","3":"2015-04-29","4":"<NA>","5":"NA","6":"4"},{"1":"17","2":"44083","3":"2015-04-29","4":"<NA>","5":"NA","6":"5"},{"1":"17","2":"44088","3":"2015-04-29","4":"<NA>","5":"NA","6":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>As in previous tables, taxonomic information is saved in column <code>taxonid</code>. The column <code>commontaxaid</code> contains the identifier to define the typic taxonoic groups to search on. This information is saved in table <code>commontaxa</code>:</p>
+<pre class="r"><code>common_taxa &lt;- 
+  dbGetQuery(conn, &quot;SELECT * FROM biodiv.commontaxa&quot;) %&gt;%
+  as_tibble()</code></pre>
+<p>Preview:</p>
+<pre class="r"><code>head(common_taxa)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["nptaxonid"],"name":[2],"type":["int"],"align":["right"]},{"label":["vernacularnamenl"],"name":[3],"type":["chr"],"align":["left"]},{"label":["vernacularnamefr"],"name":[4],"type":["chr"],"align":["left"]},{"label":["bruenvi_created"],"name":[5],"type":["date"],"align":["right"]},{"label":["bruenvi_modified"],"name":[6],"type":["date"],"align":["right"]},{"label":["bruenvi_author"],"name":[7],"type":["chr"],"align":["left"]}],"data":[{"1":"1","2":"1","3":"Vogels","4":"Oiseaux","5":"2015-04-29","6":"<NA>","7":"NA"},{"1":"2","2":"2","3":"Zoogdieren","4":"Mammifères","5":"2015-04-29","6":"<NA>","7":"NA"},{"1":"3","2":"3","3":"Reptielen en amfibieën","4":"Reptiles et Amphibiens","5":"2015-04-29","6":"<NA>","7":"NA"},{"1":"4","2":"4","3":"Dagvlinders","4":"Papillons","5":"2015-04-29","6":"<NA>","7":"NA"},{"1":"5","2":"8","3":"Nachtvlinders en micro's","4":"Papillons de nuit","5":"2015-04-29","6":"<NA>","7":"NA"},{"1":"6","2":"5","3":"Libellen","4":"Libellules","5":"2015-04-29","6":"<NA>","7":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div id="detect-unused-taxa" class="section level1">
+<h1><span class="header-section-number">3</span> Detect (un)used taxa</h1>
+<div id="taxa-not-in-occurrences" class="section level2">
+<h2><span class="header-section-number">3.1</span> Taxa not in occurrences</h2>
+<p>Taxa not linked to any occurrence are found by using information in intermediate table <code>identifiablespecies</code>:</p>
+<pre class="r"><code>taxa_not_in_occs &lt;- 
+  taxa %&gt;%
+  anti_join(
+    occurrences %&gt;%
+    distinct(identifiablespeciesid) %&gt;%
+    left_join(identifiable_species, 
+              by = c(&quot;identifiablespeciesid&quot; = &quot;id&quot;)) %&gt;%
+    select(taxonid),
+    by = c(&quot;id&quot; = &quot;taxonid&quot;)) %&gt;%
+  select(names(taxa))</code></pre>
+<p>Number of taxa linked to occurrences:</p>
+<pre class="r"><code>taxa %&gt;%
+  mutate(used_for_occs = if_else(id %in% taxa_not_in_occs$id,
+                                 FALSE, TRUE)) %&gt;%
+  group_by(used_for_occs) %&gt;%
+  summarize(n_taxa_with_occs = n())</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["used_for_occs"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["n_taxa_with_occs"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"43636"},{"1":"TRUE","2":"8197"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="taxa-not-used-in-annexes" class="section level2">
+<h2><span class="header-section-number">3.2</span> Taxa not used in annexes</h2>
+<p>Taxa not included in any annex:</p>
+<pre class="r"><code>taxa_not_in_annex &lt;-
+  taxa %&gt;%
+  anti_join(annex %&gt;% distinct(taxonid),
+            by = c(&quot;id&quot; = &quot;taxonid&quot;))</code></pre>
+<p>Number of taxa linked to annexes:</p>
+<pre class="r"><code>taxa %&gt;%
+  mutate(used_for_annex = if_else(id %in% taxa_not_in_annex$id,
+                                 FALSE, TRUE)) %&gt;%
+  group_by(used_for_annex) %&gt;%
+  summarize(n_taxa_in_annex = n())</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["used_for_annex"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["n_taxa_in_annex"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"44331"},{"1":"TRUE","2":"7502"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="taxa-not-used-in-media" class="section level2">
+<h2><span class="header-section-number">3.3</span> Taxa not used in media</h2>
+<p>Taxa not linked to media:</p>
+<pre class="r"><code>taxa_not_in_media &lt;-
+  taxa %&gt;%
+  anti_join(media %&gt;% distinct(taxonid),
+            by = c(&quot;id&quot; = &quot;taxonid&quot;))</code></pre>
+<p>Number of taxa with media:</p>
+<pre class="r"><code>taxa %&gt;%
+  mutate(has_media = if_else(id %in% taxa_not_in_media$id,
+                                 FALSE, TRUE)) %&gt;%
+  group_by(has_media) %&gt;%
+  summarize(n_taxa_with_media = n())</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["has_media"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["n_taxa_with_media"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"51833"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="taxa-not-in-common-groups" class="section level2">
+<h2><span class="header-section-number">3.4</span> Taxa not in common groups</h2>
+<p>Taxa not belonging to any common group:</p>
+<pre class="r"><code>taxa_not_in_common_groups &lt;- 
+  taxa %&gt;%
+  anti_join(taxon_common_taxa %&gt;% distinct(taxonid),
+            by = c(&quot;id&quot; = &quot;taxonid&quot;))</code></pre>
+<p>Number of taxa not in common groups:</p>
+<pre class="r"><code>taxa %&gt;%
+  mutate(in_groups = if_else(id %in% taxa_not_in_common_groups$id,
+                                 FALSE, TRUE)) %&gt;%
+  group_by(in_groups) %&gt;%
+  summarize(n_taxa_in_groups = n())</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["in_groups"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["n_taxa_in_groups"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"51544"},{"1":"TRUE","2":"289"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="used-and-unused-taxa" class="section level2">
+<h2><span class="header-section-number">3.5</span> Used and unused taxa</h2>
+<p>By inner join on previous results we can find which taxa are not used neither in occurrences nor annex nor common groups nor media:</p>
+<pre class="r"><code>not_used_taxa &lt;- 
+  taxa_not_in_occs %&gt;% 
+  filter(id %in% taxa_not_in_annex$id) %&gt;%
+  filter(id %in% taxa_not_in_common_groups$id) %&gt;%
+  filter(id %in% taxa_not_in_media$id)</code></pre>
+<p>Complementarily, taxa used at least by one of the linked tables:</p>
+<pre class="r"><code>used_taxa &lt;- 
+  taxa %&gt;%
+  filter(!id %in% not_used_taxa$id)</code></pre>
+<p>Parents of the used taxa:</p>
+<pre class="r"><code>parents_used_taxa &lt;-
+  taxa %&gt;%
+  filter(id %in% 
+           (used_taxa %&gt;% distinct(parentid) %&gt;% pull()))</code></pre>
+<p>We remove these taxa from the unused taxa:</p>
+<pre class="r"><code>not_used_taxa &lt;-
+  not_used_taxa %&gt;%
+  filter(!id %in% parents_used_taxa$id)</code></pre>
+<p>Final number of not used taxa:</p>
+<pre class="r"><code>nrow(not_used_taxa)</code></pre>
+<pre><code>## [1] 34306</code></pre>
+</div>
+</div>
+<div id="save-data" class="section level1">
+<h1><span class="header-section-number">4</span> Save data</h1>
+<div id="save-occurrence-data" class="section level2">
+<h2><span class="header-section-number">4.1</span> Save occurrence data</h2>
+<p>Save occurrences locally, but not push to repo via <code>.gitignore</code>:</p>
+<pre class="r"><code>write_tsv(occurrences,
+          path = here(&quot;data&quot;, &quot;input&quot;, &quot;occurrences.tsv&quot;),
+          na = &quot;&quot;)</code></pre>
+</div>
+<div id="save-identifiable-species" class="section level2">
+<h2><span class="header-section-number">4.2</span> Save identifiable species</h2>
+<pre class="r"><code>write_tsv(identifiable_species,
+          path = here(&quot;data&quot;, &quot;input&quot;, &quot;identifiable_species.tsv&quot;),
+          na = &quot;&quot;
+)</code></pre>
+</div>
+<div id="save-taxa" class="section level2">
+<h2><span class="header-section-number">4.3</span> Save taxa</h2>
+<div id="used-taxa" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> Used taxa</h3>
+<p>We save also the used taxa as these ones will be the nucleus of the new taxa table:</p>
+<pre class="r"><code>write_tsv(used_taxa,
+          path = here(&quot;data&quot;, &quot;interim&quot;, &quot;used_taxa.tsv&quot;),
+          na = &quot;&quot;)</code></pre>
+</div>
+<div id="not-used-taxa" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> Not used taxa</h3>
+<p>Save taxa which are not currently in use:</p>
+<pre class="r"><code>write_tsv(not_used_taxa,
+          path = here(&quot;data&quot;, &quot;interim&quot;, &quot;not_used_taxa.tsv&quot;),
+          na = &quot;&quot;)</code></pre>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

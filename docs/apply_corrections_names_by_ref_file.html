@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Damiano Oldoni" />
+<meta name="author" content="Lien Reyserhove" />
+<meta name="author" content="Peter Desmet" />
+
+<meta name="date" content="2019-05-13" />
+
+<title>Apply corrections on names, authors and rank</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">BIM taxonomic data</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Workflow
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="get_taxa_from_db.html">Get taxa from database</a>
+    </li>
+    <li>
+      <a href="detect_unused_taxa.html">Find unused taxa</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Appendix 1. Build taxonomic reference file
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="add_kingdom.html">Add kingdom based on parent IDs</a>
+    </li>
+    <li>
+      <a href="match_taxa_gbif_backbone.html">Match taxa to GBIF Taxonomy Backbone</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/inbo/ibge-bim-species">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Apply corrections on names, authors and rank</h1>
+<h4 class="author">Damiano Oldoni</h4>
+<h4 class="author">Lien Reyserhove</h4>
+<h4 class="author">Peter Desmet</h4>
+<h4 class="date">2019-05-13</h4>
+
+</div>
+
+
+<div id="setup" class="section level1">
+<h1><span class="header-section-number">1</span> Setup</h1>
+<div id="load-libraries" class="section level2">
+<h2><span class="header-section-number">1.1</span> Load libraries</h2>
+<pre class="r"><code>library(tidyverse)  # To do data science
+library(here)       # To work with paths</code></pre>
+</div>
+</div>
+<div id="read-taxonomic-data" class="section level1">
+<h1><span class="header-section-number">2</span> Read taxonomic data</h1>
+<div id="read-used-taxa" class="section level2">
+<h2><span class="header-section-number">2.1</span> Read used taxa</h2>
+<p>We read the taxa which we will further use to build the improved <code>taxa</code> table:</p>
+<pre class="r"><code>used_taxa &lt;- read_tsv(here(&quot;data&quot;, &quot;interim&quot;, &quot;used_taxa.tsv&quot;),
+                 col_types = cols(
+                   .default = col_character(),
+                   id = col_double(),
+                   parentid = col_double(),
+                   media = col_logical(),
+                   speciesbeparentid = col_double(),
+                   bruenvi_created = col_date(format = &quot;%Y-%m-%d&quot;),
+                   bruenvi_modified = col_date(format = &quot;%Y-%m-%d&quot;))
+)</code></pre>
+</div>
+<div id="read-taxa-with-gbif-information" class="section level2">
+<h2><span class="header-section-number">2.2</span> Read taxa with GBIF information</h2>
+<p>We read the full <code>taxa</code> after the match attempts with GBIF Taxonomy Backbone:</p>
+<pre class="r"><code>taxa_gbif &lt;- read_tsv(here(&quot;data&quot;, &quot;interim&quot;, &quot;taxa_gbif.tsv&quot;),
+                      col_types = cols(
+                        .default = col_character(),
+                        id = col_double(),
+                        n_occs = col_double(),
+                        parentid = col_double(),
+                        media = col_logical(),
+                        speciesbeparentid = col_double(),
+                        bruenvi_created = col_date(format = &quot;%Y-%m-%d&quot;),
+                        bruenvi_modified = col_date(format = &quot;%Y-%m-%d&quot;),
+                        kingdom_id = col_double(),
+                        gbif_usageKey = col_double(),
+                        gbif_confidence = col_double(),
+                        gbif_kingdomKey = col_double(),
+                        gbif_phylumKey = col_double(),
+                        gbif_classKey = col_double(),
+                        gbif_orderKey = col_double(),
+                        gbif_familyKey = col_double(),
+                        gbif_genusKey = col_double(),
+                        gbif_synonym = col_logical(),
+                        gbif_acceptedUsageKey = col_double(),
+                        gbif_speciesKey = col_double())
+)</code></pre>
+</div>
+<div id="read-reference-file" class="section level2">
+<h2><span class="header-section-number">2.3</span> Read reference file</h2>
+<p>The unmatched taxa have been previously saved in a reference file called <code>corrected_taxa.tsv</code>. This file has been manually screened by an expert which added the corrected informations where needed:</p>
+<pre class="r"><code>corrected_taxa &lt;- read_tsv(here(&quot;references&quot;, &quot;corrected_taxa.tsv&quot;),
+                           na = &quot;&quot;,
+                           col_types = cols(
+                             .default = col_character(),
+                             id = col_double())
+)</code></pre>
+<p>Preview:</p>
+<pre class="r"><code>corrected_taxa %&gt;%
+  head()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["acceptedname"],"name":[2],"type":["chr"],"align":["left"]},{"label":["scientificnameauthorship"],"name":[3],"type":["chr"],"align":["left"]},{"label":["taxonranken"],"name":[4],"type":["chr"],"align":["left"]},{"label":["bim_kingdom"],"name":[5],"type":["chr"],"align":["left"]},{"label":["acceptedname_corrected"],"name":[6],"type":["chr"],"align":["left"]},{"label":["scientificnameauthorship_corrected"],"name":[7],"type":["chr"],"align":["left"]},{"label":["taxonranken_corrected"],"name":[8],"type":["chr"],"align":["left"]},{"label":["bim_kingdom_corrected"],"name":[9],"type":["chr"],"align":["left"]},{"label":["remark"],"name":[10],"type":["chr"],"align":["left"]}],"data":[{"1":"864","2":"Teucrium chamaedrys germanicum","3":"(F.Herm.) Rech.f.","4":"subspecies","5":"Plantae","6":"Teucrium chamaedrys subsp. germanicum","7":"NA","8":"NA","9":"NA","10":"NA"},{"1":"887","2":"Vicia tetrasperma gracilis","3":"(DC.) Hook.f.","4":"subspecies","5":"Plantae","6":"Vicia tetrasperma subsp. gracilis","7":"NA","8":"NA","9":"NA","10":"NA"},{"1":"1081","2":"Sagina apetala erecta","3":"(Hornem.) F.Herm.","4":"subspecies","5":"Plantae","6":"Sagina apetala subsp. erecta","7":"NA","8":"NA","9":"NA","10":"NA"},{"1":"1085","2":"Salsola kali kali","3":"L.","4":"subspecies","5":"Plantae","6":"Salsola kali subsp. kali","7":"NA","8":"NA","9":"NA","10":"NA"},{"1":"1087","2":"Carex oederi oederi","3":"Retz.","4":"subspecies","5":"Plantae","6":"Carex oederi subsp. oederi","7":"NA","8":"NA","9":"NA","10":"NA"},{"1":"1099","2":"Asparagus officinalis officinalis","3":"L.","4":"subspecies","5":"Plantae","6":"Asparagus officinalis subsp. officinalis","7":"NA","8":"NA","9":"NA","10":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The columns ending with suffix <code>_corrected</code> contain the corrected information where corrections have been applied. For example, in excerpt shown above we can see that the taxon canonical name <code>Teucrium chamaedrys germanicum</code> has been corrected as <code>Teucrium chamaedrys subsp. germanicum</code>, taxon canonical name <code>Sagina apetala erecta</code> has been corrected as <code>Sagina apetala subsp. erecta</code>.</p>
+</div>
+</div>
+<div id="apply-corrections" class="section level1">
+<h1><span class="header-section-number">3</span> Apply corrections</h1>
+<p>Based on <code>corrected_taxa</code> we apply taxonomic corrections to <code>used_taxa</code>. Number of used taxa whose taxonomic information will be corrected:</p>
+<pre class="r"><code>corrected_taxa %&gt;%
+  left_join(used_taxa,
+            by = c(&quot;id&quot;, 
+                   &quot;acceptedname&quot;, 
+                   &quot;scientificnameauthorship&quot;, 
+                   &quot;taxonranken&quot;)) %&gt;%
+  nrow()</code></pre>
+<pre><code>## [1] 133</code></pre>
+<p>Apply corrections on columns <code>acceptedname</code>, <code>scientificnameauthorship</code>, <code>taxonranken</code> and <code>bim_kingdom</code>:</p>
+<pre class="r"><code>corrected_used_taxa &lt;-
+  used_taxa %&gt;%
+  
+  # add kingdom based on BIM parent IDs
+  left_join(taxa_gbif,
+            by = names(used_taxa)) %&gt;%
+  select(-starts_with(&quot;gbif_&quot;)) %&gt;%
+  
+  # add column with corrections
+  left_join(corrected_taxa,
+            by = c(&quot;id&quot;,
+                   &quot;acceptedname&quot;,
+                   &quot;scientificnameauthorship&quot;,
+                   &quot;taxonranken&quot;,
+                   &quot;bim_kingdom&quot;)) %&gt;%
+  
+  # apply corrections
+  mutate(acceptedname = if_else(!is.na(acceptedname_corrected),
+                                acceptedname_corrected,
+                                acceptedname),
+         scientificnameauthorship = if_else(!is.na(scientificnameauthorship_corrected),
+                                            scientificnameauthorship_corrected,
+                                            scientificnameauthorship),
+         taxonranken = if_else(!is.na(taxonranken_corrected),
+                               taxonranken_corrected,
+                               taxonranken),
+         bim_kingdom = if_else(!is.na(bim_kingdom_corrected),
+                               bim_kingdom_corrected,
+                               bim_kingdom)) %&gt;%
+  
+  # remove `*_corrected_` columns
+  select(-ends_with(&quot;_corrected&quot;))</code></pre>
+</div>
+<div id="save-corrected-used-taxa" class="section level1">
+<h1><span class="header-section-number">4</span> Save corrected used taxa</h1>
+<p>Save the used taxa after applying corrections:</p>
+<pre class="r"><code>write_tsv(corrected_used_taxa, 
+          path = here(&quot;data&quot;, &quot;interim&quot;, &quot;corrected_used_taxa.tsv&quot;),
+          na = &quot;&quot;)</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

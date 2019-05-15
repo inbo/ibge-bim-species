@@ -327,139 +327,52 @@ taxa_gbif %>%
 
 ## Get number of occurrences per taxa
 
-It is interesting to know how many occurrences are linked to the unmatched taxa. For example, taxa linked to many occurrences could be checked before other ones, thus prioritizing the work of the taxonomists. We retrieve this information by reading the occurrences from database.
+It is interesting to know how many occurrences are linked to the unmatched taxa: taxa linked to many occurrences should be checked before other ones, thus prioritizing the work of the taxonomists. We retrieve this information by reading the occurrences from text file:
 
-### Connect to database
-
-Connect to database:
-
-```{r connect_to_db}
-conn <- dbConnect(odbc(), 
-                  driver = ibge_bim$driver,
-                  server = ibge_bim$server,
-                  database = ibge_bim$database,
-                  port = ibge_bim$port,
-                  uid = ibge_bim$uid,
-                  pwd = ibge_bim$pwd,
-                  encoding = "latin1"
+```{r read_occurrences}
+occurrences <- read_tsv(here("data", "input", "occurrences.tsv"), 
+                        na = "",
+                        col_types = cols(
+                          .default = col_character(),
+                          id = col_double(),
+                          locationid = col_double(),
+                          identificationid = col_double(),
+                          identifiablespeciesid = col_double(),
+                          observerid = col_double(),
+                          eventid = col_double(),
+                          individualcount = col_double(),
+                          individualcountestimationid = col_double(),
+                          dateentered = col_date(format = ""),
+                          bbd_id = col_double(),
+                          bruenvi_created = col_date(format = "%Y-%m-%d"),
+                          bruenvi_modified = col_date(format = "%Y-%m-%d"))
 )
 ```
 
-### Get occurrences from table `occurence`
+The link to `taxa` has been made by intermediate table `identifiablespecies` containing all identifiable species and linking synonyms to accepted taxa. We read it by file:
 
-Table `occurence` contains occurrence data. It is linked to taxa in table `taxon` via intermediate table `identifiablespecies`, which takes care of synonym relations. We retrieve first the column `identifiablespeciesid` from table `occurence`:
-
-```{r get_identifiable_species_ids}
-identifiable_species_id <- 
-  dbGetQuery(conn, "SELECT identifiablespeciesid FROM biodiv.occurence") %>%
-  as_tibble()
+```{r read_identifiable_species}
+identifiable_species <- read_tsv(here("data", 
+                                      "input", 
+                                      "identifiable_species.tsv"), 
+                                 na = "",
+                                 col_types = cols(
+                                   .default = col_character(),
+                                   id = col_double(),
+                                   taxonid = col_double(),
+                                   bruenvi_created = col_date(format = "%Y-%m-%d"),
+                                   bruenvi_modified = col_date(format = "%Y-%m-%d"))
+)
 ```
 
-Number of occurrences:
+Link observations to taxonomic ID of accepted taxa in `taxa`:
 
-```{r}
-nrow(identifiable_species_id)
-```
-
-Number of unique IDs, i.e. number of taxa (synonyms or accepted by BIM) linked to at least one occurrence:
-
-```{r n_taxa_in_occs}
-identifiable_species_id %>%
-  distinct(identifiablespeciesid) %>%
-  nrow()
-```
-
-The IDs in `identifiable_species_id` are linked to column `id` in table `identifiablespecies`:
- 
-```{r get_identifiable_species}
-identifiable_species <- 
-  dbGetQuery(conn, "SELECT * FROM biodiv.identifiablespecies") %>%
-  as_tibble()
-```
-
-Preview:
-
-```{r overview_identifiable_species}
-head(identifiable_species)
-```
-
-Column `taxonid` contains the taxon identifiers corresponding to column `id` of table `biodiv.taxon`.
-
-Number of taxa in this intermediate table:
-
-```{r n_taxa_identifiable_species}
-nrow(identifiable_species)
-```
-
-Number of distinct accepted taxa:
-
-```{r n_unique_taxa}
-identifiable_species %>%
-  distinct(taxonid) %>%
-  nrow()
-```
-
-Taxa linked to multiple IDs, thus collecting synonyms:
-
-```{r multiple_IDs}
-identifiable_species %>%
-  group_by(taxonid) %>%
-  count() %>%
-  filter(n > 1) %>%
-  left_join(identifiable_species, by = "taxonid") %>%
-  select(names(identifiable_species))
-```
-
-Notice how these rows can contain synonyms only. 
-
-Example: taxa linked to  `taxonid` 79:
-
-```{r example_synonyms_only}
-identifiable_species %>%
-  filter(taxonid == 79) %>%
-  select(id, taxonid, taxonomicstatusen)
-```
-
-The acepted taxon is the following:
-
-```{r accepted_taxon_exmaple} 
-taxa_gbif %>%
-  filter(id == 79) %>%
-  select(id, acceptedname, scientificnameauthorship, taxonomicstatusen)
-```
-
-There also accepted taxa not present in `identifiable_species`:
-
-```{r taxa_not_in_identifiable_species}
-taxa_gbif %>%
-  filter(!id %in% identifiable_species$taxonid)
-```
-
-We add `taxonid` column to `identifiable_species_id` data.frame:
-
-```{r add_taxonid}
-identifiable_species_id <-
-  identifiable_species_id %>%
-  left_join(identifiable_species %>% select(id, taxonid),
+```{r link_to_taxa}
+occurrences <- 
+  occurrences %>%
+  left_join(identifiable_species %>%
+              select(id, taxonid),
             by = c("identifiablespeciesid" = "id"))
-```
-
-So, we got a data.frame containing the accepted taxon ID of each occurrence.
-
-Number of acceted taxa linked to at least one occurrence:
-
-```{r n_accepted_taxa}
-identifiable_species_id %>%
-  distinct(taxonid) %>%
-  nrow()
-```
-
-### Close connection
-
-Close connection:
-
-```{r close_connection_occs}
-dbDisconnect(conn)
 ```
 
 ### Add number of occurrences to taxonomic data
@@ -468,7 +381,7 @@ We add a new column called `n_occs` containing the number of occurrences linked 
 
 ```{r add_n_occs}
 taxa_gbif <- 
-  identifiable_species_id %>%
+  occurrences %>%
   group_by(taxonid) %>%
   count() %>%
   ungroup() %>%
