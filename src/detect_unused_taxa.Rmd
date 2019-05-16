@@ -105,7 +105,7 @@ head(occurrences)
 
 The taxonomic information of occurrences is linked to taxa via intermediate table `identifiablespecies` where a many-to-one relation occurs. This is the way synonym relations are handled. Read data from `identifiablespecies`:
 
-```{r identifiable_species}
+```{r identifiable_species, cache=TRUE}
 identifiable_species <- 
   dbGetQuery(conn, "SELECT * FROM biodiv.identifiablespecies") %>%
   as_tibble()

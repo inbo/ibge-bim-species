@@ -1,5 +1,5 @@
 ---
-title: "Match taxa with GBIF Taxonomy Backbone"
+title: "Match taxa to GBIF Taxonomy Backbone"
 author:
   - Damiano Oldoni
   - Lien Reyserhove
