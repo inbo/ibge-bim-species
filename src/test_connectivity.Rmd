@@ -108,5 +108,3 @@ Close connection:
 ```{r close_connection}
 dbDisconnect(conn)
 ```
-
-
