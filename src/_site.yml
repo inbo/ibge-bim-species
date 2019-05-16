@@ -19,7 +19,7 @@ navbar:
       - text: "Test connection with `ibge_dev` database"
         href: test_connectivity.html
     - text: "Appendix 2. Build taxonomic reference file"
-    - href: ""
+      href: ""
       menu:
       - text: "Add kingdom based on parent IDs"
         href: add_kingdom.html

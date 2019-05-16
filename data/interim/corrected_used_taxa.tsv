@@ -1799,7 +1799,7 @@ id	speciesbeid	colid	acceptedname	vernacularnamefr	vernacularnamenl	scientificna
 3712	4742		Arthonia vinosa				43958	1a	species		accepted	57137	2015-04-29				3902	Fungi	Arthonia vinosa	species		FALSE
 3717	4747		Aspicilia grisea		wrattig dambordje	Arnold	44002	1a	species		accepted	57181	2015-04-29				3902	Fungi	Aspicilia grisea Arnold	species		FALSE
 3720	4750		Aspicilia radiosa		gelobd dambordje	(Hoffm.) Poelt & Leuckert	44002	1a	species		accepted	57181	2015-04-29				3902	Fungi	Aspicilia radiosa (Hoffm.) Poelt & Leuckert	species		FALSE
-3734	4764		Bagliettoa steineri		tulbandkorst	(Kušan) Vezda	44116	1a	species		accepted	57295	2015-04-29									FALSE
+3734	4764		Bagliettoa steineri		tulbandkorst	(Kušan) Vezda	44116	1a	species		accepted	57295	2015-04-29				3902	Fungi	Bagliettoa steineri (Kušan) Vezda	species		FALSE
 3772	4802		Cladina arbuscula		gebogen rendiermos	(Wallr.) Hale & W.L. Culb.	43978	1a	species		accepted	57157	2015-04-29				3902	Fungi	Cladina arbuscula (Wallr.) Hale & W.L. Culb.	species		FALSE
 3874	4903		Staurothele hymenogonia				44123	1a	species		accepted	57302	2015-04-29				3902	Fungi	Staurothele hymenogonia	species		FALSE
 3875	59142		Pauropoda	pauropodes			45955		class		to determine	59160	2015-04-29				45974	Animalia	Pauropoda	class		FALSE
@@ -3443,7 +3443,7 @@ id	speciesbeid	colid	acceptedname	vernacularnamefr	vernacularnamenl	scientificna
 2693	3728		Sanguisorba minor		kleine pimpernel	Scop.	39253	1a	species		accepted	52246	2015-04-29			12	45975	Plantae	Sanguisorba minor Scop.	species		FALSE
 2843	3886		Cygnus olor	cygne tuberculé	knobbelzwaan	(Gmelin, 1803)	40321	1a	species		accepted	53318	2015-04-29			4005	45974	Animalia	Cygnus olor (Gmelin, 1803)	species		FALSE
 2845	3888		Accipiter gentilis	autour des palombes	havik	(Linnaeus, 1758)	40284	1a	species		accepted	53282	2015-04-29			913	45974	Animalia	Accipiter gentilis (Linnaeus, 1758)	species		FALSE
-2848	3891		Cettia cetti	bouscarle de cetti	cetti’s zanger	(Temminck, 1820)	40489	1a	species		accepted	53485	2015-04-29									FALSE
+2848	3891		Cettia cetti	bouscarle de cetti	cetti’s zanger	(Temminck, 1820)	40489	1a	species		accepted	53485	2015-04-29			21	45974	Animalia	Cettia cetti (Temminck, 1820)	species		FALSE
 2856	3899		Erithacus rubecula	rougegorge familier	roodborst	(Linnaeus, 1758)	40449	1a	species		accepted	53445	2015-04-29			23364	45974	Animalia	Erithacus rubecula (Linnaeus, 1758)	species		FALSE
 2876	3919		Pica pica	pie bavarde	ekster	(Linnaeus, 1758)	40362	1a	species		accepted	53358	2015-04-29			13575	45974	Animalia	Pica pica (Linnaeus, 1758)	species		FALSE
 2878	3921		Picus viridis	pic vert	groene specht	Linnaeus, 1758	40427	1a	species		accepted	53423	2015-04-29			5727	45974	Animalia	Picus viridis Linnaeus, 1758	species		FALSE
@@ -3471,7 +3471,7 @@ id	speciesbeid	colid	acceptedname	vernacularnamefr	vernacularnamenl	scientificna
 3519	4554		Anser fabalis	oie des moissons de la taïga	taigarietgans	(Latham, 1787)	40316	1b	species		accepted	53313	2015-04-29				45974	Animalia	Anser fabalis (Latham, 1787)	species		FALSE
 3535	4570		Merops persicus	guêpier de perse	groene bijeneter	Pallas, 1773	40402	1b	species		accepted	53398	2015-04-29				45974	Animalia	Merops persicus Pallas, 1773	species		FALSE
 3619	4652		Motacilla cinerea	bergeronnette des ruisseaux	grote gele kwikstaart	Tunstall, 1771	40405	1a	species		accepted	53401	2015-04-29			5965	45974	Animalia	Motacilla cinerea Tunstall, 1771	species		FALSE
-3621	4654		Anser rossii	oie de ross	ross’ gans	Cassin, 1861	40316	1b	species		accepted	53313	2015-04-29									FALSE
+3621	4654		Anser rossii	oie de ross	ross’ gans	Cassin, 1861	40316	1b	species		accepted	53313	2015-04-29				45974	Animalia	Anser rossii Cassin, 1861	species		FALSE
 3630	4663		Coracias garrulus	rollier deurope	scharrelaar	Linnaeus, 1758	40358	1b	species		accepted	53354	2015-04-29				45974	Animalia	Coracias garrulus Linnaeus, 1758	species		FALSE
 3652	4684		Nyctalus lasiopterus	grande noctule	grote rosse vleermuis	(Schreber, 1780)	40966	2d	species		accepted	53966	2015-04-29				45974	Animalia	Nyctalus lasiopterus (Schreber, 1780)	species		FALSE
 3653	4685		Nyctalus leisleri	noctule de leisler	bosvleermuis	(Kuhl, 1817)	40966	1a	species		accepted	53966	2015-04-29			138	45974	Animalia	Nyctalus leisleri (Kuhl, 1817)	species		FALSE
@@ -5785,7 +5785,7 @@ id	speciesbeid	colid	acceptedname	vernacularnamefr	vernacularnamenl	scientificna
 1007	1912		Trachemys scripta elegans		roodwangschildpad	Wied-Neuwied, 1839	16134	2d	subspecies		accepted	18709	2015-04-29			271	45974	Animalia	Trachemys scripta elegans Wied-Neuwied, 1839	subspecies		FALSE
 3051	4089		Physcia wainioi				44074	1a	species		accepted	57253	2015-04-29				3902	Fungi	Physcia wainioi	species		FALSE
 1047	1957		Enallagma cyathigerum cyathigerum		watersnuffel	(Charpentier, 1840)	20220	1a	subspecies		accepted	22951	2015-04-29			3	45974	Animalia	Enallagma cyathigerum cyathigerum (Charpentier, 1840)	subspecies		FALSE
-1184	2093		Branta hutchinsii hutchinsii	bernache naine	hutchins’ canadese gans	(Richardson, 1832)	23744	1b	subspecies		accepted	26498	2015-04-29									FALSE
+1184	2093		Branta hutchinsii hutchinsii	bernache naine	hutchins’ canadese gans	(Richardson, 1832)	23744	1b	subspecies		accepted	26498	2015-04-29				45974	Animalia	Branta hutchinsii hutchinsii (Richardson, 1832)	subspecies		FALSE
 1329	2375		Rana esculenta	grenouille verte	middelste groene kikker	Linnaeus, 1758	37158	1a	species		accepted	50132	2015-04-29				45974	Animalia	Rana esculenta Linnaeus, 1758	species		FALSE
 1330	2376		Rana lessonae	grenouille de lessona	poelkikker, kleine groene kikker	Camerano, 1882	37158	1a	species		accepted	50132	2015-04-29				45974	Animalia	Rana lessonae Camerano, 1882	species		FALSE
 1369	2415		Cottus gobio	chabot	rivierdonderpad	Linnaeus, 1758	39353	1a	species		accepted	52347	2015-04-29				45974	Animalia	Cottus gobio Linnaeus, 1758	species		FALSE
@@ -7457,7 +7457,7 @@ id	speciesbeid	colid	acceptedname	vernacularnamefr	vernacularnamenl	scientificna
 3569	4603		Passer hispaniolensis	moineau espagnol	spaanse mus	(Temminck, 1820)	40415	1b	species		accepted	53411	2015-04-29				45974	Animalia	Passer hispaniolensis (Temminck, 1820)	species		FALSE
 3588	4620		Phylloscopus collybita	pouillot véloce	tjiftjaf	(Vieillot, 1887)	40494	1a	species		accepted	53490	2015-04-29			14480	45974	Animalia	Phylloscopus collybita (Vieillot, 1887)	species		FALSE
 3615	4648		Panurus biarmicus	panure à moustaches	baardmannetje, baardman	(Linnaeus, 1758)	40493	1a	species		accepted	53489	2015-04-29			1	45974	Animalia	Panurus biarmicus (Linnaeus, 1758)	species		FALSE
-3629	4662		Rhodostethia rosea	mouette de ross	ross’ meeuw	(MacGillivray, 1824)	40399	1b	species		accepted	53395	2015-04-29									FALSE
+3629	4662		Rhodostethia rosea	mouette de ross	ross’ meeuw	(MacGillivray, 1824)	40399	1b	species		accepted	53395	2015-04-29				45974	Animalia	Rhodostethia rosea (MacGillivray, 1824)	species		FALSE
 3644	4674		Dama dama	daim européen	damhert	(Linnaeus, 1758)	40919	2a	species		accepted	53917	2015-04-29			10	45974	Animalia	Dama dama (Linnaeus, 1758)	species		FALSE
 3650	4682		Myotis nattereri	vespertilion de natterer, murin de natterer	franjestaart	(Kuhl, 1817)	40965	1a	species		accepted	53965	2015-04-29			19	45974	Animalia	Myotis nattereri (Kuhl, 1817)	species		FALSE
 3706	4736		Anisomeridium macrocarpum		grote sporenkorst	(Körb.) V. Wirth	44027	1a	species		accepted	57206	2015-04-29				3902	Fungi	Anisomeridium macrocarpum (Körb.) V. Wirth	species		FALSE
@@ -8218,7 +8218,7 @@ id	speciesbeid	colid	acceptedname	vernacularnamefr	vernacularnamenl	scientificna
 2873	3916		Jynx torquilla	torcol fourmilier	draaihals	Linnaeus, 1758	40426	1a	species		accepted	53422	2015-04-29			44	45974	Animalia	Jynx torquilla Linnaeus, 1758	species		FALSE
 2875	3918		Phylloscopus trochilus	pouillot fitis	fitis	(Linnaeus, 1758)	40494	1a	species		accepted	53490	2015-04-29			1713	45974	Animalia	Phylloscopus trochilus (Linnaeus, 1758)	species		FALSE
 2918	3960		Upupa epops	huppe fasciée	hop	Linnaeus, 1758	40504	1a	species		accepted	53500	2015-04-29			56	45974	Animalia	Upupa epops Linnaeus, 1758	species		FALSE
-2927	3969		Phylloscopus proregulus	pouillot de pallas	pallas’ boszanger	(Pallas, 1811)	40494	1b	species		accepted	53490	2015-04-29									FALSE
+2927	3969		Phylloscopus proregulus	pouillot de pallas	pallas’ boszanger	(Pallas, 1811)	40494	1b	species		accepted	53490	2015-04-29			39	45974	Animalia	Phylloscopus proregulus (Pallas, 1811)	species		FALSE
 2971	4010		Eptesicus serotinus	sérotine	laatvlieger	(Schreber, 1774)	40964	1a	species		accepted	53964	2015-04-29			372	45974	Animalia	Eptesicus serotinus (Schreber, 1774)	species		FALSE
 2975	4013		Evernia divaricata				44038	1a	species		accepted	57217	2015-04-29				3902	Fungi	Evernia divaricata	species		FALSE
 2981	4019		Lecanora hybocarpa		beukenschotelkorst	(Tuck.) Brodo	44007	1a	species		accepted	57186	2015-04-29				3902	Fungi	Lecanora hybocarpa (Tuck.) Brodo	species		FALSE
@@ -13333,7 +13333,7 @@ id	speciesbeid	colid	acceptedname	vernacularnamefr	vernacularnamenl	scientificna
 50781			Psathyrella microrrhiza f. microrrhiza						forma		unknown		2015-04-29			236			Psathyrella microrrhiza f. microrrhiza	form		FALSE
 50782		urn:lsid:catalogueoflife.org:taxon:da41684c-29c1-102b-9a4a-00304854f820	Psathyrella phegophila			Romagn. 1985			species		accepted		2015-04-29			1			Psathyrella phegophila Romagn. 1985	species		FALSE
 50783		urn:lsid:catalogueoflife.org:taxon:d827333e-29c1-102b-9a4a-00304854f820	Pseudemys						genus		accepted		2015-04-29			8			Pseudemys	genus		FALSE
-50784		urn:lsid:catalogueoflife.org:taxon:d6d543b5-2dc5-11e0-98c6-2ce70255a436	Pseudoboletus parasiticus			(Bull.) Šutara 1991			species		accepted		2015-04-29									FALSE
+50784		urn:lsid:catalogueoflife.org:taxon:d6d543b5-2dc5-11e0-98c6-2ce70255a436	Pseudoboletus parasiticus			(Bull.) Šutara 1991			species		accepted		2015-04-29			32			Pseudoboletus parasiticus (Bull.) Šutara 1991	species		FALSE
 50841		urn:lsid:catalogueoflife.org:taxon:528359ca-1cce-11e2-b3ba-569cdfeac142	Salvia officinalis			L.			species		accepted		2015-04-29			1			Salvia officinalis L.	species		FALSE
 50785		urn:lsid:catalogueoflife.org:taxon:d6c9946b-2dc5-11e0-98c6-2ce70255a436	Pseudocraterellus undulatus			(Pers.) Rauschert 1987			species		accepted		2015-04-29			5			Pseudocraterellus undulatus (Pers.) Rauschert 1987	species		FALSE
 50786			Psilachnum chrysostigmum						species		accepted		2015-04-29			1			Psilachnum chrysostigmum	species		FALSE
@@ -13449,7 +13449,7 @@ id	speciesbeid	colid	acceptedname	vernacularnamefr	vernacularnamenl	scientificna
 50901		urn:lsid:catalogueoflife.org:taxon:efed78fc-29c1-102b-9a4a-00304854f820	Tadorna cana			(Gmelin, 1789)			species		accepted		2015-04-29			4			Tadorna cana (Gmelin, 1789)	species		FALSE
 50902		urn:lsid:catalogueoflife.org:taxon:effcecce-29c1-102b-9a4a-00304854f820	Taeniopygia guttata			(Vieillot, 1817)			species		accepted		2015-04-29			2			Taeniopygia guttata (Vieillot, 1817)	species		FALSE
 50903		urn:lsid:catalogueoflife.org:taxon:feb87918-683e-11e1-84f0-6a680e1ee4b0	Taleporia tubulosa			Retzius, 1783			species		accepted		2015-04-29			32			Taleporia tubulosa Retzius, 1783	species		FALSE
-50904		urn:lsid:catalogueoflife.org:taxon:d71a912d-2dc5-11e0-98c6-2ce70255a436	Tapinella atrotomentosa			(Batsch) Šutara 1992			species		accepted		2015-04-29									FALSE
+50904		urn:lsid:catalogueoflife.org:taxon:d71a912d-2dc5-11e0-98c6-2ce70255a436	Tapinella atrotomentosa			(Batsch) Šutara 1992			species		accepted		2015-04-29			82			Tapinella atrotomentosa (Batsch) Šutara 1992	species		FALSE
 50905		urn:lsid:catalogueoflife.org:taxon:237c23c0-9478-11e1-a35b-569cdfeac142	Taraxacum tortilobum			Florstr.			species		accepted		2015-04-29			1			Taraxacum tortilobum Florstr.	species		FALSE
 50906		urn:lsid:catalogueoflife.org:taxon:1b8910ba-9478-11e1-a35b-569cdfeac142	Telekia speciosa			(Schreb.) Baumg.			species		accepted		2015-04-29			18			Telekia speciosa (Schreb.) Baumg.	species		FALSE
 50907		urn:lsid:catalogueoflife.org:taxon:5157e066-1cce-11e2-b3ba-569cdfeac142	Tellima grandiflora			(Pursh) Douglas ex Lindl.			species		accepted		2015-04-29			11			Tellima grandiflora (Pursh) Douglas ex Lindl.	species		FALSE
@@ -13506,10 +13506,10 @@ id	speciesbeid	colid	acceptedname	vernacularnamefr	vernacularnamenl	scientificna
 50958			Vitis vinifera subsp. vinifera						subspecies		accepted		2015-04-29			2			Vitis vinifera subsp. vinifera	subspecies		FALSE
 50959		urn:lsid:catalogueoflife.org:taxon:c6368cc8-8800-11e2-92c3-569cdfeac142	Wisteria						genus		accepted		2015-04-29			2			Wisteria	genus		FALSE
 50960			Xerocomellus						genus		accepted		2015-04-29			22			Xerocomellus	genus		FALSE
-50961		urn:lsid:catalogueoflife.org:taxon:9b27a740-e2a9-11e3-805d-020044200006	Xerocomellus chrysenteron			(Bull.) Šutara 2008			species		accepted		2015-04-29									FALSE
-50962		urn:lsid:catalogueoflife.org:taxon:9b27a3ad-e2a9-11e3-805d-020044200006	Xerocomellus porosporus			(Imler ex G. Moreno & Bon) Šutara 2008			species		accepted		2015-04-29									FALSE
-50963		urn:lsid:catalogueoflife.org:taxon:9b27a23c-e2a9-11e3-805d-020044200006	Xerocomellus pruinatus			(Fr.) Šutara 2008			species		accepted		2015-04-29									FALSE
-50964		urn:lsid:catalogueoflife.org:taxon:9b279e57-e2a9-11e3-805d-020044200006	Xerocomellus rubellus			(Krombh.) Šutara 2008			species		accepted		2015-04-29									FALSE
+50961		urn:lsid:catalogueoflife.org:taxon:9b27a740-e2a9-11e3-805d-020044200006	Xerocomellus chrysenteron			(Bull.) Šutara 2008			species		accepted		2015-04-29			617			Xerocomellus chrysenteron (Bull.) Šutara 2008	species		FALSE
+50962		urn:lsid:catalogueoflife.org:taxon:9b27a3ad-e2a9-11e3-805d-020044200006	Xerocomellus porosporus			(Imler ex G. Moreno & Bon) Šutara 2008			species		accepted		2015-04-29			203			Xerocomellus porosporus (Imler ex G. Moreno & Bon) Šutara 2008	species		FALSE
+50963		urn:lsid:catalogueoflife.org:taxon:9b27a23c-e2a9-11e3-805d-020044200006	Xerocomellus pruinatus			(Fr.) Šutara 2008			species		accepted		2015-04-29			206			Xerocomellus pruinatus (Fr.) Šutara 2008	species		FALSE
+50964		urn:lsid:catalogueoflife.org:taxon:9b279e57-e2a9-11e3-805d-020044200006	Xerocomellus rubellus			(Krombh.) Šutara 2008			species		accepted		2015-04-29			15			Xerocomellus rubellus (Krombh.) Šutara 2008	species		FALSE
 50965		urn:lsid:catalogueoflife.org:taxon:a1a37738-d976-11e1-a7f8-569cdfeac142	Zea mays			L.			species		accepted		2015-04-29			4			Zea mays L.	species		FALSE
 50966		urn:lsid:catalogueoflife.org:taxon:32b53875-4661-11e1-9b0d-e752e483e0da	Zyginella pulchra			Löw, 1885			species		accepted		2015-04-29			7			Zyginella pulchra Löw, 1885	species		FALSE
 50967			Zygoptera						genus		accepted		2015-04-29			8			Zygoptera	genus		FALSE
