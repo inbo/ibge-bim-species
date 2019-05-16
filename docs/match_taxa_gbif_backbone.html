@@ -13,7 +13,7 @@
 <meta name="author" content="Lien Reyserhove" />
 <meta name="author" content="Peter Desmet" />
 
-<meta name="date" content="2019-05-13" />
+<meta name="date" content="2019-05-15" />
 
 <title>Match taxa with GBIF Taxonomy Backbone</title>
 
@@ -403,11 +403,26 @@ div.tocify {
     <li>
       <a href="detect_unused_taxa.html">Find unused taxa</a>
     </li>
+    <li>
+      <a href="apply_corrections_names_by_ref_file.html">Correct taxonomic information by reference file</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Appendix 1. Build taxonomic reference file
+    Appendix 1. Setup connection
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="test_connectivity.html">Test connection with `ibge_dev` database</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown-header">Appendix 2. Build taxonomic reference file</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
      
     <span class="caret"></span>
   </a>
@@ -441,7 +456,7 @@ div.tocify {
 <h4 class="author">Damiano Oldoni</h4>
 <h4 class="author">Lien Reyserhove</h4>
 <h4 class="author">Peter Desmet</h4>
-<h4 class="date">2019-05-13</h4>
+<h4 class="date">2019-05-15</h4>
 
 </div>
 
@@ -559,7 +574,7 @@ library(inborutils) # To match taxa (rgbif called in background)</code></pre>
   count()</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"50628"},{"1":"FUZZY","2":"410"},{"1":"NONE","2":"795"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"50629"},{"1":"FUZZY","2":"410"},{"1":"NONE","2":"794"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>We create a new data.frame, <code>taxa_no_exact_match</code>, for taxa without exact match:</p>
@@ -621,7 +636,7 @@ taxa_without_author &lt;-
   count()</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"177"},{"1":"FUZZY","2":"398"},{"1":"NONE","2":"630"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"176"},{"1":"FUZZY","2":"398"},{"1":"NONE","2":"630"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>As some of the matches might be wrong, we update <code>gbif_matchType</code> to <code>EXACT_WITHOUT_AUTHOR</code>, <code>FUZZY_WITHOUT_AUTHOR</code>:</p>
@@ -645,7 +660,7 @@ taxa_without_author &lt;-
   count()</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"50628"},{"1":"EXACT_WITHOUT_AUTHOR","2":"177"},{"1":"FUZZY_WITHOUT_AUTHOR","2":"398"},{"1":"NONE","2":"630"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"50629"},{"1":"EXACT_WITHOUT_AUTHOR","2":"176"},{"1":"FUZZY_WITHOUT_AUTHOR","2":"398"},{"1":"NONE","2":"630"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -719,7 +734,7 @@ taxa_without_author &lt;-
   count()</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"50628"},{"1":"EXACT_WITHOUT_AUTHOR","2":"177"},{"1":"EXACT_WITHOUT_AUTHOR_AND_KINGDOM","2":"95"},{"1":"FUZZY_WITHOUT_AUTHOR_AND_KINGDOM","2":"398"},{"1":"NONE","2":"535"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["gbif_matchType"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"EXACT","2":"50629"},{"1":"EXACT_WITHOUT_AUTHOR","2":"176"},{"1":"EXACT_WITHOUT_AUTHOR_AND_KINGDOM","2":"95"},{"1":"FUZZY_WITHOUT_AUTHOR_AND_KINGDOM","2":"398"},{"1":"NONE","2":"535"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -826,7 +841,7 @@ taxa_gbif_unmatched %&gt;%
 )</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["has_parentid"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["has_occs"],"name":[2],"type":["lgl"],"align":["right"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"FALSE","3":"112"},{"1":"FALSE","2":"TRUE","3":"69"},{"1":"TRUE","2":"FALSE","3":"964"},{"1":"TRUE","2":"TRUE","3":"60"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["has_parentid"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["has_occs"],"name":[2],"type":["lgl"],"align":["right"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"FALSE","3":"112"},{"1":"FALSE","2":"TRUE","3":"69"},{"1":"TRUE","2":"FALSE","3":"963"},{"1":"TRUE","2":"TRUE","3":"60"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Experts should focus first on taxa without parent ID, <code>has_parentid = FALSE</code>. Among these ones priority should be given to taxa with occurrences, <code>has_occs = TRUE</code>. To do so, we arrange the taxa by absence of parent ID and decreasing number of occurrences:</p>
@@ -839,7 +854,7 @@ taxa_gbif_unmatched %&gt;%
   count()</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["rank_for_gbif"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"NA","2":"1"},{"1":"class","2":"15"},{"1":"family","2":"19"},{"1":"form","2":"37"},{"1":"genus","2":"138"},{"1":"order","2":"86"},{"1":"phylum","2":"6"},{"1":"species","2":"731"},{"1":"subfamily","2":"4"},{"1":"subform","2":"1"},{"1":"suborder","2":"3"},{"1":"subspecies","2":"104"},{"1":"superfamily","2":"1"},{"1":"superorder","2":"2"},{"1":"unranked","2":"4"},{"1":"variety","2":"53"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["rank_for_gbif"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"NA","2":"1"},{"1":"class","2":"15"},{"1":"family","2":"19"},{"1":"form","2":"37"},{"1":"genus","2":"138"},{"1":"order","2":"86"},{"1":"phylum","2":"6"},{"1":"species","2":"730"},{"1":"subfamily","2":"4"},{"1":"subform","2":"1"},{"1":"suborder","2":"3"},{"1":"subspecies","2":"104"},{"1":"superfamily","2":"1"},{"1":"superorder","2":"2"},{"1":"unranked","2":"4"},{"1":"variety","2":"53"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>

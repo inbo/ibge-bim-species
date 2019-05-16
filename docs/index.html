@@ -300,11 +300,26 @@ $(document).ready(function () {
     <li>
       <a href="detect_unused_taxa.html">Find unused taxa</a>
     </li>
+    <li>
+      <a href="apply_corrections_names_by_ref_file.html">Correct taxonomic information by reference file</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Appendix 1. Build taxonomic reference file
+    Appendix 1. Setup connection
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="test_connectivity.html">Test connection with `ibge_dev` database</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown-header">Appendix 2. Build taxonomic reference file</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
      
     <span class="caret"></span>
   </a>
@@ -340,15 +355,26 @@ $(document).ready(function () {
 
 <div id="ibge-bim-species" class="section level1">
 <h1>ibge-bim-species</h1>
-<p>Validation of species list of Brussels Environment</p>
+<p>Validation of species list of Brussels Environment Departement</p>
+<div id="appendix-1.-test-connectivity" class="section level2">
+<h2>Appendix 1. Test connectivity</h2>
+<p>Test connection to database by following documentation in <a href="http://inbo.github.io/ibge-bim-species/test_connectivity.html">test connectivity script</a> (Appendix 1). Please, be aware that connection to <code>ibge_dev</code> database is restricted and login credentials are needed.</p>
+</div>
 <div id="workflow" class="section level2">
 <h2>Workflow</h2>
+<p>The steps followed during validation are divided in a series of scripts:</p>
 <ol style="list-style-type: decimal">
-<li><code>test_connectivity.Rmd</code>: test connection with <code>ibge_dev</code> database (credentials needed)</li>
-<li><code>get_taxa_from_db.Rmd</code>: get all taxa from table <code>biodiv.taxon</code> and save them in <a href="./data/input/taxa.tsv">/data/input/taxa.tsv`</a></li>
-<li><code>add_kingdom_detect_anomalies.Rmd</code>: add kingdom by following internal parent IDs where possible, detect anomalies (suspected duplicates)</li>
-<li><code>occurrences_overview_anomalous_taxa.Rmd</code>: get overview about number of occurrences linked to anomalous taxa found in previous step</li>
-<li><code>match_taxa_gbif_backbone.Rmd</code>: match taxa to <a href="https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c">GBIF Taxonomy Backbone</a></li>
+<li><a href="http://inbo.github.io/ibge-bim-species/get_taxa_from_db.html">Get taxa</a> from table <code>biodiv.taxon</code>.</li>
+<li><a href="http://inbo.github.io/ibge-bim-species/detect_unused_taxa.html">Find (un)used taxa</a>, i.e. taxa not mentioned as parents or in use in linked tables.</li>
+<li><a href="http://inbo.github.io/ibge-bim-species/apply_corrections_names_by_ref_file.html">Correct taxonomic information</a> by reading a reference file. See Appendix 2 to know how this file has been created.</li>
+</ol>
+</div>
+<div id="appendix-2.-build-reference-file-correcting-taxonomic-information" class="section level2">
+<h2>Appendix 2. Build reference file correcting taxonomic information</h2>
+<p>We build a <a href="https://github.com/inbo/ibge-bim-species/blob/master/references/corrected_taxa.tsv">reference file</a> to correct taxonomic informations in order to improve match and provide description of the problems while matchin to GBIF Taxonomy Backbone. This is performed in a two-step procedure:</p>
+<ol style="list-style-type: decimal">
+<li><a href="http://inbo.github.io/ibge-bim-species/add_kingdom.html">Add kingdom</a>: add kingdom by following internal parent IDs where possible</li>
+<li><a href="http://inbo.github.io/ibge-bim-species/match_taxa_gbif_backbone.html">Match taxa to GBIF Taxonomy Backbone</a>: try to match taxa to <a href="https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c">GBIF Taxonomy Backbone</a> in three matching attempts with decreasing restrictions. A reference file with no exact matches is saved and manually checked by an expert.</li>
 </ol>
 </div>
 <div id="contributors" class="section level2">
