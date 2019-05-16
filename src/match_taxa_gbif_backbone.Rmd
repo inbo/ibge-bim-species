@@ -114,7 +114,7 @@ gbif_terms <- c("matchType",
 
 We also use the columns containing kingdom information (`bim_kingdom`) and rank (`rank_for_gbif`) and we require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification. **Note: This step takes long**:
 
-```{r get_name_gbif}
+```{r get_name_gbif, cache=TRUE}
 taxa_gbif <-
   taxa %>%
   gbif_species_name_match(name = "name_for_gbif",
@@ -138,7 +138,7 @@ taxa_gbif <-
 
 Preview:
 
-```{r overview}
+```{r overview_taxa_gbif}
 taxa_gbif %>%
   head()
 ```
@@ -182,13 +182,13 @@ taxa_no_exact_match %>%
 
 while in GBIF Backbone:
 
-```{r}
+```{r show_version_on_gbif}
 rgbif::name_backbone(name = "`Neosartorya fischeri var. glabra Fennell & Raper, 1973`") %>% as_tibble()
 ```
 
 Matching without authors can improve matching:
 
-```{r match_acceptedname_only}
+```{r match_acceptedname_only, cache=TRUE}
 taxa_without_author <-
   taxa_no_exact_match %>%
   select(names(taxa)) %>%
@@ -267,7 +267,7 @@ taxa_gbif %>%
 
 The taxa with `gbif_matchType` not equal to `EXACT` or `EXACT_WITHOUT_AUTHOR` are matched again. As third and final matching attempt, we try matching taxa without `scientificnameauthorship` and without passing kingdom as parameter. Please note that rank is always given to the match function.
 
-```{r match_without_kingdom_acceptedname_only}
+```{r match_without_kingdom_acceptedname_only, cache=TRUE}
 taxa_without_author_and_kingdom <-
   taxa_gbif %>%
   filter(!gbif_matchType %in% c("EXACT_WITHOUT_AUTHOR", 
@@ -327,54 +327,52 @@ taxa_gbif %>%
 
 ## Get number of occurrences per taxa
 
-It is interesting to know how many occurrences are linked to the unmatched taxa. For example, taxa linked to many occurrences could be checked before other ones, thus prioritizing the work of the taxonomists. We retrieve this information by reading the occurrences from database.
+It is interesting to know how many occurrences are linked to the unmatched taxa: taxa linked to many occurrences should be checked before other ones, thus prioritizing the work of the taxonomists. We retrieve this information by reading the occurrences from text file:
 
-### Connect to database
-
-Connect to database:
-
-```{r connect_to_db}
-conn <- dbConnect(odbc(), 
-                  driver = ibge_bim$driver,
-                  server = ibge_bim$server,
-                  database = ibge_bim$database,
-                  port = ibge_bim$port,
-                  uid = ibge_bim$uid,
-                  pwd = ibge_bim$pwd,
-                  encoding = "latin1"
+```{r read_occurrences}
+occurrences <- read_tsv(here("data", "input", "occurrences.tsv"), 
+                        na = "",
+                        col_types = cols(
+                          .default = col_character(),
+                          id = col_double(),
+                          locationid = col_double(),
+                          identificationid = col_double(),
+                          identifiablespeciesid = col_double(),
+                          observerid = col_double(),
+                          eventid = col_double(),
+                          individualcount = col_double(),
+                          individualcountestimationid = col_double(),
+                          dateentered = col_date(format = ""),
+                          bbd_id = col_double(),
+                          bruenvi_created = col_date(format = "%Y-%m-%d"),
+                          bruenvi_modified = col_date(format = "%Y-%m-%d"))
 )
 ```
 
-### Get occurrences from table `occurence`
+The link to `taxa` has been made by intermediate table `identifiablespecies` containing all identifiable species and linking synonyms to accepted taxa. We read it by file:
 
-Table `occurence` contains occurrence data:
+```{r read_identifiable_species}
+identifiable_species <- read_tsv(here("data", 
+                                      "input", 
+                                      "identifiable_species.tsv"), 
+                                 na = "",
+                                 col_types = cols(
+                                   .default = col_character(),
+                                   id = col_double(),
+                                   taxonid = col_double(),
+                                   bruenvi_created = col_date(format = "%Y-%m-%d"),
+                                   bruenvi_modified = col_date(format = "%Y-%m-%d"))
+)
+```
 
-```{r get_occs}
+Link observations to taxonomic ID of accepted taxa in `taxa`:
+
+```{r link_to_taxa}
 occurrences <- 
-  dbGetQuery(conn, "SELECT * FROM biodiv.occurence") %>%
-  as_tibble()
-```
-
-Overview:
-
-```{r overview_occs}
-head(occurrences)
-```
-
-where `identifiablespeciesid` is the column corresponding to the column `id` of table `biodiv.taxon` where taxonomic data have been retrieved in previous pipeline  `get_taxa_from_db.Rmd`.
-
-Number of occurrences:
-
-```{r n_occs}
-nrow(occurrences)
-```
-
-### Close connection
-
-Close connection:
-
-```{r close_connection_occs}
-dbDisconnect(conn)
+  occurrences %>%
+  left_join(identifiable_species %>%
+              select(id, taxonid),
+            by = c("identifiablespeciesid" = "id"))
 ```
 
 ### Add number of occurrences to taxonomic data
@@ -384,13 +382,13 @@ We add a new column called `n_occs` containing the number of occurrences linked 
 ```{r add_n_occs}
 taxa_gbif <- 
   occurrences %>%
-  group_by(identifiablespeciesid) %>%
+  group_by(taxonid) %>%
   count() %>%
   ungroup() %>%
   rename(n_occs = n) %>%
   right_join(taxa_gbif,
-             by = c("identifiablespeciesid" = "id")) %>%
-  rename(id = identifiablespeciesid) %>%
+             by = c("taxonid" = "id")) %>%
+  rename(id = taxonid) %>%
   arrange(id)
 ```
 

@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Damiano Oldoni" />
+<meta name="author" content="Lien Reyserhove" />
+
+<meta name="date" content="2019-05-15" />
+
+<title>Taxa: retrieve kingdom IDs and detect anomalies</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">BIM taxonomic data</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Workflow
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="get_taxa_from_db.html">Get taxa from database</a>
+    </li>
+    <li>
+      <a href="detect_unused_taxa.html">Find unused taxa</a>
+    </li>
+    <li>
+      <a href="apply_corrections_names_by_ref_file.html">Correct taxonomic information by reference file</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Appendix 1. Setup connection
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="test_connectivity.html">Test connection with `ibge_dev` database</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown-header">Appendix 2. Build taxonomic reference file</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="add_kingdom.html">Add kingdom based on parent IDs</a>
+    </li>
+    <li>
+      <a href="match_taxa_gbif_backbone.html">Match taxa to GBIF Taxonomy Backbone</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/inbo/ibge-bim-species">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Taxa: retrieve kingdom IDs and detect anomalies</h1>
+<h4 class="author">Damiano Oldoni</h4>
+<h4 class="author">Lien Reyserhove</h4>
+<h4 class="date">2019-05-15</h4>
+
+</div>
+
+
+<div id="setup" class="section level1">
+<h1><span class="header-section-number">1</span> Setup</h1>
+<div id="load-libraries" class="section level2">
+<h2><span class="header-section-number">1.1</span> Load libraries</h2>
+<pre class="r"><code>library(tidyverse)  # To do data science</code></pre>
+<pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## -- Attaching packages ----------------</code></pre>
+<pre><code>## v ggplot2 3.1.1     v purrr   0.3.2
+## v tibble  2.1.1     v dplyr   0.8.1
+## v tidyr   0.8.3     v stringr 1.4.0
+## v readr   1.3.1     v forcats 0.3.0</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## Warning: package &#39;readr&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## -- Conflicts -------------------------
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(here)       # To work with paths</code></pre>
+<pre><code>## here() starts at C:/Users/damiano_oldoni/Documents/INBO/repositories/ibge-bim-species</code></pre>
+</div>
+</div>
+<div id="read-taxa" class="section level1">
+<h1><span class="header-section-number">2</span> Read taxa</h1>
+<p>Read taxa from <code>./data/input/taxa.tsv</code>:</p>
+<pre class="r"><code>taxa &lt;- read_tsv(here(&quot;data&quot;, &quot;input&quot;, &quot;taxa.tsv&quot;),
+                 col_types = cols(
+                   .default = col_character(),
+                   id = col_double(),
+                   parentid = col_double(),
+                   media = col_logical(),
+                   speciesbeparentid = col_double(),
+                   bruenvi_created = col_date(format = &quot;%Y-%m-%d&quot;),
+                   bruenvi_created = col_date(format = &quot;%Y-%m-%d&quot;))
+)</code></pre>
+</div>
+<div id="overview-ranks-and-parent-ids" class="section level1">
+<h1><span class="header-section-number">3</span> Overview ranks and parent IDs</h1>
+<p>Taxonomy ranks present in <code>taxa</code>:</p>
+<pre class="r"><code>taxa %&gt;% 
+  group_by(taxonranken) %&gt;% 
+  summarize(records = n())</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["taxonranken"],"name":[1],"type":["chr"],"align":["left"]},{"label":["records"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"class","2":"74"},{"1":"family","2":"1924"},{"1":"forma","2":"174"},{"1":"genus","2":"11172"},{"1":"informal group","2":"1"},{"1":"kingdom","2":"4"},{"1":"order","2":"416"},{"1":"phylum","2":"24"},{"1":"species","2":"36623"},{"1":"subfamily","2":"4"},{"1":"subforma","2":"6"},{"1":"suborder","2":"3"},{"1":"subspecies","2":"697"},{"1":"superfamily","2":"1"},{"1":"superorder","2":"2"},{"1":"unranked","2":"13"},{"1":"variety","2":"695"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Taxa without parent ID:</p>
+<pre class="r"><code>taxa %&gt;%
+  group_by(!is.na(parentid)) %&gt;%
+  summarize(records = n()) %&gt;%
+  rename( has_parent = &quot;!is.na(parentid)&quot;)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["has_parent"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["records"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"2493"},{"1":"TRUE","2":"49340"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Check the internal validity of parent IDs. Are all parent IDs valid IDs?</p>
+<pre class="r"><code>parent_ids &lt;- taxa %&gt;%
+  filter(!is.na(parentid)) %&gt;%
+  pull(parentid)
+all(parent_ids %in% taxa$id)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Taxon ranks linked to the parent IDs:</p>
+<pre class="r"><code>taxa %&gt;%
+  filter(id %in% parent_ids) %&gt;%
+  group_by(taxonranken) %&gt;% 
+  summarize(records = n())</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["taxonranken"],"name":[1],"type":["chr"],"align":["left"]},{"label":["records"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"class","2":"73"},{"1":"family","2":"1882"},{"1":"genus","2":"10133"},{"1":"kingdom","2":"4"},{"1":"order","2":"413"},{"1":"phylum","2":"23"},{"1":"species","2":"914"},{"1":"subspecies","2":"4"},{"1":"variety","2":"4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>This means that the following taxon ranks are not pointed out by any taxa:</p>
+<pre class="r"><code>taxonranks &lt;- 
+  taxa %&gt;% 
+  distinct(taxonranken)
+not_pointed_out_taxonranks &lt;- 
+  taxonranks %&gt;%
+  anti_join(
+    taxa %&gt;% 
+      filter(id %in% parent_ids) %&gt;%
+      distinct(taxonranken),
+    by = &quot;taxonranken&quot;
+)
+not_pointed_out_taxonranks</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["taxonranken"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"forma"},{"1":"unranked"},{"1":"informal group"},{"1":"superfamily"},{"1":"subfamily"},{"1":"superorder"},{"1":"subforma"},{"1":"suborder"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>This reflects the structure of GBIF Taxonomy backbone (see issue <a href="https://github.com/gbif/checklistbank/issues/79" class="uri">https://github.com/gbif/checklistbank/issues/79</a>) and Catalogue of Life, where no <code>subfamily</code>, <code>superfamily</code>, <code>superorder</code>, <code>suborder</code> or <code>informal group</code> are present in the upper hierarchy. On the other hand, the fact that <code>forma</code> and <code>subforma</code> are never parents of other taxa is quite reasonable. In the case of <code>subforma</code>, there refer to <code>species</code> (and thus not <code>forma</code>) as a taxon rank which is ok.</p>
+</div>
+<div id="search-taxa-in-gbif-taxonomy-backbone" class="section level1">
+<h1><span class="header-section-number">4</span> Search taxa in GBIF Taxonomy Backbone</h1>
+<p>We will search each taxa within the GBIF Taxonomy Backbone. It is a search <em>by scientific name</em>. However, homonyms are present among different kingdoms. This means that a scientific name can occur in different kingdoms, these are so-called hemihomonyms. For example the name <em>Erica</em> has been given to both a genus of spiders, <code>Erica Peckham &amp; Peckham, 1892</code> and to a genus of heaths <code>Erica L.</code>. To avoid a taxon being misidentified, we first need to retrieve the kingdom of each taxon.</p>
+<div id="get-kingdom" class="section level2">
+<h2><span class="header-section-number">4.1</span> Get kingdom</h2>
+<p>We write a recursive function, called <code>get_keys_higher_levels</code>, to keep track of all keys while <em>climbing up</em> to the highest possible level for each taxon. This function uses the parent IDs until no parent ID is found anymore, meaning we arrived at kingdom taxonomic level if no mising parent keys are found. The function returns a vector containing the sequence of parent IDs. If a taxa is found where <code>parentid</code> = <code>id</code> or the sequence of parent IDs is circular, the vector contains <code>NA</code> at first position in order to be easily found for further inspection.</p>
+<pre class="r"><code>#&#39; Function to retrieve all parent taxa up to kingdom recursively via parent ID&#39;s.
+#&#39; 
+#&#39; @param taxon_id (double) A unique ID identifying taxon in `taxa_df`.
+#&#39; @param taxa_df (tibble) A data.frame containing the taxonomic data. It MUST
+#&#39; contains the following columns: `id` and `parent_id`.
+#&#39; @param parents_vector (double) A vector of parent IDs. It is populated within recursion. Default: NULL.
+#&#39; @return A vector of parent IDs. If a corrupted parent IDs is found, the
+#&#39; vector contains NA at first position.
+get_keys_higher_levels &lt;- function(taxon_id, taxa_df = taxa, parents_vector = NULL) {
+  parent_id &lt;- taxa_df %&gt;%
+    filter(id == taxon_id) %&gt;%
+    pull(parentid)
+  parents_vector &lt;- c(taxon_id, parents_vector)
+  if (parent_id %in% parents_vector) {
+      return(c(NA, parents_vector))
+  } else {
+    if (is.na(parent_id)) {
+      return(parents_vector)
+    } else {
+      return(c(get_keys_higher_levels(taxon_id = parent_id,
+                                        taxa_df =  taxa_df,
+                                        parents_vector = parents_vector)))
+    }
+  }
+}</code></pre>
+<p>We first initialize a new empty column called <code>kingdom_id</code> in <code>taxa</code>:</p>
+<pre class="r"><code>taxa &lt;- 
+  taxa %&gt;%
+  mutate(kingdom_id = 0)</code></pre>
+<p>We apply the function <code>get_keys_higher_levels</code> to all taxa. If the highest taxonomic level pointed by the sequence of parent IDs is not equal to <code>kingdom</code> or the vector of parent IDs starts with <code>NA</code>, <code>kingdom_id</code> will be set to <code>NA</code>:</p>
+<pre class="r"><code>circular_parent_ids &lt;- c()
+pb &lt;- txtProgressBar(min = 0, max = nrow(taxa),  style = 3)</code></pre>
+<pre><code>## 
+  |                                                                       
+  |                                                                 |   0%</code></pre>
+<pre class="r"><code>for (t in 1:nrow(taxa)) {
+  if (!is.na(taxa$kingdom_id[t]) &amp; taxa$kingdom_id[t] == 0) {
+    higher_levels_ids &lt;- get_keys_higher_levels(taxon_id = taxa$id[t], taxa, NULL)
+    if (!is.na(higher_levels_ids[1])) {
+      taxon_rank_highest_level &lt;-
+        taxa$taxonranken[taxa$id == higher_levels_ids[1]]
+    } else {
+      circular_parent_ids &lt;- c(list(higher_levels_ids[2:length(higher_levels_ids)]),
+                               circular_parent_ids)
+      for (i in higher_levels_ids[2:length(higher_levels_ids)]) {
+        taxa$kingdom_id[taxa$id == i] &lt;- NA_real_
+      }
+    }
+    for (i in higher_levels_ids) {
+      if (taxon_rank_highest_level == &quot;kingdom&quot;) {
+        taxa$kingdom_id[taxa$id == i] &lt;- higher_levels_ids[1]
+      } else {
+        taxa$kingdom_id[taxa$id == i] &lt;- NA_real_
+      }
+    }
+  }
+  setTxtProgressBar(pb, t)
+}</code></pre>
+<pre><code>## 
+  |                                                                       
+  |                                                                 |   1%
+  |                                                                       
+  |=                                                                |   1%
+  |                                                                       
+  |=                                                                |   2%
+  |                                                                       
+  |==                                                               |   2%
+  |                                                                       
+  |==                                                               |   3%
+  |                                                                       
+  |==                                                               |   4%
+  |                                                                       
+  |===                                                              |   4%
+  |                                                                       
+  |===                                                              |   5%
+  |                                                                       
+  |====                                                             |   5%
+  |                                                                       
+  |====                                                             |   6%
+  |                                                                       
+  |====                                                             |   7%
+  |                                                                       
+  |=====                                                            |   7%
+  |                                                                       
+  |=====                                                            |   8%
+  |                                                                       
+  |======                                                           |   8%
+  |                                                                       
+  |======                                                           |   9%
+  |                                                                       
+  |======                                                           |  10%
+  |                                                                       
+  |=======                                                          |  10%
+  |                                                                       
+  |=======                                                          |  11%
+  |                                                                       
+  |=======                                                          |  12%
+  |                                                                       
+  |========                                                         |  12%
+  |                                                                       
+  |========                                                         |  13%
+  |                                                                       
+  |=========                                                        |  13%
+  |                                                                       
+  |=========                                                        |  14%
+  |                                                                       
+  |=========                                                        |  15%
+  |                                                                       
+  |==========                                                       |  15%
+  |                                                                       
+  |==========                                                       |  16%
+  |                                                                       
+  |===========                                                      |  16%
+  |                                                                       
+  |===========                                                      |  17%
+  |                                                                       
+  |===========                                                      |  18%
+  |                                                                       
+  |============                                                     |  18%
+  |                                                                       
+  |============                                                     |  19%
+  |                                                                       
+  |=============                                                    |  19%
+  |                                                                       
+  |=============                                                    |  20%
+  |                                                                       
+  |=============                                                    |  21%
+  |                                                                       
+  |==============                                                   |  21%
+  |                                                                       
+  |==============                                                   |  22%
+  |                                                                       
+  |===============                                                  |  22%
+  |                                                                       
+  |===============                                                  |  23%
+  |                                                                       
+  |===============                                                  |  24%
+  |                                                                       
+  |================                                                 |  24%
+  |                                                                       
+  |================                                                 |  25%
+  |                                                                       
+  |=================                                                |  25%
+  |                                                                       
+  |=================                                                |  26%
+  |                                                                       
+  |=================                                                |  27%
+  |                                                                       
+  |==================                                               |  27%
+  |                                                                       
+  |==================                                               |  28%
+  |                                                                       
+  |===================                                              |  28%
+  |                                                                       
+  |===================                                              |  29%
+  |                                                                       
+  |===================                                              |  30%
+  |                                                                       
+  |====================                                             |  30%
+  |                                                                       
+  |====================                                             |  31%
+  |                                                                       
+  |====================                                             |  32%
+  |                                                                       
+  |=====================                                            |  32%
+  |                                                                       
+  |=====================                                            |  33%
+  |                                                                       
+  |======================                                           |  33%
+  |                                                                       
+  |======================                                           |  34%
+  |                                                                       
+  |======================                                           |  35%
+  |                                                                       
+  |=======================                                          |  35%
+  |                                                                       
+  |=======================                                          |  36%
+  |                                                                       
+  |========================                                         |  36%
+  |                                                                       
+  |========================                                         |  37%
+  |                                                                       
+  |========================                                         |  38%
+  |                                                                       
+  |=========================                                        |  38%
+  |                                                                       
+  |=========================                                        |  39%
+  |                                                                       
+  |==========================                                       |  39%
+  |                                                                       
+  |==========================                                       |  40%
+  |                                                                       
+  |==========================                                       |  41%
+  |                                                                       
+  |===========================                                      |  41%
+  |                                                                       
+  |===========================                                      |  42%
+  |                                                                       
+  |============================                                     |  42%
+  |                                                                       
+  |============================                                     |  43%
+  |                                                                       
+  |============================                                     |  44%
+  |                                                                       
+  |=============================                                    |  44%
+  |                                                                       
+  |=============================                                    |  45%
+  |                                                                       
+  |==============================                                   |  45%
+  |                                                                       
+  |==============================                                   |  46%
+  |                                                                       
+  |==============================                                   |  47%
+  |                                                                       
+  |===============================                                  |  47%
+  |                                                                       
+  |===============================                                  |  48%
+  |                                                                       
+  |================================                                 |  48%
+  |                                                                       
+  |================================                                 |  49%
+  |                                                                       
+  |================================                                 |  50%
+  |                                                                       
+  |=================================                                |  50%
+  |                                                                       
+  |=================================                                |  51%
+  |                                                                       
+  |=================================                                |  52%
+  |                                                                       
+  |==================================                               |  52%
+  |                                                                       
+  |==================================                               |  53%
+  |                                                                       
+  |===================================                              |  53%
+  |                                                                       
+  |===================================                              |  54%
+  |                                                                       
+  |===================================                              |  55%
+  |                                                                       
+  |====================================                             |  55%
+  |                                                                       
+  |====================================                             |  56%
+  |                                                                       
+  |=====================================                            |  56%
+  |                                                                       
+  |=====================================                            |  57%
+  |                                                                       
+  |=====================================                            |  58%
+  |                                                                       
+  |======================================                           |  58%
+  |                                                                       
+  |======================================                           |  59%
+  |                                                                       
+  |=======================================                          |  59%
+  |                                                                       
+  |=======================================                          |  60%
+  |                                                                       
+  |=======================================                          |  61%
+  |                                                                       
+  |========================================                         |  61%
+  |                                                                       
+  |========================================                         |  62%
+  |                                                                       
+  |=========================================                        |  62%
+  |                                                                       
+  |=========================================                        |  63%
+  |                                                                       
+  |=========================================                        |  64%
+  |                                                                       
+  |==========================================                       |  64%
+  |                                                                       
+  |==========================================                       |  65%
+  |                                                                       
+  |===========================================                      |  65%
+  |                                                                       
+  |===========================================                      |  66%
+  |                                                                       
+  |===========================================                      |  67%
+  |                                                                       
+  |============================================                     |  67%
+  |                                                                       
+  |============================================                     |  68%
+  |                                                                       
+  |=============================================                    |  68%
+  |                                                                       
+  |=============================================                    |  69%
+  |                                                                       
+  |=============================================                    |  70%
+  |                                                                       
+  |==============================================                   |  70%
+  |                                                                       
+  |==============================================                   |  71%
+  |                                                                       
+  |==============================================                   |  72%
+  |                                                                       
+  |===============================================                  |  72%
+  |                                                                       
+  |===============================================                  |  73%
+  |                                                                       
+  |================================================                 |  73%
+  |                                                                       
+  |================================================                 |  74%
+  |                                                                       
+  |================================================                 |  75%
+  |                                                                       
+  |=================================================                |  75%
+  |                                                                       
+  |=================================================                |  76%
+  |                                                                       
+  |==================================================               |  76%
+  |                                                                       
+  |==================================================               |  77%
+  |                                                                       
+  |==================================================               |  78%
+  |                                                                       
+  |===================================================              |  78%
+  |                                                                       
+  |===================================================              |  79%
+  |                                                                       
+  |====================================================             |  79%
+  |                                                                       
+  |====================================================             |  80%
+  |                                                                       
+  |====================================================             |  81%
+  |                                                                       
+  |=====================================================            |  81%
+  |                                                                       
+  |=====================================================            |  82%
+  |                                                                       
+  |======================================================           |  82%
+  |                                                                       
+  |======================================================           |  83%
+  |                                                                       
+  |======================================================           |  84%
+  |                                                                       
+  |=======================================================          |  84%
+  |                                                                       
+  |=======================================================          |  85%
+  |                                                                       
+  |========================================================         |  85%
+  |                                                                       
+  |========================================================         |  86%
+  |                                                                       
+  |========================================================         |  87%
+  |                                                                       
+  |=========================================================        |  87%
+  |                                                                       
+  |=========================================================        |  88%
+  |                                                                       
+  |==========================================================       |  88%
+  |                                                                       
+  |==========================================================       |  89%
+  |                                                                       
+  |==========================================================       |  90%
+  |                                                                       
+  |===========================================================      |  90%
+  |                                                                       
+  |===========================================================      |  91%
+  |                                                                       
+  |===========================================================      |  92%
+  |                                                                       
+  |============================================================     |  92%
+  |                                                                       
+  |============================================================     |  93%
+  |                                                                       
+  |=============================================================    |  93%
+  |                                                                       
+  |=============================================================    |  94%
+  |                                                                       
+  |=============================================================    |  95%
+  |                                                                       
+  |==============================================================   |  95%
+  |                                                                       
+  |==============================================================   |  96%
+  |                                                                       
+  |===============================================================  |  96%
+  |                                                                       
+  |===============================================================  |  97%
+  |                                                                       
+  |===============================================================  |  98%
+  |                                                                       
+  |================================================================ |  98%
+  |                                                                       
+  |================================================================ |  99%
+  |                                                                       
+  |=================================================================|  99%
+  |                                                                       
+  |=================================================================| 100%</code></pre>
+<p>Kingdoms present in <code>taxa</code>:</p>
+<pre class="r"><code>kingdom_df &lt;- 
+  taxa %&gt;%
+  filter(taxonranken == &quot;kingdom&quot;) %&gt;%
+  select(id, acceptedname) %&gt;%
+  rename(kingdom = acceptedname)
+kingdom_df</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["kingdom"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"45975","2":"Plantae"},{"1":"49806","2":"Chromista"},{"1":"45974","2":"Animalia"},{"1":"3902","2":"Fungi"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We add <code>kingdom</code> to <code>taxa</code> for better interpretation of the results. We call this column <code>bim_kingdom</code> in order to distinct it in the future from the <code>kingdom</code> got by GBIF Taxonomy Backbone:</p>
+<pre class="r"><code>taxa &lt;- 
+  taxa %&gt;%
+  left_join(kingdom_df, by = c(&quot;kingdom_id&quot; = &quot;id&quot;)) %&gt;%
+  rename(bim_kingdom = kingdom)</code></pre>
+<p>Preview of taxa linked to their specific kingdom:</p>
+<pre class="r"><code>taxa %&gt;% 
+  select(acceptedname, bim_kingdom) %&gt;% 
+  head(n = 100)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["acceptedname"],"name":[1],"type":["chr"],"align":["left"]},{"label":["bim_kingdom"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Narcine","2":"NA"},{"1":"Bison priscus","2":"NA"},{"1":"Conostroma","2":"Fungi"},{"1":"Coprotrichum","2":"Fungi"},{"1":"Dermatium","2":"NA"},{"1":"Discosia","2":"Fungi"},{"1":"Embellisia","2":"Fungi"},{"1":"Fusarium","2":"Fungi"},{"1":"Mastigomyces","2":"Fungi"},{"1":"Heterosporium","2":"Fungi"},{"1":"Hormoconis","2":"Fungi"},{"1":"Leptotrimitus","2":"NA"},{"1":"Sarcopodium","2":"Fungi"},{"1":"Steno","2":"Animalia"},{"1":"Ibalia","2":"Animalia"},{"1":"Pusa","2":"Animalia"},{"1":"Sepioidea","2":"Animalia"},{"1":"Holothuroidea","2":"NA"},{"1":"Amanita excelsa form. excelsa","2":"Fungi"},{"1":"Cystoderma amianthinum form. rugosoreticulatum","2":"Fungi"},{"1":"Entoloma sericatum form. saliciphilum","2":"Fungi"},{"1":"Hygrophoropsis aurantiaca form. albida","2":"Fungi"},{"1":"Hygrocybe conica form. conica","2":"Fungi"},{"1":"Macrophoma mirbelii form. ramicola","2":"Fungi"},{"1":"Melanoleuca polioleuca form. langei","2":"Fungi"},{"1":"Mucor circinelloides form. griseocyanus","2":"Fungi"},{"1":"Phylloporia ribis form. evonymi","2":"Fungi"},{"1":"Psathyrella microrrhiza form. pumila","2":"Fungi"},{"1":"Psathyrella spadiceogrisea form. phaeophylla","2":"Fungi"},{"1":"Russula romellii form. alba","2":"Fungi"},{"1":"Rajiformes","2":"Animalia"},{"1":"Tulostoma brumale form. heterosporum","2":"Fungi"},{"1":"Microbryum davallianum var. conicum","2":"Plantae"},{"1":"Microbryum davallianum var. davallianum","2":"Plantae"},{"1":"Bolbitius vitellinus var. fragilis","2":"Fungi"},{"1":"Candida pintolopesii var. pintolopesii","2":"Fungi"},{"1":"Cortinarius glaucopus var. glaucopus","2":"Fungi"},{"1":"Cortinarius hinnuleus var. robustus","2":"Fungi"},{"1":"Daedaleopsis confragosa var. confragosa","2":"Fungi"},{"1":"Daedaleopsis confragosa var. tricolor","2":"Fungi"},{"1":"Diderma effusum var. effusum","2":"Fungi"},{"1":"Galerina cerina var. ampullicystis","2":"Fungi"},{"1":"Galerina cerina var. bresadolae","2":"Fungi"},{"1":"Glomerella cingulata var. cingulata","2":"Fungi"},{"1":"Hymenogaster luteus var. luteus","2":"Fungi"},{"1":"Lachnum fuscescens var. fagicola","2":"Fungi"},{"1":"Lophodermium arundinaceum var. abbreviatum","2":"Fungi"},{"1":"Microsphaera ornata var. europaea","2":"Fungi"},{"1":"Mollisia rosae var. rosae","2":"Fungi"},{"1":"Mycena pelliculosa var. fuscopurpurea","2":"Fungi"},{"1":"Nectria mammoidea var. rubi","2":"Fungi"},{"1":"Neosartorya fischeri var. glabra","2":"Fungi"},{"1":"Pleospora herbarum var. herbarum","2":"Fungi"},{"1":"Polydesmus exitiosus var. solani","2":"Fungi"},{"1":"Psathyrella badiophylla var. badiophylla","2":"Fungi"},{"1":"Psathyrella umbrina var. utriformis","2":"Fungi"},{"1":"Rhizopus stolonifer var. reflexus","2":"Fungi"},{"1":"Russula anthracina var. carneifolia","2":"Fungi"},{"1":"Russula grisea var. iodes","2":"Fungi"},{"1":"Trichia botrytis var. cerifera","2":"Fungi"},{"1":"Trichia decipiens var. decipiens","2":"Fungi"},{"1":"Tricholoma atrosquamosum var. atrosquamosum","2":"Fungi"},{"1":"Tricholoma atrosquamosum var. squarrulosum","2":"Fungi"},{"1":"Uredo linearis var. frumenti","2":"NA"},{"1":"Wilcoxina mikolae var. mikolae","2":"Fungi"},{"1":"Ceratophyllus rossitensis rossitensis","2":"Animalia"},{"1":"Penicillidia dufourii dufourii","2":"Animalia"},{"1":"Tryblionella angustata","2":"NA"},{"1":"Pedicia rivosa rivosa","2":"Animalia"},{"1":"Nephrotoma lamellata lamellata","2":"Animalia"},{"1":"Myrianida","2":"NA"},{"1":"Bembidion axillare occiduum","2":"Animalia"},{"1":"Diabrotica virgifera virgifera","2":"Animalia"},{"1":"Bledius dama jutlandensis","2":"Animalia"},{"1":"Aeshna juncea juncea","2":"Animalia"},{"1":"Amaranthus hybridus hybridus","2":"Plantae"},{"1":"Spergularia media angustata","2":"Plantae"},{"1":"Carex oederi oedocarpa","2":"Plantae"},{"1":"Lotus corniculatus corniculatus","2":"Plantae"},{"1":"Ballota nigra foetida","2":"Plantae"},{"1":"Plantago major intermedia","2":"Plantae"},{"1":"Puccinellia distans distans","2":"Plantae"},{"1":"Salix cinerea oleifolia","2":"Plantae"},{"1":"Zannichellia palustris palustris","2":"Plantae"},{"1":"Caryocolum marmoreum marmoreum","2":"Animalia"},{"1":"Gastropacha populifolia populifolia","2":"Animalia"},{"1":"Amphipyra berbera svenssoni","2":"Animalia"},{"1":"Deilephila elpenor elpenor","2":"Animalia"},{"1":"Aturus scaber rotundus","2":"Animalia"},{"1":"Piona conglobata coacta","2":"Animalia"},{"1":"Viviparus viviparus viviparus","2":"Animalia"},{"1":"Berytinus hirticornis hirticornis","2":"Animalia"},{"1":"Paracorixa concinna concinna","2":"Animalia"},{"1":"Capsodes gothicus gothicus","2":"Animalia"},{"1":"Orthotylus ericetorum ericetorum","2":"Animalia"},{"1":"Psallus betuleti betuleti","2":"Animalia"},{"1":"Ilyocoris cimicoides cimicoides","2":"Animalia"},{"1":"Corizus hyoscyami hyoscyami","2":"Animalia"},{"1":"Agyrtes","2":"Animalia"},{"1":"Pezicula frangulae frangulae","2":"Fungi"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Number of taxa without <code>kingdom_id</code>:</p>
+<pre class="r"><code>taxa %&gt;%
+  filter(is.na(kingdom_id)) %&gt;%
+  nrow()</code></pre>
+<pre><code>## [1] 5221</code></pre>
+<p>Some of these ones have parent IDs ending up in a circular sequence. Blindly following the path of parent IDs would then result in an infinite loop:</p>
+<pre class="r"><code>tibble(id = unlist(circular_parent_ids)) %&gt;%
+  left_join(taxa, by = &quot;id&quot;) %&gt;%
+  select(acceptedname, id, parentid)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["acceptedname"],"name":[1],"type":["chr"],"align":["left"]},{"label":["id"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["parentid"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Salmo trutta fario","2":"1414","3":"1414"},{"1":"Salmo trutta trutta","2":"47848","3":"1414"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>In our case the <code>Salmo trutta fario</code> refers to itself, <code>parentid</code> = <code>id</code>, so anything linking diretly or indirectly to this taxon will not get any step further.</p>
+</div>
+</div>
+<div id="save-taxa" class="section level1">
+<h1><span class="header-section-number">5</span> Save taxa</h1>
+<p>We save all taxa in <code>.\data\interim</code>:</p>
+<pre class="r"><code>write_tsv(taxa, 
+          here(&quot;data&quot;, &quot;interim&quot;, &quot;taxa.tsv&quot;), 
+          na = &quot;&quot;)</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
