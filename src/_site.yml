@@ -16,7 +16,7 @@ navbar:
     - text: "Appendix 1. Setup connection"
       href: ""
       menu:
-        text: "Test connection with `ibge_dev` database"
+      - text: "Test connection with `ibge_dev` database"
         href: test_connectivity.html
     - text: "Appendix 2. Build taxonomic reference file"
     - href: ""
