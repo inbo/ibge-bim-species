@@ -58,11 +58,11 @@ taxa <- read_tsv(here("data", "interim", "taxa.tsv"),
 
 We match taxa to GBIF Taxonomy Backbone in three steps:
 
-1. match by name with authorship + kingdom + rank
-2. match by name without authorship + kingdom + rank
-3. match by name without authorship + rank
+1. match by scientific name with authorship + kingdom + rank
+2. match by scientific name + kingdom + rank
+3. match by scientific name + rank
 
-## Match by `acceptedname` + `scientificnameauthorship`
+## Match by `acceptedname` + `scientificnameauthorship` + `kingdom` + `rank`
 
 We try to match by using `acceptedname` + `scientificnameauthorship` as name. We also provide kingdom and rank information to the match function. First, we prepare `taxa` for matching. In this step:
 
@@ -171,7 +171,7 @@ taxa_no_exact_match %>%
   head()
 ```
 
-## Match without `scientificnameauthorship` only
+## Match by `acceptedname` + `kingdom` + `rank`
 
 Some of the taxa are not matched due to deviating author spellings, e.g.
 
@@ -246,7 +246,7 @@ taxa_gbif %>%
   count()
 ```
 
-## Match without authorship and without kingdom
+## Match by `acceptedname` + `rank`
 
 Due to errors in parent IDs, some taxa are not matched because they are linked to the wrong kingdom. Examples, the phylum `Xanthophyta`:
 
