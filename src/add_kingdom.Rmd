@@ -60,7 +60,6 @@ taxa %>%
   rename( has_parent = "!is.na(parentid)")
 ```
 
-
 Check the internal validity of parent IDs. Are all parent IDs valid IDs?
 
 ```{r check_parent_IDs}

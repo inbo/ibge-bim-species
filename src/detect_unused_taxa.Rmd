@@ -174,7 +174,7 @@ Preview:
 head(taxon_common_taxa)
 ```
 
-As in previous tables, taxonomic information is saved in column `taxonid`. The column  `commontaxaid` contains the identifier to define the typic taxonoic groups to search on. This information is saved in table `commontaxa`:
+As in previous tables, taxonomic information is saved in column `taxonid`. The column  `commontaxaid` contains the identifier to define the typic taxonomic groups to search on. This information is saved in table `commontaxa`:
 
 ```{r get_commontaxa, cache=TRUE}
 common_taxa <- 

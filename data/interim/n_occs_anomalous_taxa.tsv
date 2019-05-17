@@ -27,14 +27,14 @@ id	acceptedname	scientificnameauthorship	n	speciesbeid	colid	vernacularnamefr	ve
 51694	Morchella esculenta	Pers. (L.)	4							species		accepted		2018-08-22				
 51293	Cryphia domestica	Hufnagel, 1766	3							species		accepted		2017-02-15				
 51429	Bromus madritensis	L.	3							species		accepted		2017-02-21				
-51443	Cryphia raptricula	Denis & Schiffermüller, 1775	3							species		accepted		2017-02-21				
-51476	Panellus serotinus	Kühner, 1950 (Pers.)	3							species		accepted		2017-02-21				
+51443	Cryphia raptricula	Denis & SchiffermÃ¼ller, 1775	3							species		accepted		2017-02-21				
+51476	Panellus serotinus	KÃ¼hner, 1950 (Pers.)	3							species		accepted		2017-02-21				
 51485	Leratiomyces squamosus	Bridge & Spooner, 2008 (Pers.)	3							species		accepted		2017-02-21				
 51502	Bromus madritensis	L.	3							species		accepted		2017-02-21				
 51553	Galium parisiense	L.	3							species		accepted		2017-02-22				
 51660	Hygrocybe glutinipes	R. Haller Aar., 1956 (J.E. Lange)	3							species		accepted		2017-03-14				
 50508	Hypholoma fasciculare	P. Kumm. 1871	2		urn:lsid:catalogueoflife.org:taxon:9d0aa363-e2a9-11e3-805d-020044200006					species		accepted		2015-04-29				
-51054	Dactylorhiza fuchsii	Soó (Druce)	2					39113		species		accepted		2016-01-07			45975	Plantae
+51054	Dactylorhiza fuchsii	SoÃ³ (Druce)	2					39113		species		accepted		2016-01-07			45975	Plantae
 51158	Pseudostaurosira parasitica	Morales, 2003 (W.Smith)	2							species		accepted		2016-07-06				
 51390	Tubaria furfuracea	Gillet, 1876 (Pers.)	2							species		accepted		2017-02-15				
 51440	Solanum triflorum	Nutt.	2							species		accepted		2017-02-21				
@@ -48,12 +48,12 @@ id	acceptedname	scientificnameauthorship	n	speciesbeid	colid	vernacularnamefr	ve
 53	Galerina vittaeformis form. bispora		1	150				443	1a	forma		accepted	896	2015-04-29			3902	Fungi
 1079	Cerastium fontanum vulgare	(Hartm.) Greuter & Burdet	1	1987			gewone hoornbloem	20863	1a	subspecies		accepted	23618	2015-04-29			45975	Plantae
 2413	Haplophthalmus mengei	(Zaddach, 1844)	1	3450			kleiribbel	34269	1a	species		accepted	47241	2015-04-29			45974	Animalia
-3264	Dactylorhiza fuchsii	(Druce) Soó	1	4303			bosorchis	39113	1a	species		accepted	52105	2015-04-29			45975	Plantae
+3264	Dactylorhiza fuchsii	(Druce) SoÃ³	1	4303			bosorchis	39113	1a	species		accepted	52105	2015-04-29			45975	Plantae
 3435	Dendrocopos medius	(Linnaeus, 1758)	1	4472		pic mar	middelste bonte specht	40424	1a	species		accepted	53420	2015-04-29			45974	Animalia
-3436	Dendrocopos minor	(Linnaeus, 1758)	1	4473		pic épeichette	kleine bonte specht	40424	1a	species		accepted	53420	2015-04-29			45974	Animalia
-3484	Carduelis flammea	(Linnaeus, 1758)	1	4519		sizerin flammé	barmsijs	40371	1a	species		accepted	53367	2015-04-29			45974	Animalia
+3436	Dendrocopos minor	(Linnaeus, 1758)	1	4473		pic Ã©peichette	kleine bonte specht	40424	1a	species		accepted	53420	2015-04-29			45974	Animalia
+3484	Carduelis flammea	(Linnaeus, 1758)	1	4519		sizerin flammÃ©	barmsijs	40371	1a	species		accepted	53367	2015-04-29			45974	Animalia
 3510	Anas penelope	Linnaeus, 1758	1	4545		canard siffleur	smient	40315	1b	species		accepted	53312	2015-04-29			45974	Animalia
-3512	Anas querquedula	Linnaeus, 1758	1	4547		sarcelle d'été	zomertaling	40315	1a	species		accepted	53312	2015-04-29			45974	Animalia
+3512	Anas querquedula	Linnaeus, 1758	1	4547		sarcelle d'Ã©tÃ©	zomertaling	40315	1a	species		accepted	53312	2015-04-29			45974	Animalia
 3513	Anas strepera	Linnaeus, 1758	1	4548		canard chipeau	krakeend	40315	1a	species		accepted	53312	2015-04-29			45974	Animalia
 3521	Anas clypeata	Linnaeus, 1758	1	4556		canard souchet	slobeend	40315	1a	species		accepted	53312	2015-04-29			45974	Animalia
 4246	Morchella esculenta	(L.:Fr.) Pers.	1	5274			gewone morielje	43025	1a	species		accepted	56145	2015-04-29			3902	Fungi
@@ -61,20 +61,20 @@ id	acceptedname	scientificnameauthorship	n	speciesbeid	colid	vernacularnamefr	ve
 4988	Hygrocybe glutinipes	(J.E. Lange) R. Haller	1	6058			kleverige wasplaat	42769	1a	species		accepted	55866	2015-04-29			3902	Fungi
 16405	Agonum emarginatum	(Gyllenhal, 1827)	1	18998				37275	1a	species		accepted	50250	2015-04-29			45974	Animalia
 18127	Anoplotrupes stercorosus	(Scriba, 1791)	1	20824				37798	0a	species		accepted	50782	2015-04-29			45974	Animalia
-20727	Matricaria discoidea	DC.	1	23485		matricaire discoïde	schijfkamille	38820	2a	species		accepted	51812	2015-04-29			45975	Plantae
+20727	Matricaria discoidea	DC.	1	23485		matricaire discoÃ¯de	schijfkamille	38820	2a	species		accepted	51812	2015-04-29			45975	Plantae
 20772	Anchusa arvensis	(L.) M.Bieb.	1	23529		lycopside	kromhals	38850	1a	species		accepted	51842	2015-04-29			45975	Plantae
 20801	Cardamine flexuosa	With.	1	23557		cardamine des bois	bosveldkers	38872	1a	species		accepted	51864	2015-04-29			45975	Plantae
 20822	Lepidium draba	L.	1	23578		cardaire drave	pijlkruidkers	38886	2a	species		accepted	51878	2015-04-29			45975	Plantae
 20856	Sambucus nigra	L.	1	23611		sureau noir	gewone vlier	38908	1a	species		accepted	51900	2015-04-29			45975	Plantae
 20922	Hypericum dubium	Leers	1	23675			kantig hertshooi	38944	1a	species		accepted	51936	2015-04-29			45975	Plantae
-21036	Securigera varia	(L.) Lassen	1	23787		coronille bigarrée	bont kroonkruid	39003	1a	species		accepted	51995	2015-04-29			45975	Plantae
+21036	Securigera varia	(L.) Lassen	1	23787		coronille bigarrÃ©e	bont kroonkruid	39003	1a	species		accepted	51995	2015-04-29			45975	Plantae
 21239	Arrhenatherum elatius	(L.) J.Presl & C.Presl	1	23986		fromentin	glanshaver	39147	1a	species		accepted	52140	2015-04-29			45975	Plantae
-21410	Crataegus laevigata	(Poir.) DC.	1	24152		aubépine à deux styles	tweestijlige meidoorn	39242	1a	species		accepted	52235	2015-04-29			45975	Plantae
-21519	Solanum triflorum	Nutt.	1	24257		morelle à trois fleures	driebloemige nachtschade	39293	2a	species		accepted	52286	2015-04-29			45975	Plantae
-21531	Ulmus minor	Mill.	1	24269		orme champêtre	gladde iep	39302	1a	species		accepted	52295	2015-04-29			45975	Plantae
-22818	Cryphia domestica	(Hüfnagel, 1766)	1	25569		perle	lichte korstmosuil	39908	0a	species		accepted	52904	2015-04-29			45974	Animalia
-22820	Cryphia raptricula	(Denis & Schiffermüller, 1775)	1	25571		bryophile fraisillée	donkere korstmosuil	39908	0a	species		accepted	52904	2015-04-29			45974	Animalia
-22964	Omphaloscelis lunosa	(Haworth, 1809)	1	25715		omphaloscélis à lunule	maansikkeluil	39975	0a	species		accepted	52973	2015-04-29			45974	Animalia
+21410	Crataegus laevigata	(Poir.) DC.	1	24152		aubÃ©pine Ã  deux styles	tweestijlige meidoorn	39242	1a	species		accepted	52235	2015-04-29			45975	Plantae
+21519	Solanum triflorum	Nutt.	1	24257		morelle Ã  trois fleures	driebloemige nachtschade	39293	2a	species		accepted	52286	2015-04-29			45975	Plantae
+21531	Ulmus minor	Mill.	1	24269		orme champÃªtre	gladde iep	39302	1a	species		accepted	52295	2015-04-29			45975	Plantae
+22818	Cryphia domestica	(HÃ¼fnagel, 1766)	1	25569		perle	lichte korstmosuil	39908	0a	species		accepted	52904	2015-04-29			45974	Animalia
+22820	Cryphia raptricula	(Denis & SchiffermÃ¼ller, 1775)	1	25571		bryophile fraisillÃ©e	donkere korstmosuil	39908	0a	species		accepted	52904	2015-04-29			45974	Animalia
+22964	Omphaloscelis lunosa	(Haworth, 1809)	1	25715		omphaloscÃ©lis Ã  lunule	maansikkeluil	39975	0a	species		accepted	52973	2015-04-29			45974	Animalia
 24679	Codium fragile	(Suringar) Hariot	1	27503			viltwier	40785	2a	species		accepted	53781	2015-04-29				
 24680	Codium fragile	(Van Goor) P.C. Silva	1	27504				40785	2a	species		accepted	53781	2015-04-29				
 27588	Clitocybe gibba	(Pers.:Fr.) P. Kumm.	1	32387			slanke trechterzwam	42169	1a	species		accepted	55194	2015-04-29			3902	Fungi
@@ -84,7 +84,7 @@ id	acceptedname	scientificnameauthorship	n	speciesbeid	colid	vernacularnamefr	ve
 29438	Hemimycena lactea	(Pers.:Fr.) Singer	1	36135			sneeuwwitte mycena	42697	1a	species		accepted	55790	2015-04-29			3902	Fungi
 29642	Hygrocybe conica	(Schaeff.:Fr.) P. Kumm.	1	36782			zwartwordende wasplaat	42769	1a	species		accepted	55866	2015-04-29			3902	Fungi
 30529	Myxarium nucleatum	Wallr.	1	38753			klontjestrilzwam	43058	1a	species		accepted	56179	2015-04-29			3902	Fungi
-30875	Panellus serotinus	(Pers.) Kühner	1	39548			groene schelpzwam	43191	1a	species		accepted	56313	2015-04-29			3902	Fungi
+30875	Panellus serotinus	(Pers.) KÃ¼hner	1	39548			groene schelpzwam	43191	1a	species		accepted	56313	2015-04-29			3902	Fungi
 31695	Phytophthora nicotianae		1	41068				43287	1a	species		accepted	56418	2015-04-29			3902	Fungi
 32518	Saccharomyces bayanus	Saccardo, 1895	1	43454				43551	1a	species		accepted	56697	2015-04-29			3902	Fungi
 32519	Saccharomyces bayanus	Saccardo, 1895	1	43455				43551	1a	species		accepted	56697	2015-04-29			3902	Fungi
@@ -98,8 +98,8 @@ id	acceptedname	scientificnameauthorship	n	speciesbeid	colid	vernacularnamefr	ve
 43358	Polysticta		1	56490						genus		to determine	59179	2015-04-29				
 44251	Aulacaspis		1	57430				45616		family		to determine	58794	2015-04-29			45974	Animalia
 45977	Haplophthalmus mengei	Zaddach, 1844	1	59200				34269		species		accepted	47241	2015-04-29			45974	Animalia
-46613	Colurella uncinata uncinata	(Müller, 1773)	1	59901				46610		subspecies		accepted	59898	2015-04-29			45974	Animalia
-46614	Colurella uncinata uncinata	(Müller 1773)	1	59902				46610		subspecies		accepted	59898	2015-04-29			45974	Animalia
+46613	Colurella uncinata uncinata	(MÃ¼ller, 1773)	1	59901				46610		subspecies		accepted	59898	2015-04-29			45974	Animalia
+46614	Colurella uncinata uncinata	(MÃ¼ller 1773)	1	59902				46610		subspecies		accepted	59898	2015-04-29			45974	Animalia
 50450	Galerina vittiformis	(Fr.) Singer 1950	1		urn:lsid:catalogueoflife.org:taxon:d6c8b4db-2dc5-11e0-98c6-2ce70255a436					species		accepted		2015-04-29				
 50556	Lactarius vellereus	(Fr.) Fr. 1838	1		urn:lsid:catalogueoflife.org:taxon:d6e71cea-2dc5-11e0-98c6-2ce70255a436					species		accepted		2015-04-29				
 50937	Tubaria furfuracea	(Pers.) Gillet 1876	1		urn:lsid:catalogueoflife.org:taxon:d6e64119-2dc5-11e0-98c6-2ce70255a436					species		accepted		2015-04-29				

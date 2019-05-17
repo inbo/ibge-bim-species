@@ -120,7 +120,6 @@ Preview:
 occs_anomalous_taxa %>% head(n = 50)
 ```
 
-
 Total number of occurrences linked to anomalous taxa:
 
 ```{r tot_n_occs_anomalous_taxa}
