@@ -1,0 +1,82 @@
+---
+title: "Review annexes"
+author:
+  - Lien Reyserhove
+  - Damiano Oldoni
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(odbc)       # To work with database
+library(tidyverse)  # To do data science
+library(here)       # To work with paths
+```
+
+## Load access informations
+
+Retrieve access informations from configuration file:
+
+```{r get_access_infos}
+ibge_bim <- config::get("ibge_bim")
+```
+
+## Connect to database
+
+Connect to database:
+
+```{r connect_to_db}
+conn <- dbConnect(odbc(), 
+                  driver = ibge_bim$driver,
+                  server = ibge_bim$server,
+                  database = ibge_bim$database,
+                  port = ibge_bim$port,
+                  uid = ibge_bim$uid,
+                  pwd = ibge_bim$pwd,
+                  encoding = "Windows-1252"
+)
+```
+
+## Retrieve annex information
+
+```{r}
+annex_species <- dbGetQuery(conn, "
+  SELECT
+    sa.taxonid,
+    t.acceptedname,
+    t.scientificnameauthorship,
+    t.vernacularnamenl,
+    t.taxonranken,
+    t.taxonomicstatusen,
+    sa.annexcode,
+    a.descriptionnl
+
+  FROM biodiv.speciesannex AS sa
+    LEFT JOIN biodiv.annex AS a
+      ON sa.annexcode = a.annexcode
+    LEFT JOIN biodiv.taxon AS t
+      ON sa.taxonid = t.id
+  ORDER BY
+    sa.annexcode,
+    t.acceptedname
+") %>% 
+  as_tibble()
+```
+
+
