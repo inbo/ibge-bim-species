@@ -69,6 +69,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 28659	Diaporthe rijckholti	(Westend.) Nitschke	species	Fungi	Diaporthe ryckholtii				
 28688	Dothichiza pityophila	(Corda) Petr.	species	Fungi	Dothichiza pithyophila				
 29173	Gloeosporium ulmicolum	Miles	species	Fungi	Gloeosporium ulmicola				
+29756	Kluyveromyces marxianus	(E.C. Hansen) Van der Walt 1971	species	Fungi		EMPTY			removed authorship. Rapported to GBIF: gbif/portal-feedback#2015
 29811	Lachnum soppitii	(Massee) Raitv.	species	Fungi	Lachnum soppittii				
 30021	Leptosphaeria michoti	(Westend.) Sacc.	species	Fungi	Leptosphaeria michotii				
 30519	Myxosporium platanicolum	Ellis & Everh.	species	Fungi	Myxosporium platanicola				
