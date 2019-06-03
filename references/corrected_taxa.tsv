@@ -135,6 +135,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 50751	Pimplinae		genus				subfamily		
 50753	Pisces		genus				informal group		
 50788	Psocoptera		genus				order		
+50810	Ranunculus sgen. Batrachium		species		Batrachium	Gray (DC.)	subgenus		taxon rank improved, but invalid GBIF taxonomic rank
 50846	Scopariinae		genus				subfamily		
 50931	Tripleurospermum maritimum subsp. maritima	(L.) W.D.J.Koch	subspecies		Tripleurospermum maritimum subsp. maritimum	EMPTY			authorship refers to species
 50935	Tryphoninae		genus				subfamily		
