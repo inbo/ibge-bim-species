@@ -55,6 +55,8 @@ conn <- dbConnect(odbc(),
 
 ## Retrieve annex information
 
+Annex information from database:
+
 ```{r}
 annex_species <- dbGetQuery(conn, "
   SELECT
@@ -79,4 +81,15 @@ annex_species <- dbGetQuery(conn, "
   as_tibble()
 ```
 
+Annex information from Belgisch staatsblad:
+
+```{r}
+annex_test <- read.csv("../data/input/annex_test.csv", header=FALSE)
+```
+
+Merge both dataframes:
+
+```{r}
+test <- annex_test %>% semi_join(annex_species, by = c("V1" = "acceptedname"))
+```
 
