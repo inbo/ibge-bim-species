@@ -65,6 +65,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 27199	Calyptellacapula gibbosh		species		Calyptella capula				Not sure what to do with "gibbosh"
 27627	Coniosporium piri	Oudem.	species	Fungi	Coniosporium pyri				
 28027	Crepidotus roseoornatus	Pöder & Ferrari	species	Fungi	Crepidotus roseo-ornatus				
+28315	Dekkera bruxellensis	Van der Walt, 1964	species	Fungi		EMPTY			removed authorship. Rapported to GBIF: gbif/portal-feedback/#2014
 28659	Diaporthe rijckholti	(Westend.) Nitschke	species	Fungi	Diaporthe ryckholtii				
 28688	Dothichiza pityophila	(Corda) Petr.	species	Fungi	Dothichiza pithyophila				
 29173	Gloeosporium ulmicolum	Miles	species	Fungi	Gloeosporium ulmicola				
