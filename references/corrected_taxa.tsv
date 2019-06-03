@@ -106,6 +106,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 50048	Anser anser domesticus		species				forma		
 50092	Acari		genus				subclass		
 50103	Aceria macrorhyncha		species		Aceria macrorhynchus				
+50104	Aceria macrotricha		species		Aculops macrotrichus				https://github.com/inbo/ibge-bim-species/issues/30#issuecomment-497701301
 50131	Agromyza idaeiana		family				species		
 50174	Aphidoidea		genus				superfamily		
 50211	Atyaephyra desmaresti		species		Atyaephyra desmarestii				
