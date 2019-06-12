@@ -143,6 +143,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 27855	Corticium alboochraceum		species	Fungi	Corticium albo-ochraceum				
 28027	Crepidotus roseoornatus	Pöder & Ferrari	species	Fungi	Crepidotus roseo-ornatus				
 28312	Debaryomyces tyrocola		species	Fungi	Debaryomyces tyrocolus				
+28313	Debaryomyces yamadae	(Van der Walt & Johannsen) Van der Walt et al., 1980	species	Fungi	Schwanniomyces yamadae				see https://github.com/inbo/ibge-bim-species/issues/53
 28315	Dekkera bruxellensis	Van der Walt, 1964	species	Fungi		EMPTY			removed authorship. Rapported to GBIF: gbif/portal-feedback/#2014
 28505	Discostroma polymorpha	Brockmann	species	Fungi	Discostroma polymorphum				
 28659	Diaporthe rijckholti	(Westend.) Nitschke	species	Fungi	Diaporthe ryckholtii				
