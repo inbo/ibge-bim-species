@@ -1,5 +1,5 @@
 ---
-title: "Detect unused taxa"
+title: "Detect used taxa"
 author:
   - Damiano Oldoni
   - Lien Reyserhove
@@ -23,6 +23,7 @@ knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding =
 ```{r load_libs}
 library(odbc)       # To work with database
 library(tidyverse)  # To do data science
+library(tidylog)    # To provide feedback on dplyr functions
 library(here)       # To work with paths
 library(inborutils) # To match taxa (rgbif called in background)
 ```
@@ -71,7 +72,7 @@ We also retrieve occurrences from table `occurence` in order to assess which tax
 We read taxa. They were previously saved as text file:
 
 ```{r import_taxa_from tsv}
-taxa <- read_tsv(here("data", "input", "taxa.tsv"),
+taxa <- read_tsv(here("data", "interim", "taxa.tsv"),
                  col_types = cols(
                    .default = col_character(),
                    id = col_double(),
@@ -300,13 +301,24 @@ used_taxa <-
   filter(!id %in% not_used_taxa$id)
 ```
 
-Parents of the used taxa:
+Parents of the used taxa and correspondent higher taxonomy:
 
 ```{r parents_used_taxa}
 parents_used_taxa <-
   taxa %>%
-  filter(id %in% 
-           (used_taxa %>% distinct(parentid) %>% pull()))
+  filter(id %in% used_taxa$parentid)
+parents_to_add <- parents_used_taxa
+while (nrow(parents_to_add) > 0) {
+  parents <-
+    taxa %>%
+    filter(id %in% parents_to_add$parentid)
+  parents_to_add <-
+    parents %>%
+    filter(!id %in% parents_used_taxa)
+  parents_used_taxa <- 
+    parents_used_taxa %>%
+    bind_rows(parents_to_add)
+}
 ```
 
 We remove these taxa from the unused taxa:
@@ -317,10 +329,22 @@ not_used_taxa <-
   filter(!id %in% parents_used_taxa$id)
 ```
 
-Final number of not used taxa:
+We add column `used` as flag to `taxa`:
+
+```{r add_flag_used}
+taxa <-
+  taxa %>%
+  mutate(used = if_else(
+    id %in% not_used_taxa$id, FALSE, TRUE)
+)
+```
+
+Final number of used or unused taxa:
 
 ```{r nrow_not_used_taxa}
-nrow(not_used_taxa)
+taxa %>%
+  group_by(used) %>%
+  count()
 ```
 
 # Save data
@@ -346,22 +370,10 @@ write_tsv(identifiable_species,
 
 ## Save taxa
 
-### Used taxa
-
-We save also the used taxa as these ones will be the nucleus of the new taxa table:
+We save taxa with added flag `used`:
 
 ```{r save_used_taxa}
-write_tsv(used_taxa,
-          path = here("data", "interim", "used_taxa.tsv"),
-          na = "")
-```
-
-### Not used taxa
-
-Save taxa which are not currently in use:
-
-```{r save_not_used_taxa}
-write_tsv(not_used_taxa,
-          path = here("data", "interim", "not_used_taxa.tsv"),
+write_tsv(taxa,
+          path = here("data", "interim", "flagged_taxa.tsv"),
           na = "")
 ```
