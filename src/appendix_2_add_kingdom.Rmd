@@ -19,8 +19,9 @@ knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding =
 
 ## Load libraries
 
-```{r load_libs}
+```{r add_kingdom-load_libs}
 library(tidyverse)  # To do data science
+library(tidylog)    # To provide feedback on dplyr functions
 library(here)       # To work with paths
 ```
 
@@ -28,7 +29,7 @@ library(here)       # To work with paths
 
 Read taxa from `./data/input/taxa.tsv`:
 
-```{r read_taxa_from_tsv_file}
+```{r add_kingdom-read_taxa_from_tsv_file}
 taxa <- read_tsv(here("data", "input", "taxa.tsv"),
                  col_types = cols(
                    .default = col_character(),
@@ -45,7 +46,7 @@ taxa <- read_tsv(here("data", "input", "taxa.tsv"),
 
 Taxonomy ranks present in `taxa`:
 
-```{r get_taxonranks}
+```{r add_kingdom-get_taxonranks}
 taxa %>% 
   group_by(taxonranken) %>% 
   summarize(records = n())
@@ -53,7 +54,7 @@ taxa %>%
 
 Taxa without parent ID:
 
-```{r n_taxa_with_no_parentid}
+```{r add_kingdom-n_taxa_with_no_parentid}
 taxa %>%
   group_by(!is.na(parentid)) %>%
   summarize(records = n()) %>%
@@ -63,7 +64,7 @@ taxa %>%
 
 Check the internal validity of parent IDs. Are all parent IDs valid IDs?
 
-```{r check_parent_IDs}
+```{r add_kingdom-check_parent_IDs}
 parent_ids <- taxa %>%
   filter(!is.na(parentid)) %>%
   pull(parentid)
@@ -72,7 +73,7 @@ all(parent_ids %in% taxa$id)
 
 Taxon ranks linked to the parent IDs:
 
-```{r taxon_ranks_of_parents}
+```{r add_kingdom-taxon_ranks_of_parents}
 taxa %>%
   filter(id %in% parent_ids) %>%
   group_by(taxonranken) %>% 
@@ -81,7 +82,7 @@ taxa %>%
 
 This means that the following taxon ranks are not pointed out by any taxa:
 
-```{r not_pointed_out_ranks}
+```{r add_kingdom-not_pointed_out_ranks}
 taxonranks <- 
   taxa %>% 
   distinct(taxonranken)
@@ -106,7 +107,7 @@ We will search each taxa within the GBIF Taxonomy Backbone. It is a search *by s
 
 We write a recursive function, called `get_keys_higher_levels`, to keep track of all keys while *climbing up* to the highest possible level for each taxon. This function uses the parent IDs until no parent ID is found anymore, meaning we arrived at kingdom taxonomic level if no mising parent keys are found.  The function returns a vector containing the sequence of parent IDs. If a taxa is found where `parentid` = `id` or the sequence of parent IDs is circular, the vector contains `NA` at first position in order to be easily found for further inspection.
 
-```{r function_get_kingdom}
+```{r add_kingdom-function_get_kingdom}
 #' Function to retrieve all parent taxa up to kingdom recursively via parent ID's.
 #' 
 #' @param taxon_id (double) A unique ID identifying taxon in `taxa_df`.
@@ -136,7 +137,7 @@ get_keys_higher_levels <- function(taxon_id, taxa_df = taxa, parents_vector = NU
 
 We first initialize a new empty column called `kingdom_id` in `taxa`:
 
-```{r initialize_col_kingdom_id_taxa}
+```{r add_kingdom-initialize_col_kingdom_id_taxa}
 taxa <- 
   taxa %>%
   mutate(kingdom_id = 0)
@@ -144,7 +145,7 @@ taxa <-
 
 We apply the function `get_keys_higher_levels` to all taxa. If the highest taxonomic level pointed by the sequence of parent IDs is not equal to `kingdom` or the vector of parent IDs starts with `NA`, `kingdom_id` will be set to `NA`:
 
-```{r find_kingdom_id_all_taxa, cache=TRUE}
+```{r add_kingdom-find_kingdom_id_all_taxa, cache=TRUE}
 circular_parent_ids <- c()
 pb <- txtProgressBar(min = 0, max = nrow(taxa),  style = 3)
 for (t in 1:nrow(taxa)) {
@@ -174,7 +175,7 @@ for (t in 1:nrow(taxa)) {
 
 Kingdoms present in `taxa`:
 
-```{r add_kingdom_names}
+```{r add_kingdom-add_kingdom_names}
 kingdom_df <- 
   taxa %>%
   filter(taxonranken == "kingdom") %>%
@@ -185,7 +186,7 @@ kingdom_df
 
 We add `kingdom` to `taxa` for better interpretation of the results. We call this column `bim_kingdom` in order to distinct it in the future from the `kingdom` got by GBIF Taxonomy Backbone:
 
-```{r add_kingdom_column}
+```{r add_kingdom-add_kingdom_column}
 taxa <- 
   taxa %>%
   left_join(kingdom_df, by = c("kingdom_id" = "id")) %>%
@@ -194,7 +195,7 @@ taxa <-
 
 Preview of taxa linked to their specific kingdom:
 
-```{r preview_taxa_with_kingdom}
+```{r add_kingdom-preview_taxa_with_kingdom}
 taxa %>% 
   select(acceptedname, bim_kingdom) %>% 
   head(n = 100)
@@ -202,7 +203,7 @@ taxa %>%
 
 Number of taxa without `kingdom_id`:
 
-```{r invalid_kingdom_id}
+```{r add_kingdom-invalid_kingdom_id}
 taxa %>%
   filter(is.na(kingdom_id)) %>%
   nrow()
@@ -210,19 +211,30 @@ taxa %>%
 
 Some of these ones have parent IDs ending up in a circular sequence. Blindly following the path of parent IDs would then result in an infinite loop:
 
-```{r circular_parent_ids}
+```{r add_kingdom-circular_parent_ids}
 tibble(id = unlist(circular_parent_ids)) %>%
   left_join(taxa, by = "id") %>%
   select(acceptedname, id, parentid)
 ```
 
-In our case the `Salmo trutta fario` refers to itself, `parentid` =  `id`, so anything linking diretly or indirectly to this taxon will not get any step further.
+In our case the *Salmo trutta fario* refers to itself, `parentid` =  `id`, so anything linking directly or indirectly to this taxon will not get any step further.
+
+We correct the parent ID of *Salmo trutta fario* immediately:
+
+```{r add_kingdom-correct_circular_parent_ids}
+taxa <- 
+  taxa %>%
+  mutate(parentid = case_when(
+    acceptedname == "Salmo trutta fario" ~ 47683,
+    TRUE ~ parentid)
+)
+```
 
 # Save taxa
 
 We save all taxa in `.\data\interim`:
 
-```{r save_all_taxa}
+```{r add_kingdom-save_all_taxa}
 write_tsv(taxa, 
           here("data", "interim", "taxa.tsv"), 
           na = "")

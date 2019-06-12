@@ -20,7 +20,7 @@ knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding =
 
 ## Load libraries
 
-```{r load_libs}
+```{r match_taxa_gbif_backbone-load_libs}
 library(odbc)       # To work with database
 library(tidyverse)  # To do data science
 library(here)       # To work with paths
@@ -31,7 +31,7 @@ library(inborutils) # To match taxa (rgbif called in background)
 
 Retrieve access informations from configuration file:
 
-```{r get_access_infos}
+```{r match_taxa_gbif_backbone-get_access_infos}
 ibge_bim <- config::get("ibge_bim")
 ```
 
@@ -39,7 +39,7 @@ ibge_bim <- config::get("ibge_bim")
 
 Read taxa from `./data/interim/taxa.tsv`:
 
-```{r read_taxa_from_tsv_file}
+```{r match_taxa_gbif_backbone-read_taxa_from_tsv_file}
 taxa <- read_tsv(here("data", "interim", "taxa.tsv"),
                  col_types = cols(
                    .default = col_character(),
@@ -69,7 +69,7 @@ We try to match by using `acceptedname` + `scientificnameauthorship` as name. We
 1. We create a new column, `name_for_gbif`, where we paste `acceptedname` and `scientificnameauthorship`, if present.
 2. Recode the taxon ranks from `taxonranken` in a new column, `rank_for_gbif`, containing the correct GBIF terms.
 
-```{r prepare_taxa_for_matching_backbone}
+```{r match_taxa_gbif_backbone-prepare_taxa_for_matching_backbone}
 taxa <-
   taxa %>%
   mutate(name_for_gbif = if_else(
@@ -86,7 +86,7 @@ taxa <-
 
 We match the names in `name_for_gbif` with GBIF Backbone and retrieve the following GBIF fields:
 
-```{r gbif_terms}
+```{r match_taxa_gbif_backbone-gbif_terms}
 gbif_terms <- c("matchType",
                 "confidence", 
                 "rank", 
@@ -114,7 +114,7 @@ gbif_terms <- c("matchType",
 
 We also use the columns containing kingdom information (`bim_kingdom`) and rank (`rank_for_gbif`) and we require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification. **Note: This step takes long**:
 
-```{r get_name_gbif, cache=TRUE}
+```{r match_taxa_gbif_backbone-get_name_gbif, cache=TRUE}
 taxa_gbif <-
   taxa %>%
   gbif_species_name_match(name = "name_for_gbif",
@@ -126,7 +126,7 @@ taxa_gbif <-
 
 We add the prefix `gbif_` to the columns coming from GBIF Backbone:
 
-```{r add_gbif_prefix}
+```{r match_taxa_gbif_backbone-add_gbif_prefix}
 taxa_gbif <- 
   taxa_gbif %>%
   select(gbif_terms) %>%
@@ -138,14 +138,14 @@ taxa_gbif <-
 
 Preview:
 
-```{r overview_taxa_gbif}
+```{r match_taxa_gbif_backbone-overview_taxa_gbif}
 taxa_gbif %>%
   head()
 ```
 
 The column `gbif_matchType` informs us whether the match has been successful (`gbif_matchType` = `EXACT`), doubtful (`gbif_matchType` = `FUZZY`) or failed (`gbif_matchType` = `NONE`). The column  `confidence` is also informative. Number of taxa for each value of `gbif_matchType`:
 
-```{r overview_n_match}
+```{r match_taxa_gbif_backbone-overview_n_match}
 taxa_gbif %>%
   group_by(gbif_matchType) %>%
   count()
@@ -153,7 +153,7 @@ taxa_gbif %>%
 
 We create a new data.frame, `taxa_no_exact_match`, for taxa without exact match:
 
-```{r taxa_no_exact_match}
+```{r match_taxa_gbif_backbone-taxa_no_exact_match}
 taxa_no_exact_match <-
   taxa_gbif %>%
   filter(gbif_matchType != "EXACT") %>%
@@ -162,7 +162,7 @@ taxa_no_exact_match <-
 
 Preview (only relevant columns shown):
 
-```{r not_matched_taxa}
+```{r match_taxa_gbif_backbone-not_matched_taxa}
 taxa_no_exact_match %>%
   select(-c(speciesbeid, colid, vernacularnamefr, 
             vernacularnamenl, parentid, distributionstatuscode, 
@@ -175,20 +175,20 @@ taxa_no_exact_match %>%
 
 Some of the taxa are not matched due to deviating author spellings, e.g.
 
-```{r example_no_match_due_to_author_spelling_deviation}
+```{r match_taxa_gbif_backbone-example_no_match_due_to_author_spelling_deviation}
 taxa_no_exact_match %>%
   filter(name_for_gbif == "Neosartorya fischeri var. glabra (Fennell & Raper) Malloch & Cain")
 ```
 
 while in GBIF Backbone:
 
-```{r show_version_on_gbif}
+```{r match_taxa_gbif_backbone-show_version_on_gbif}
 rgbif::name_backbone(name = "`Neosartorya fischeri var. glabra Fennell & Raper, 1973`") %>% as_tibble()
 ```
 
 Matching without authors can improve matching:
 
-```{r match_acceptedname_only, cache=TRUE}
+```{r match_taxa_gbif_backbone-match_acceptedname_only, cache=TRUE}
 taxa_without_author <-
   taxa_no_exact_match %>%
   select(names(taxa)) %>%
@@ -209,7 +209,7 @@ taxa_without_author <-
 
 Overview match:
 
-```{r summarize_new_match}
+```{r match_taxa_gbif_backbone-summarize_new_match}
 taxa_without_author %>%
   group_by(gbif_matchType) %>%
   count()
@@ -217,7 +217,7 @@ taxa_without_author %>%
 
 As some of the matches might be wrong, we update `gbif_matchType` to `EXACT_WITHOUT_AUTHOR`, `FUZZY_WITHOUT_AUTHOR`:
 
-```{r flag_matchType}
+```{r match_taxa_gbif_backbone-flag_matchType}
 taxa_without_author <-
   taxa_without_author %>%
   mutate(gbif_matchType = case_when(
@@ -229,7 +229,7 @@ taxa_without_author <-
 
 Include the results of this second match attempt to `taxa_gbif`:
 
-```{r join_taxa_without_author}
+```{r match_taxa_gbif_backbone-join_taxa_without_author}
 taxa_gbif <-
   taxa_gbif %>%
   anti_join(taxa_without_author,
@@ -240,7 +240,7 @@ taxa_gbif <-
 
 Overview:
 
-```{r overview_matchType}
+```{r match_taxa_gbif_backbone-overview_matchType}
 taxa_gbif %>%
   group_by(gbif_matchType) %>%
   count()
@@ -250,13 +250,13 @@ taxa_gbif %>%
 
 Due to errors in parent IDs, some taxa are not matched because they are linked to the wrong kingdom. Examples, the phylum `Xanthophyta`:
 
-```{r example_Xanthophyta}
+```{r match_taxa_gbif_backbone-example_Xanthophyta}
 taxa_gbif %>% filter(acceptedname == "Xanthophyta")
 ```
 
 Its `bim_kingdom` is based on parentid `45975`, which refers to the internal id of acceptedname `Plantae`, while the kingdom according to GBIF Backbone is  `Chromista`:
 
-```{r example_Xanthophyta_GBIF_Backbone}
+```{r match_taxa_gbif_backbone-example_Xanthophyta_GBIF_Backbone}
 taxa_gbif %>% 
   filter(acceptedname == "Xanthophyta") %>%
   select(acceptedname) %>%
@@ -267,7 +267,7 @@ taxa_gbif %>%
 
 The taxa with `gbif_matchType` not equal to `EXACT` or `EXACT_WITHOUT_AUTHOR` are matched again. As third and final matching attempt, we try matching taxa without `scientificnameauthorship` and without passing kingdom as parameter. Please note that rank is always given to the match function.
 
-```{r match_without_kingdom_acceptedname_only, cache=TRUE}
+```{r match_taxa_gbif_backbone-match_without_kingdom_acceptedname_only, cache=TRUE}
 taxa_without_author_and_kingdom <-
   taxa_gbif %>%
   filter(!gbif_matchType %in% c("EXACT_WITHOUT_AUTHOR", 
@@ -288,7 +288,7 @@ taxa_without_author_and_kingdom <-
 
 Overview match:
 
-```{r summarize_match_without_kingdom_acceptedname}
+```{r match_taxa_gbif_backbone-summarize_match_without_kingdom_acceptedname}
 taxa_without_author_and_kingdom %>%
   group_by(gbif_matchType) %>%
   count()
@@ -296,7 +296,7 @@ taxa_without_author_and_kingdom %>%
 
 As some of the matches might be wrong, we update `gbif_matchType` to `EXACT_WITHOUT_AUTHOR_AND_KINGDOM`, `FUZZY_WITHOUT_AUTHOR_AND_KINGDOM`:
 
-```{r flag_matchType_without_author_and_kingdom}
+```{r match_taxa_gbif_backbone-flag_matchType_without_author_and_kingdom}
 taxa_without_author_and_kingdom <-
   taxa_without_author_and_kingdom %>%
   mutate(gbif_matchType = case_when(
@@ -308,7 +308,7 @@ taxa_without_author_and_kingdom <-
 
 Include the results of this third match attempt to `taxa_gbif`:
 
-```{r join_taxa_without_author_and_kingdom}
+```{r match_taxa_gbif_backbone-join_taxa_without_author_and_kingdom}
 taxa_gbif <-
   taxa_gbif %>%
   anti_join(taxa_without_author_and_kingdom,
@@ -319,7 +319,7 @@ taxa_gbif <-
 
 Overview  `gbif_matchType`:
 
-```{r overview_matchType_3}
+```{r match_taxa_gbif_backbone-overview_matchType_3}
 taxa_gbif %>%
   group_by(gbif_matchType) %>%
   count()
@@ -329,7 +329,7 @@ taxa_gbif %>%
 
 It is interesting to know how many occurrences are linked to the unmatched taxa: taxa linked to many occurrences should be checked before other ones, thus prioritizing the work of the taxonomists. We retrieve this information by reading the occurrences from text file:
 
-```{r read_occurrences}
+```{r match_taxa_gbif_backbone-read_occurrences}
 occurrences <- read_tsv(here("data", "input", "occurrences.tsv"), 
                         na = "",
                         col_types = cols(
@@ -351,7 +351,7 @@ occurrences <- read_tsv(here("data", "input", "occurrences.tsv"),
 
 The link to `taxa` has been made by intermediate table `identifiablespecies` containing all identifiable species and linking synonyms to accepted taxa. We read it by file:
 
-```{r read_identifiable_species}
+```{r match_taxa_gbif_backbone-read_identifiable_species}
 identifiable_species <- read_tsv(here("data", 
                                       "input", 
                                       "identifiable_species.tsv"), 
@@ -367,7 +367,7 @@ identifiable_species <- read_tsv(here("data",
 
 Link observations to taxonomic ID of accepted taxa in `taxa`:
 
-```{r link_to_taxa}
+```{r match_taxa_gbif_backbone-link_to_taxa}
 occurrences <- 
   occurrences %>%
   left_join(identifiable_species %>%
@@ -379,7 +379,7 @@ occurrences <-
 
 We add a new column called `n_occs` containing the number of occurrences linked to each taxon:
 
-```{r add_n_occs}
+```{r match_taxa_gbif_backbone-add_n_occs}
 taxa_gbif <- 
   occurrences %>%
   group_by(taxonid) %>%
@@ -394,7 +394,7 @@ taxa_gbif <-
 
 Number of taxa with/without occurrences:
 
-```{r n_taxa_with_without_occs}
+```{r match_taxa_gbif_backbone-n_taxa_with_without_occs}
 taxa_gbif %>%
   group_by(!is.na(n_occs)) %>%
   count() %>%
@@ -405,7 +405,7 @@ taxa_gbif %>%
 
 In particular, for unmatched taxa (`gbif_matchType` not equal to `EXACT`):
 
-```{r n_occs_unmatched_taxa}
+```{r match_taxa_gbif_backbone-n_occs_unmatched_taxa}
 taxa_gbif_unmatched <- 
   taxa_gbif %>%
   filter(gbif_matchType != "EXACT") %>%
@@ -434,7 +434,7 @@ taxa_gbif_unmatched %>%
 
 Number of unmatched taxa linked to at least one occurrence _or_ none at all **and** with _or_ without parent ID:
 
-```{r unmatched_taxa_count_n_occs}
+```{r match_taxa_gbif_backbone-unmatched_taxa_count_n_occs}
 taxa_gbif_unmatched %>%
   group_by(!is.na(parentid), !is.na(n_occs)) %>%
   count() %>%
@@ -445,7 +445,7 @@ taxa_gbif_unmatched %>%
 
 Experts should focus first on taxa without parent ID, `has_parentid = FALSE`. Among these ones priority should be given to taxa with occurrences, `has_occs = TRUE`. To do so, we arrange the taxa by absence of parent ID and decreasing number of occurrences:
 
-```{r taxa_gbif_unmatched_arrange_parentid_n_occs}
+```{r match_taxa_gbif_backbone-taxa_gbif_unmatched_arrange_parentid_n_occs}
 taxa_gbif_unmatched <- 
   taxa_gbif_unmatched %>%
   arrange(!is.na(parentid), n_occs)
@@ -453,7 +453,7 @@ taxa_gbif_unmatched <-
 
 Finally, it is also important to show the rank of the unmatched taxa:
 
-```{r rank_of_unmatched_taxa}
+```{r match_taxa_gbif_backbone-rank_of_unmatched_taxa}
 taxa_gbif_unmatched %>%
   group_by(rank_for_gbif) %>%
   count()
@@ -463,7 +463,7 @@ taxa_gbif_unmatched %>%
 
 We save the taxa with the added information from GBIF Taxonomy Backbone:
 
-```{r save_taxa_gbif}
+```{r match_taxa_gbif_backbone-save_taxa_gbif}
 write_tsv(taxa_gbif,
           path = here::here("data", "interim", "taxa_gbif.tsv"),
           na = "")
@@ -471,7 +471,7 @@ write_tsv(taxa_gbif,
 
 We save the subset of the unmatched taxa in a separate file for verification.
 
-```{r save_unmatched_taxa}
+```{r match_taxa_gbif_backbone-save_unmatched_taxa}
 write_tsv(taxa_gbif_unmatched,
           path = here::here("data", "interim", "unmatched_taxa_gbif.tsv"),
           na = "")
