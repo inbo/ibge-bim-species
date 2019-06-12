@@ -188,6 +188,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 36404	Homoneura	Van der Wulp, 1891	genus	Animalia		Wulp, 1891			updated author from Van der Wulp, 1891
 40884	Trentepohlia		genus		Trentepholia				
 45920	Hirudinea		class	Animalia			subclass		taxon rank improved, but invalid GBIF taxonomic rank
+45927	Chondrichthyes		class	Animalia	Elasmobranchii				see https://github.com/inbo/ibge-bim-species/issues/55
 45964	Xanthophyta		phylum	Plantae				Chromista	
 45970	Myxomycota		phylum	Fungi			division		taxon rank improved, but invalid GBIF taxonomic rank
 46177	Dama Linnaeus,	Linnaeus, 1758	species	Animalia	Dama dama				
