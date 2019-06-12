@@ -20,8 +20,9 @@ knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding =
 
 ## Load libraries
 
-```{r load_libs}
+```{r apply_corrections_names_by_ref_file-load_libs}
 library(tidyverse)  # To do data science
+library(tidylog)    # To provide feedback on dplyr functions
 library(here)       # To work with paths
 ```
 
@@ -29,10 +30,10 @@ library(here)       # To work with paths
 
 ## Read used taxa
 
-We read the taxa which we will further use to build the improved  `taxa` table:
+We read the taxa which we will further use to build the improved `taxa` table. We select only the used taxa:
 
-```{r read_used_taxa}
-used_taxa <- read_tsv(here("data", "interim", "used_taxa.tsv"),
+```{r apply_corrections_names_by_ref_file-read_used_taxa}
+used_taxa <- read_tsv(here("data", "interim", "flagged_taxa.tsv"),
                       col_types = cols(
                         .default = col_character(),
                         id = col_double(),
@@ -40,15 +41,16 @@ used_taxa <- read_tsv(here("data", "interim", "used_taxa.tsv"),
                         media = col_logical(),
                         speciesbeparentid = col_double(),
                         bruenvi_created = col_date(format = "%Y-%m-%d"),
-                        bruenvi_modified = col_date(format = "%Y-%m-%d"))
-)
+                        bruenvi_modified = col_date(format = "%Y-%m-%d"))) %>%
+  filter(used == TRUE) %>%
+  select(-used)
 ```
 
 ## Read taxa with GBIF information
 
-We read the full `taxa` after applying the first attempts to match taxa  with GBIF Taxonomy Backbone:
+We read the full `taxa` after applying the first attempts to match taxa with GBIF Taxonomy Backbone:
 
-```{r read_taxa_table_with_GBIF}
+```{r apply_corrections_names_by_ref_file-read_taxa_table_with_GBIF}
 taxa_gbif <- read_tsv(here("data", "interim", "taxa_gbif.tsv"),
                       col_types = cols(
                         .default = col_character(),
@@ -78,7 +80,7 @@ taxa_gbif <- read_tsv(here("data", "interim", "taxa_gbif.tsv"),
 
 The unmatched taxa have been previously saved in a reference file called `corrected_taxa.tsv`. This file has been manually screened by an expert which added the corrected informations where needed:
 
-```{r read_corrected_taxa.tsv}
+```{r apply_corrections_names_by_ref_file-read_corrected_taxa.tsv}
 corrected_taxa <- read_tsv(here("references", "corrected_taxa.tsv"),
                            na = "",
                            col_types = cols(
@@ -89,18 +91,37 @@ corrected_taxa <- read_tsv(here("references", "corrected_taxa.tsv"),
 
 Preview:
 
-```{r corrected_taxa_preview}
+```{r apply_corrections_names_by_ref_file-corrected_taxa_preview}
 corrected_taxa %>%
   head()
 ```
 
-The columns ending with suffix `_corrected` contain the corrected information where corrections have been applied. For example, in excerpt shown above we can see that the taxon canonical name `Teucrium chamaedrys germanicum` has been corrected as `Teucrium chamaedrys subsp. germanicum`, taxon canonical name `Sagina apetala erecta` has been corrected as `Sagina apetala subsp. erecta`.
+The columns ending with suffix `_corrected` contain the corrected information where corrections have been applied. For example, in excerpt shown above we can see that the taxon zith canonical name `Teucrium chamaedrys germanicum` has been corrected as `Teucrium chamaedrys subsp. germanicum`, while `Russula heterophylla form. pseudoochroleuca` has been corrected as `Russula heterophylla f. pseudo-ochroleuca` and author `Romagn.` has been changed to `Romagn., 1962`.
+
+In some cases we have to remove authorship. This was typically due to anomalous taxa within GBIF Backbone: issues to GBIF Portal have been created, see reference in column `remarks`. We used the `flag `EMPTY` to identify these names.
+
+```{r apply_corrections_names_by_ref_file-show_flag_EMPTY}
+corrected_taxa %>%
+  filter(scientificnameauthorship_corrected == "EMPTY")
+```
+
+We set empty string where flag `EMPTY`:
+
+```{r apply_corrections_names_by_ref_file-set_zero_length_string_where_flag_EMPTY}
+corrected_taxa <-
+  corrected_taxa %>%
+  mutate(scientificnameauthorship_corrected = if_else(
+    scientificnameauthorship_corrected == "EMPTY",
+    "",
+    scientificnameauthorship_corrected
+  ))
+```
 
 # Apply corrections
 
 Based on `corrected_taxa` we apply taxonomic corrections to `used_taxa`. Number of used taxa whose taxonomic information will be corrected:
 
-```{r n_used_taxa_to_correct}
+```{r apply_corrections_names_by_ref_file-n_used_taxa_to_correct}
 corrected_taxa %>%
   inner_join(used_taxa,
             by = c("id", 
@@ -112,8 +133,8 @@ corrected_taxa %>%
 
 Apply corrections on columns `acceptedname`, `scientificnameauthorship`, `taxonranken` and `bim_kingdom`:
 
-```{r correct_used_taxa}
-corrected_used_taxa <-
+```{r apply_corrections_names_by_ref_file-correct_used_taxa}
+used_taxa_after_correction <-
   used_taxa %>%
   
   # add kingdom based on BIM parent IDs
@@ -133,9 +154,10 @@ corrected_used_taxa <-
   mutate(acceptedname = if_else(!is.na(acceptedname_corrected),
                                 acceptedname_corrected,
                                 acceptedname),
-         scientificnameauthorship = if_else(!is.na(scientificnameauthorship_corrected),
-                                            scientificnameauthorship_corrected,
-                                            scientificnameauthorship),
+         scientificnameauthorship = if_else(
+           !is.na(scientificnameauthorship_corrected),
+           scientificnameauthorship_corrected,
+           scientificnameauthorship),
          taxonranken = if_else(!is.na(taxonranken_corrected),
                                taxonranken_corrected,
                                taxonranken),
@@ -157,8 +179,8 @@ corrected_used_taxa <-
 
 Save the used taxa after applying corrections:
 
-```{r save_corrected_used_taxa}
-write_tsv(corrected_used_taxa, 
+```{r apply_corrections_names_by_ref_file-save_used_taxa_after_correction}
+write_tsv(used_taxa_after_correction, 
           path = here("data", "interim", "corrected_used_taxa.tsv"),
           na = "")
 ```
