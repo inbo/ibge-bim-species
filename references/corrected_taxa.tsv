@@ -13,15 +13,15 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 645	Paxillus panuoides var. ionipus	Quél.	variety	Fungi		(Quél.) Tkalcec & Me			updated author from Quél.
 655	Peziza vesiculosa var. minor	(Sacc.) Grélet	variety	Fungi		Fr., 1822			udpate author from (Sacc.) Grélet
 848	Volvariella pusilla var. taylori	(Berk.) Boekhout	variety	Fungi	Volvariella pusilla var. taylorii				
-864	Teucrium chamaedrys germanicum	(F.Herm.) Rech.f.	subspecies	Plantae	Teucrium chamaedrys subsp. germanicum				
+864	Teucrium chamaedrys germanicum	(F.Herm.) Rech.f.	subspecies	Plantae	Teucrium chamaedrys subsp. germanicum				Correct version does not match to GBIF. Reported to GBIF Portal: https://github.com/gbif/portal-feedback/issues/2044
 887	Vicia tetrasperma gracilis	(DC.) Hook.f.	subspecies	Plantae	Vicia tetrasperma subsp. gracilis				
 1081	Sagina apetala erecta	(Hornem.) F.Herm.	subspecies	Plantae	Sagina apetala subsp. erecta				
-1085	Salsola kali kali	L.	subspecies	Plantae	Salsola kali subsp. kali				
-1087	Carex oederi oederi	Retz.	subspecies	Plantae	Carex oederi subsp. oederi				
+1085	Salsola kali kali	L.	subspecies	Plantae		EMPTY	variety		remove authorship and update rank
+1087	Carex oederi oederi	Retz.	subspecies	Plantae	Carex oederi subsp. oederi	EMPTY			remove authorship
 1105	Phleum pratense pratense	L.	subspecies	Plantae	Phleum pratense subsp. pratense				
 1110	Vulpia ciliata ciliata	Dumort.	subspecies	Plantae	Vulpia ciliata subsp. ciliata				
-1111	Montia fontana chondrosperma	Fenzl	subspecies	Plantae	Montia fontana subsp. chondrosperma				
-1117	Salix cinerea cinerea	L.	subspecies	Plantae	Salix cinerea subsp. cinerea				
+1111	Montia fontana chondrosperma	Fenzl	subspecies	Plantae	Montia fontana subsp. chondrosperma	(Fenzl) Walters			
+1117	Salix cinerea cinerea	L.	subspecies	Plantae	Salix cinerea subsp. cinerea	EMPTY			remove authorship: it is related to the species. However, such subspecies is not found in GBIF Backbone.
 1311	Leptosphaeria arundinacea godini	(Desm.) Sacc.	subspecies	Fungi	Leptosphaeria arundinacea var. godinii		variety		
 1312	doliolum		subspecies	Fungi	Leptosphaeria doliolum doliolum				
 1316	hoehnelii		subspecies	Fungi	Phoma hoehnelii hoehnelii				
@@ -108,7 +108,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 22507	Phyllonorycter kleemannella	(Fabricius, 1781)	species	Animalia	Phyllonorycter klemannella				
 23765	Motacilla yarrellii Gould,	Gould, 1837	subspecies	Animalia	Motacilla yarrellii		species		
 23778	Actitis macularius	(Linnaeus, 1766)	species	Animalia	Actitis macularia				
-24423	ephippius		species	Animalia	Parodontodynerus ephippius				
+24423	Parodontodynerus ephippius		species	Animalia		(Klug, 1817)			add authorship
 24425	Polistes dominulus	(Christ, 1791)	species	Animalia	Polistes dominula				
 24618	Botrytella sp.		species	Chromista	Botrytella		genus		
 24622	Elachista sp.		species	Chromista	Elachista		genus		
@@ -192,7 +192,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 45964	Xanthophyta		phylum	Plantae				Chromista	
 45970	Myxomycota		phylum	Fungi			division		taxon rank improved, but invalid GBIF taxonomic rank
 46177	Dama Linnaeus,	Linnaeus, 1758	species	Animalia	Dama dama				
-46188	Motacilla flavissima Blyth,	Blyth, 1834	subspecies	Animalia	 Motacilla flava subsp. flavissima				
+46188	Motacilla flavissima Blyth,	Blyth, 1834	subspecies	Animalia	Motacilla flava subsp. flavissima				
 46189	Saxicola torquata	Linnaeus, 1766	species	Animalia	Saxicola torquatus				
 46191	Ciliophora	Doflein, 1901	phylum	Animalia				Chromista	
 46261	Halictoxenos sp.		species	Animalia	Halictoxenos		genus		
@@ -207,7 +207,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 49833	Cuon alpinus europaeus		species				subspecies		
 49842	Microtus malei	Schrank 1798	species			Hinton, 1927			updated author from Schrank 1798
 49939	Anas platyrhynchos f. domestica		forma	Animalia	Anas platyrhynchos f. domesticus				
-49942	Zygoribatula terricola	von der Hammen, 1952	species			der Hammen, 1952			
+49942	Zygoribatula terricola	von der Hammen, 1952	species			der Hammen, 1952	subpspecies		updated rank and author from von der Hammen, 1952
 50009	Mustela nivalis rixosa		species				subspecies		
 50013	Radix peregra		forma				species		
 50015	Equus caballus germanicus		species				subspecies		
