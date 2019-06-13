@@ -389,3 +389,12 @@ taxa_gbif_parent_key_complete %>%
 
 Notice how the old parent ID is a species, while the new one is a genus. This is due to the fact that Amanita excelsa form. excelsa and Amanita excelsa form. spissa	are both synonyms of the species [Amanita excelsa (Fr.) Bertill., 1866](https://www.gbif.org/species/8340529), so for GBIF their parent is the genus Amanita.
 
+# Save final version of taxa
+
+We save the taxa with corrected parent IDs:
+
+```{r save_taxa_parentid_corrected}
+write_tsv(taxa_gbif_parent_key_complete,
+          here("data", "output", "taxa_parentid_corrected.tsv"),
+          na = "")
+```
