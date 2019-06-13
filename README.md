@@ -6,7 +6,9 @@ Validation of species list of Brussels Environment Departement
 
 Test connection to database by following documentation in [test connectivity script](http://inbo.github.io/ibge-bim-species/test_connectivity.html) (Appendix 1). Please, be aware that connection to `ibge_dev` database is restricted and login credentials are needed.
 
-## Workflow
+## Improve parent ID 
+
+### Workflow
 
 The steps followed during validation are divided in a series of scripts:
 
@@ -16,7 +18,7 @@ The steps followed during validation are divided in a series of scripts:
   4. [Match to GBIF Taxonomy Backbone](http://inbo.github.io/ibge-bim-species/match_used_corrected_taxa_gbif.html).
   5. [Assign parent IDs](http://inbo.github.io/ibge-bim-species/parentid_5_set_parentids_after_match_to_gbif.html) based on parent relationships in GBIF Backbone
 
-## Appendix 2. Build reference file correcting taxonomic information
+### Appendix 2. Build reference file correcting taxonomic information
 
 We build a [reference file](https://github.com/inbo/ibge-bim-species/blob/master/references/corrected_taxa.tsv) to correct taxonomic informations in order to improve match and provide description of the problems while matchin to GBIF Taxonomy Backbone. This is performed in a two-step procedure:
 
