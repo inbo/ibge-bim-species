@@ -1,0 +1,400 @@
+---
+title: "Set parent IDs based on GBIF Taxonomy Backbone"
+author:
+  - Damiano Oldoni
+  - Lien Reyserhove
+  - Peter Desmet
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(tidyverse)  # To do data science
+library(tidylog)    # To provide feedback on dplyr functions
+library(here)       # To work with paths
+library(rgbif)      # To work with GBIF 
+```
+
+# Read taxa
+
+Read taxa after match with GBIF Backbone from `./data/interim/taxa_final_match_gbif.tsv`:
+
+```{r read_taxa_gbif_after_match}
+taxa_match_gbif <- read_tsv(
+  here("data", "interim", "taxa_final_match_gbif.tsv"),
+  col_types = cols(
+    .default = col_character(),
+    id = col_double(),
+    n_occs = col_double(),
+    parentid = col_double(),
+    media = col_logical(),
+    speciesbeparentid = col_double(),
+    bruenvi_created = col_date(format = "%Y-%m-%d"),
+    bruenvi_modified = col_date(format = "%Y-%m-%d"),
+    kingdom_id = col_double(),
+    gbif_usageKey = col_double(),
+    gbif_confidence = col_double(),
+    gbif_kingdomKey = col_double(),
+    gbif_phylumKey = col_double(),
+    gbif_classKey = col_double(),
+    gbif_orderKey = col_double(),
+    gbif_familyKey = col_double(),
+    gbif_genusKey = col_double(),
+    gbif_synonym = col_logical(),
+    gbif_acceptedUsageKey = col_double(),
+    gbif_speciesKey = col_double())
+)
+```
+
+Number of taxa matched with GBIF:
+
+```{r taxa_match_gbif_count_matchType}
+taxa_match_gbif %>%
+  group_by(gbif_matchType) %>%
+  count()
+```
+
+If we limit to used taxa:
+
+```{r used_taxa_match_gbif_count_matchType}
+taxa_match_gbif %>%
+  filter(used == TRUE) %>%
+  group_by(gbif_matchType) %>%
+  count()
+```
+
+# Set parent ID based on GBIF match
+
+## Get GBIF parent key
+
+The match to GBIF Backbone doesn't return a field with the parent key. However, we can retrieve it easily by using another rgbif function: `name_usage`. We add this information in column `gbif_parentKey`. We apply it at the moment only to used taxa. **Note: this step can take long**.
+
+```{r set_gbif_parentKey, cache=TRUE}
+used_taxa_match_gbif <- 
+  taxa_match_gbif %>%
+  filter(used == TRUE)
+# progress bar 
+pb <- progress_estimated(nrow(taxa_match_gbif))
+
+# function to get parent key - wrapper around name_usage
+get_gbif_parent_key <- function(gbif_usageKey) {
+  pb$tick()$print()
+  parent_key <- NA_real_
+  if (!is.na(gbif_usageKey)) {
+    data <- name_usage(gbif_usageKey, 
+             return = "data")
+    if ("parentKey" %in% names(data)) {
+      parent_key <- 
+        data %>% 
+        pull(parentKey)
+    }
+  }
+  return(parent_key)
+}
+
+# apply function to all taxa
+taxa_gbif_parent_key <- 
+  taxa_match_gbif %>%
+  mutate(gbif_parentKey = map_dbl(gbif_usageKey,
+                                   get_gbif_parent_key))
+```
+
+## Check completeness GBIF parent keys
+
+We check the completeness of the taxonomic tree as provided by GBIF. We search parents in not used taxa as well and we add them to the used taxa. 
+
+```{r add_parents_in_unused_taxa}
+used_taxa_gbif_parent_key <- 
+  taxa_match_gbif %>%
+  filter(used == FALSE) %>%
+  filter(gbif_usageKey %in% used_taxa_gbif_parent_key$gbif_parentKey) %>%
+  bind_rows(used_taxa_gbif_parent_key) %>%
+  arrange(id)
+```
+
+Parents found in unused taxa:
+
+```{r n_parents_in_used_unused_taxa}
+used_taxa_gbif_parent_key %>%
+  filter(used == FALSE) %>%
+  nrow()
+```
+
+Number of taxa whose GBIF parent keys are (not) present in taxa:
+
+```{r parent_in_db}
+used_taxa_gbif_parent_key %>% 
+  filter(!is.na(gbif_usageKey)) %>%
+  group_by(gbif_parentKey %in% (used_taxa_gbif_parent_key$gbif_usageKey)) %>%
+  summarize(n_taxa = n()) %>%
+  rename(parent_in_db = "gbif_parentKey %in% (used_taxa_gbif_parent_key$gbif_usageKey)")
+```
+
+More detailed summary about used taxa with no parents:
+
+```{r missing_parent_key_status_rank}
+used_taxa_gbif_parent_key %>% 
+  filter(!is.na(gbif_usageKey)) %>%
+  group_by(gbif_parentKey %in% used_taxa_gbif_parent_key$gbif_usageKey,
+           gbif_rank,
+           gbif_status) %>%
+  rename(parent_in_db = "gbif_parentKey %in% used_taxa_gbif_parent_key$gbif_usageKey") %>%
+  filter(parent_in_db == FALSE) %>%
+  count() %>%
+  arrange(desc(n))
+```
+
+As some taxa share same parent keys, we list here below the missing parent keys, ordered by the number of taxa pointing to them:
+
+```{r not_present_parent_keys}
+used_taxa_gbif_parent_key %>%
+  filter(!gbif_parentKey %in% used_taxa_gbif_parent_key$gbif_usageKey) %>%
+  group_by(gbif_parentKey) %>%
+  count() %>%
+  arrange(desc(n))
+```
+
+This means, for example, that just adding [Coprinopsis Beeli (GBIF key 6005961)](https://www.gbif.org/species/6005961) to taxonomic table would provide a parent key to 77 taxa.
+
+Number of unique GBIF parent keys we need to add:
+
+```{r}
+used_taxa_gbif_parent_key %>%
+  filter(!gbif_parentKey %in% used_taxa_gbif_parent_key$gbif_usageKey) %>%
+  distinct(gbif_parentKey) %>%
+  nrow()
+```
+
+## Add missing taxa
+
+We add now the missing taxa pointed by parent keys in order to complete the taxonomic tree. 
+
+First, we retrieve such taxa from GBIF Backbone:
+
+```{r get_missing_taxa_pointed_by_parentKey, cache=TRUE}
+# select GBIF fields: add authorship
+gbif_fields <- 
+  used_taxa_gbif_parent_key %>% 
+  select(starts_with("gbif")) %>%
+  names()
+gbif_fields <- c(gbif_fields, "gbif_authorship")
+
+get_gbif_taxonomic_info <- function(key) {
+  name_usage(key, return = "data")
+}
+
+missing_gbif_keys <- 
+  used_taxa_gbif_parent_key %>%
+  filter(!gbif_parentKey %in% used_taxa_gbif_parent_key$gbif_usageKey) %>%
+  distinct(gbif_parentKey) %>%
+  pull()
+
+gbif_info_missing_taxa <- map_dfr(missing_gbif_keys, get_gbif_taxonomic_info)
+gbif_info_missing_taxa <- 
+  gbif_info_missing_taxa %>% 
+  rename(usageKey = key)
+
+names(gbif_info_missing_taxa) <- paste0("gbif_", 
+                                          names(gbif_info_missing_taxa))
+gbif_info_missing_taxa <- 
+  gbif_info_missing_taxa %>%
+  select(one_of(gbif_fields))
+```
+
+To add them to other taxa we need to set `acceptedname` and `scientificnameauthorship` equal to `gbif_canonicalName` and `gbif_authorship` respectively. We can also fill the taxonomic rank in  `taxonranken`:
+
+```{r set_acceptedname_authorship}
+gbif_info_missing_taxa <-
+  gbif_info_missing_taxa %>%
+  mutate(acceptedname = case_when(
+    is.na(gbif_canonicalName) ~ gbif_scientificName, # 9659865: genus Festuca x Lolium
+    TRUE ~ gbif_canonicalName)) %>%
+  rename(scientificnameauthorship = gbif_authorship) %>%
+  mutate(taxonranken = tolower(gbif_rank))
+```
+
+We also add column `id` with unique identifier. For easier identification, we assign them numbers higher than 100000 (maximum `id` of taxa in `biodiv.taxon` table: 51833). **Note: while inserting new taxa to a database, the id will be created authomatically by database. Column `id` is therefore not needed, but it is handy for working with data.frames.**
+
+```{r set-id}
+gbif_info_missing_taxa <-
+  gbif_info_missing_taxa %>%
+  mutate(id = seq(1:nrow(gbif_info_missing_taxa))+100000) %>%
+  select(id, acceptedname, scientificnameauthorship, taxonranken, everything())
+```
+
+These taxa are now ready to be added to the other taxa. We flag thm by adding column `added_from_gbif` with value `TRUE`, while the other ones get value `FALSE`:
+
+```{r add_gbif_info_missing_taxa_to_taxa_gbif_parent_key}
+used_taxa_gbif_parent_key_complete <-
+  used_taxa_gbif_parent_key %>%
+  bind_rows(gbif_info_missing_taxa)
+used_taxa_gbif_parent_key_complete <-
+  used_taxa_gbif_parent_key_complete %>%
+  mutate(added_from_gbif = ifelse(id > 100000, TRUE, FALSE))
+```
+
+## Assign parent ID based on GBIF parent keys
+
+We map now all GBIF parent keys to internal parent IDs:
+
+```{r assign_parent_id}
+find_parentid <- function(parent_key) {
+  suppressMessages(
+    parent_id <- 
+      used_taxa_gbif_parent_key_complete %>%
+      filter(gbif_usageKey == parent_key)
+  )
+  if (nrow(parent_id) > 1) {
+    # remove duplicates based on number of occurences
+    if (any(!is.na(parent_id$n_occs))) {
+      suppressMessages(
+        parent_id <- 
+          parent_id %>%
+          filter(n_occs == max(n_occs, na.rm =  TRUE))
+      )
+    } else {
+      # remove duplicates based on id number
+      suppressMessages(
+        parent_id <- 
+          parent_id %>%
+          filter(id == min(id))
+      )
+    }
+  }
+  if (nrow(parent_id) > 0) {
+    parent_id <- 
+      parent_id %>%
+      pull(id)
+  } else {
+    NA_real_
+  }
+}
+
+gbif_parent_keys <- 
+  used_taxa_gbif_parent_key_complete %>%
+  filter(!is.na(gbif_parentKey)) %>%
+  distinct(gbif_parentKey)
+
+gbif_parent_keys <- 
+  gbif_parent_keys %>%
+  mutate(parentid_corrected = map_dbl(gbif_parentKey, find_parentid))
+```
+
+We can now add the new parent IDs to data.frame. In order to maintain changes and compare the new parent IDs with the old ones, we add these values in new column called `parentid_corrected`:
+
+```{r add_new_parentids_to_df}
+used_taxa_gbif_parent_key_complete <- 
+  used_taxa_gbif_parent_key_complete %>%
+  left_join(gbif_parent_keys,
+            by = "gbif_parentKey")
+```
+
+## Analyze changes
+
+### Overview
+
+Number of taxa with changed parent IDs (`parentid` not equal to `parentid_corrected`, but both present):
+
+```{r n_taxa_changed_parentid}
+used_taxa_gbif_parent_key_complete %>%
+  filter(!is.na(parentid) & !is.na(parentid_corrected)) %>%
+  group_by(parentid == parentid_corrected) %>%
+  count()
+```
+
+Taxa with changed parent ID grouped by rank, status, and match type:
+
+```{r taxa_changed_parentid_grouped_rank_status_matchType}
+used_taxa_gbif_parent_key_complete %>%
+  filter(parentid != parentid_corrected) %>%
+  group_by(gbif_matchType, gbif_rank, gbif_status) %>%
+  count() %>%
+  arrange(desc(n))
+```
+
+Notice the high number of synonyms.
+
+Number of taxa with missing parent ID improved:
+
+```{r n_taxa_added_parentid}
+used_taxa_gbif_parent_key_complete %>%
+  filter(is.na(parentid) & !is.na(parentid_corrected)) %>%
+  nrow()
+```
+
+And viceversa, number of taxa where parent ID has been removed (due to unmatch to GBIF Backbone):
+
+```{r n_taxa_removed_parentid}
+used_taxa_gbif_parent_key_complete %>%
+  filter(!is.na(parentid) & is.na(parentid_corrected)) %>%
+  count(used)
+```
+
+### Examples
+
+Example 1: [Rana lessonae Camerano, 1882](https://www.gbif.org/species/2426655) and [Rana ridibunda Pallas (1771)](https://www.gbif.org/species/2426662):
+
+```{r examples_ranas}
+taxa_gbif_parent_key_complete %>%
+  filter(acceptedname %in% c("Rana lessonae", "Rana ridibunda")) %>%
+  filter(parentid != parentid_corrected) %>%
+  select(id, 
+         acceptedname, 
+         scientificnameauthorship, 
+         parentid, 
+         parentid_corrected, 
+         everything())
+```
+
+Following GBIF backbone, the old `parentid` 37158 ([Rana	Linnaeus, 1758](https://www.gbif.org/species/2422253)), should be replaced by `parentid_corrected` 50707 ([Pelophylax](https://www.gbif.org/species/2426629)):
+
+```{r}
+taxa_gbif_parent_key_complete %>%
+  filter(id %in% c(37158, 50707)) %>%
+  select(id, 
+         acceptedname, 
+         scientificnameauthorship, 
+         parentid, 
+         parentid_corrected, 
+         everything())
+```
+
+Example 2: [Amanita excelsa form. excelsa](https://www.gbif.org/species/7242029) and [Amanita excelsa form. spissa (Fr.)](https://www.gbif.org/species/7638757):
+
+```{r example2_}
+taxa_gbif_parent_key_complete %>%
+  filter(acceptedname %in% c("Amanita excelsa form. excelsa",
+                             "Amanita excelsa form. spissa")) %>%
+  select(id, 
+         acceptedname, 
+         scientificnameauthorship, 
+         gbif_status,
+         parentid, 
+         parentid_corrected, 
+         everything())
+```
+
+Following GBIF Backbone, the old `parentid` 26780 ([Rana	Linnaeus, 1758](https://www.gbif.org/species/2422253)), should be replaced by `parentid_corrected` 41810 ([]()):
+
+```{r}
+taxa_gbif_parent_key_complete %>%
+  filter(id %in% c(37158, 50707)) %>%
+  select(id, 
+         acceptedname, 
+         scientificnameauthorship, 
+         parentid, 
+         parentid_corrected, 
+         everything())
+```
