@@ -8,11 +8,15 @@ navbar:
       href: ""
       menu:
       - text: "Get taxa from database"
-        href: get_taxa_from_db.html
+        href: parentid_1_get_taxa_from_db.html
       - text: "Find used taxa"
-        href: detect_used_taxa.html
+        href: parentid_2_detect_used_taxa.html
       - text: "Correct taxonomic information by reference file"
-        href: apply_corrections_names_by_ref_file.html
+        href: parentid_3_apply_corrections_names_by_ref_file.html
+      - text: "Match corrected taxa to GBIF Backbone"
+        href: parentid_4_match_corrected_taxa_gbif.html
+      - text: "Set parent ID"
+        href: parentid_5_set_parentids_after_match_to_gbif.html
     - text: "Appendix 1. Setup connection"
       href: ""
       menu:
@@ -22,9 +26,9 @@ navbar:
       href: ""
       menu:
       - text: "Add kingdom based on parent IDs"
-        href: appendix_2_add_kingdom.html
+        href: appendix_2_1_add_kingdom.html
       - text: "Match taxa to GBIF Taxonomy Backbone"
-        href: appendix_2_match_taxa_gbif_backbone.html
+        href: appendix_2_2_match_taxa_gbif_backbone.html
   right:
   - icon: fa-github fa-lg
     href: https://github.com/inbo/ibge-bim-species
