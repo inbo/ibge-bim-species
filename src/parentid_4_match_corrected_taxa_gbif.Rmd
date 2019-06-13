@@ -20,7 +20,7 @@ knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding =
 
 ## Load libraries
 
-```{r match_corrected_taxa_to_gbif-load_libs}
+```{r parentid_4_match_corrected_taxa_to_gbif-load_libs}
 library(tidyverse)  # To do data science
 library(tidylog)    # To provide feedback on dplyr functions
 library(here)       # To work with paths
@@ -33,7 +33,7 @@ library(inborutils) # To match taxa (rgbif called in background)
 
 We read the taxa with the corrected name, rank and kingdom information:
 
-```{r match_corrected_taxa_to_gbif-read_flagged_taxa}
+```{r parentid_4_match_corrected_taxa_to_gbif-read_flagged_taxa}
 taxa_after_correction <- read_tsv(
   here("data", "interim", "corrected_flagged_taxa.tsv"),
   col_types = cols(
@@ -50,7 +50,7 @@ taxa_after_correction <- read_tsv(
 
 The column `corrected` acts as a flag to indicate whether experts corrected any of  `acceptedname`, `scientificnameauthorship`, `bim_kingdom` or `taxonranken`. Number of taxa after correction:
 
-```{r match_corrected_taxa_to_gbif-n_corrected_in_use}
+```{r parentid_4_match_corrected_taxa_to_gbif-n_corrected_in_use}
 taxa_after_correction %>%
   group_by(corrected) %>%
   summarize(n_taxa = n())
@@ -62,7 +62,7 @@ Notice that the great majority of taxa don't need to be corrected!
 
 We read the full `taxa` after applying the first attempts to match taxa  with GBIF Taxonomy Backbone:
 
-```{r match_corrected_taxa_to_gbif-read_taxa_table_with_GBIF}
+```{r parentid_4_match_corrected_taxa_to_gbif-read_taxa_table_with_GBIF}
 taxa_gbif <- read_tsv(here("data", "interim", "taxa_gbif.tsv"),
                       col_types = cols(
                         .default = col_character(),
@@ -90,7 +90,7 @@ taxa_gbif <- read_tsv(here("data", "interim", "taxa_gbif.tsv"),
 
 The columns with prefix `gbif_` come from GBIF. The column `gbif_matchType` is particularly important as it indicates the type of match:
 
-```{r match_corrected_taxa_to_gbif-type_of_match}
+```{r parentid_4_match_corrected_taxa_to_gbif-type_of_match}
 taxa_gbif %>%
   distinct(gbif_matchType)
 ```
@@ -99,7 +99,7 @@ taxa_gbif %>%
 
 First, we add the columns coming from GBIF to `taxa_after_correction`:
 
-```{r match_corrected_taxa_to_gbif-add_GBIF_info_to_taxa_after_correction}
+```{r parentid_4_match_corrected_taxa_to_gbif-add_GBIF_info_to_taxa_after_correction}
 taxa_after_correction <-
   taxa_after_correction %>%
   left_join(taxa_gbif %>%
@@ -109,7 +109,7 @@ taxa_after_correction <-
 
 Type of match of taxa with `corrected` equal to `TRUE`:
 
-```{r match_corrected_taxa_to_gbif-n_taxa_corrected_is_true}
+```{r parentid_4_match_corrected_taxa_to_gbif-n_taxa_corrected_is_true}
 corrected_taxa <-
   taxa_after_correction %>%
   filter(corrected == TRUE)
@@ -126,7 +126,7 @@ After being corrected, these taxa can be matched again to GBIF Backbone.
 
 We paste `acceptedname` and `scientificnameauthorship` together in column `name_for_gbif`, which will be used for match:
 
-```{r match_corrected_taxa_to_gbif-prepare_name}
+```{r parentid_4_match_corrected_taxa_to_gbif-prepare_name}
 corrected_taxa <-
   corrected_taxa %>%
   select(-starts_with("gbif")) %>%
@@ -142,7 +142,7 @@ corrected_taxa <-
 
 Map rank to GBIF vocabulary:
 
-```{r match_corrected_taxa_to_gbif-corrected_taxa_rank_for_gbif}
+```{r parentid_4_match_corrected_taxa_to_gbif-corrected_taxa_rank_for_gbif}
 corrected_taxa <-
   corrected_taxa %>%
   mutate(rank_for_gbif = recode(taxonranken,
@@ -159,7 +159,7 @@ corrected_taxa <-
 
 GBIF terms we are interested to:
 
-```{r match_corrected_taxa_to_gbif-gbif_terms}
+```{r parentid_4_match_corrected_taxa_to_gbif-gbif_terms}
 gbif_terms <- c("matchType",
                 "confidence", 
                 "rank", 
@@ -189,7 +189,7 @@ gbif_terms <- c("matchType",
 
 We match by name using also columns containing kingdom information (`bim_kingdom`) and rank (`rank_for_gbif`). We require a strict match, `strict = TRUE` to avoid fuzzy match with higher classification.
 
-```{r match_corrected_taxa_to_gbif-get_name_gbif, cache=TRUE}
+```{r parentid_4_match_corrected_taxa_to_gbif-get_name_gbif, cache=TRUE}
 corrected_taxa_gbif <-
   corrected_taxa %>%
   gbif_species_name_match(name = "name_for_gbif",
@@ -201,7 +201,7 @@ corrected_taxa_gbif <-
 
 We add the prefix `gbif_` to the columns coming from GBIF Backbone:
 
-```{r match_corrected_taxa_to_gbif-add_gbif_prefix}
+```{r parentid_4_match_corrected_taxa_to_gbif-add_gbif_prefix}
 cols_from_gbif <-
 colnames(corrected_taxa_gbif)[
   colnames(corrected_taxa_gbif) %in% gbif_terms]
@@ -212,7 +212,7 @@ colnames(corrected_taxa_gbif)[
 
 Overview match:
 
-```{r match_corrected_taxa_to_gbif-overview_match}
+```{r parentid_4_match_corrected_taxa_to_gbif-overview_match}
 corrected_taxa_gbif %>%
   group_by(gbif_matchType) %>%
   count()
@@ -220,7 +220,7 @@ corrected_taxa_gbif %>%
 
 Unmatched taxa after review:
 
-```{r match_corrected_taxa_to_gbif-taxa_after_correction}
+```{r parentid_4_match_corrected_taxa_to_gbif-taxa_after_correction}
 corrected_taxa_gbif %>%
   filter(gbif_matchType != "EXACT")
 ```
@@ -231,7 +231,7 @@ Notice how the rank of most of the unmached taxa is one of: subclass, division, 
 
 Now that the corrected taxa have been matched to GBIF Backbone and that we have retrieved related taxonomic information from GBIF, we can merge them to the other (used) taxa which didn't need any correction:
 
-```{r match_corrected_taxa_to_gbif-merge_corrected_taxa_to_taxa_gbif}
+```{r parentid_4_match_corrected_taxa_to_gbif-merge_corrected_taxa_to_taxa_gbif}
 taxa_final_match_gbif <-
   taxa_after_correction %>%
   filter(corrected == FALSE) %>%
@@ -243,7 +243,7 @@ taxa_final_match_gbif <-
 
 We save the taxa with added taxonomic information from GBIF Backbone:
 
-```{r match_corrected_taxa_to_gbif-save_taxa_after_final_match_gbif}
+```{r parentid_4_match_corrected_taxa_to_gbif-save_taxa_after_final_match_gbif}
 write_tsv(taxa_final_match_gbif, 
           path = here("data", "interim", "taxa_final_match_gbif.tsv"),
           na = "")
