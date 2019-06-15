@@ -129,7 +129,7 @@ taxa_duplicates_introduced <-
 taxa_duplicates_introduced
 ```
 
-Examples: the genus `Bovista` belongs, following internal parentIDs, to kingdom (`bim_kingdom`) *Fungi*. This taxon matches to GBIF Backbone taxon [*Bovista Pers.*](https://www.gbif.org/species/9441377). However, while [assigning parentIDs](parentid_5_set_parentids_after_match_to_gbif.html) via GBIF Backbone the genus [*Bovista*](https://www.gbif.org/species/9756102) from kingdom `Protozoa` has been added. This shows also how including taxonomy hierarchy would improve the readibility and maintenance of a taxonomic table (see below).
+Examples: the genus `Bovista` belongs, following internal parentIDs, to kingdom (`bim_kingdom`) *Fungi*. This taxon matches to GBIF Backbone taxon [*Bovista Pers.*](https://www.gbif.org/species/9441377). However, while [assigning parentIDs](https://github.com/inbo/ibge-bim-species/blob/master/src/parentid_5_set_parentids_after_match_to_gbif.Rmd) via GBIF Backbone the genus [*Bovista*](https://www.gbif.org/species/9756102) from kingdom `Protozoa` has been added. This shows also how including taxonomy hierarchy would improve the readibility and maintenance of a taxonomic table (see below).
 
 # Unused taxa
 
