@@ -1,0 +1,391 @@
+---
+title: "Conclusions and suggested improvements"
+author:
+  - Damiano Oldoni
+  - Lien Reyserhove
+  - Peter Desmet
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(tidyverse)  # To do data science
+library(tidylog)    # To provide feedback on dplyr functions
+library(here)       # To work with paths
+```
+
+# Proposed changes on table structure
+
+The use of *accepted* taxa in  `biodiv.taxon` and all *identifiable* taxa (link to occurrences) in `identificablespecies` is deprecated. There is no  reason to have two distinct name tables as synonym relationships can be maitained in the very same table, as parent relationships. As the task of assessing parent IDs shows, match to GBIF Backbone solves both **synonym relationships** and **parent relationships**.
+
+We propose a two table solution: 
+1. `bim_taxon` with all names used by BIM
+2. `gbif_taxon` with matched taxa from GBIF Backbone
+
+Experts have to take care of solving unmatched names by manually assigning a gbif key.
+
+Taxa belonging to ranks by GBIF considered wrong should be kept in a third table. See below.
+
+# Read taxa
+
+Read taxa containing the match with GBIF (columns  `gbif_***`) and the corrected parent IDs (column `parentid_corrected`):
+
+```{r read_taxa_parentid_corrected}
+taxa_output <- read_tsv(
+  here("data", "output", "taxa_parentid_corrected.tsv"),
+  na = "", 
+  col_types = cols(
+    .default = col_character(),
+    id = col_double(),
+    n_occs = col_double(),
+    parentid = col_double(),
+    media = col_logical(),
+    speciesbeparentid = col_double(),
+    bruenvi_created = col_date(format = "%Y-%m-%d"),
+    bruenvi_modified = col_date(format = "%Y-%m-%d"),
+    kingdom_id = col_double(),
+    parentid = col_double(),
+    parentid_corrected = col_double(),
+    used = col_logical(),
+    gbif_usageKey = col_double(),
+    gbif_confidence = col_double(),
+    gbif_kingdomKey = col_double(),
+    gbif_phylumKey = col_double(),
+    gbif_classKey = col_double(),
+    gbif_orderKey = col_double(),
+    gbif_familyKey = col_double(),
+    gbif_genusKey = col_double(),
+    gbif_synonym = col_logical(),
+    gbif_acceptedUsageKey = col_double(),
+    gbif_speciesKey = col_double(),
+    gbif_parentKey = col_double(),
+    added_from_gbif = col_logical())
+)
+```
+
+# Duplicates
+
+Based on `acceptedname` and  `scientificnameauthorhsip`, the following duplicates are found:
+
+```{r taxa_duplicates}
+taxa_duplicates <- 
+  taxa_output %>%
+  # do not take into account added taxa from GBIF
+  filter(added_from_gbif == FALSE) %>%
+  count(acceptedname, scientificnameauthorship) %>%
+  filter(n > 1)
+taxa_duplicates <- 
+  taxa_duplicates %>%
+  left_join(taxa_output %>%
+              # do not take into account added taxa from GBIF
+              filter(added_from_gbif == FALSE), 
+            by = c("acceptedname", "scientificnameauthorship")) %>%
+  select(id, acceptedname, scientificnameauthorship, n_occs, 
+         parentid, parentid_corrected, everything()) %>%
+  select(-n) %>%
+  arrange(acceptedname)
+taxa_duplicates
+```
+
+Although here appear 104 duplicates, the real number of duplicates is higher: 139, see [issue #7](https://github.com/inbo/ibge-bim-species/issues/7). This is due to the fact that we didn't correct all unmatched taxa. The reference file `corrected_taxa.tsv` containing the corrections on names takes into account `id` numbers too: so, some taxa have been corrected, others with same names not. Completing the check of all taxa would then solve this apparently incoherence.
+
+Duplicates should be removed, but without loosing link to occurrences (via `identifiablespecies`) and other linked tables. To solve this we have to take into account database constraints (see [issue #15](https://github.com/inbo/ibge-bim-species/issues/15#issuecomment-491191079)). Are these constraints in original database too? This should be discussed with database administrator of BIM.
+
+As shown above, not always the removal of duplicates will be easy: see for example `Anas clypeata`, linekd to two taxa with `id` 3521 and 51681. Such taxa are both linked to many occurrences: 1382 and 236 respectively.
+
+Notice also the presence of duplicates with different `parentid`, e.g. Elachista (`id`: 24622, 40758; `parentid`: 40758, 45061). The use of GBIF Backbone for correcting parentIDs has authomatically solved this issue ( `parentid_corrected`: 45061). It can also happen that both the parentIDs are found not correct by matching with GBIF Backbone, e.g. Macrosiagon (`id`: 18815, 38006; `parentid`: 38006, 44516) with  `parentid_corrected` 44517.
+
+Still, filling parent IDs makes the need of removing duplicates less important as it doesn't affect for example the total number of occurrences. If we use GBIF Backbone to identify taxa, then also the numer of taxa is not affected as duplicates would link to same  `gbifusageKey`.
+
+There is also a group of *introduced* duplicates: these duplicates have been created by adding missing taxa. However, these taxa are not missing: they were just not found in GBIF Backbone. Populating the reference file `/references/corrected_taxa.tsv` (see Appendix 2) and thus solving all mismatches with GBIF Backbone would authomatically remove these introduced duplicates.
+
+```{r taxa_duplicates_introduced}
+taxa_duplicates_introduced <- 
+  taxa_output %>%
+  count(acceptedname, scientificnameauthorship) %>%
+  filter(n > 1)
+taxa_duplicates_introduced <- 
+  taxa_duplicates_introduced %>%
+  left_join(taxa_output, 
+            by = c("acceptedname", "scientificnameauthorship")) %>%
+  select(id, acceptedname, scientificnameauthorship, 
+         parentid, parentid_corrected, n_occs, everything()) %>%
+  select(-n) %>%
+  # introduced duplicates only
+  anti_join(taxa_duplicates) %>%
+  arrange(acceptedname)
+taxa_duplicates_introduced
+```
+
+Examples: the genus `Bovista` belongs, following internal parentIDs, to kingdom (`bim_kingdom`) *Fungi*. This taxon matches to GBIF Backbone taxon [*Bovista Pers.*](https://www.gbif.org/species/9441377). However, while [assigning parentIDs](parentid_5_set_parentids_after_match_to_gbif.html) via GBIF Backbone the genus [*Bovista*](https://www.gbif.org/species/9756102) from kingdom `Protozoa` has been added. This shows also how including taxonomy hierarchy would improve the readibility and maintenance of a taxonomic table (see below).
+
+# Unused taxa
+
+During this project we found that most of the taxa are not used in any linked table:
+
+```{r summary_used_taxa}
+taxa_output %>%
+  count(used)
+```
+
+where `NA` refers to taxa added from GBIF Backbone while improving parent IDs.
+
+# Invalid ranks
+
+Some taxonomic rank values (field `taxonranken`) are not recognized by GBIF:
+
+1. `forma`: set to `form`
+2. `subforma`: set to `subform`
+3. `informal group`: impossible to be mapped to GBIF valid rank values
+4. `division`: in botany and micology equivalent to phylum
+5; `super*` or `sub*`, e.g. superoder, subfamily, etc. 
+
+See summary:
+
+```{r summary_taxonranken}
+taxa_output %>%
+  count(taxonranken)
+```
+
+## Division
+
+Taxa with rank `division:
+
+```{r taxa_division}
+taxa_output %>%
+  filter(taxonranken == "division")
+```
+
+Just one occurrence linked to this taxon.
+
+Is it used as parent of other taxa?
+
+```{r taxa_division_parents}
+taxa_output %>%
+  filter(taxonranken == "division") %>%
+  filter(id %in% taxa_output$parentid)
+```
+
+## Informal group
+
+Taxa with rank `informal group`:
+
+```{r taxa_informal_group}
+taxa_output %>%
+  filter(taxonranken == "informal group")
+```
+
+Among these taxa, the following are used as parent IDs:
+
+```{r taxa_informalgroup_parents}
+taxa_output %>%
+  filter(taxonranken == "informal group") %>%
+  filter(id %in% taxa_output$parentid)
+```
+
+Relative low number of occurrences related to. To be discussed with BIM experts the need of holding them in taxa table.
+
+## Suborders, subfamily, superfamily, ...
+
+Taxa with ranks: `sub*` (excepted `subspecies`), `super*`,  `infra*`:
+
+```{r taxa_sub_super_infra}
+taxa_output %>%
+  filter(taxonranken %in% c("subfamily",
+                            "subgenus",
+                            "suborder",
+                            "subphylum",
+                            "superfamily",
+                            "superorder",
+                            "infraorder")
+)
+```
+
+Some of them are not used or linked to very few occurrences.
+
+Among these taxa, the following ones are parents of other taxa:
+
+```{r taxa_sub_super_infra_parents}
+taxa_output %>%
+  filter(taxonranken %in% c("subfamily",
+                            "subgenus",
+                            "suborder",
+                            "subphylum",
+                            "superfamily",
+                            "superorder",
+                            "infraorder")) %>%
+  filter(id %in% taxa_output$parentid)
+```
+
+Due to the impossibility of matching to GBIF Backbone and the fact that they are not included in taxonomic hierarchy we suggest to define the lists of GBIF taxa they refer to in a separate table. In this way it would be possible to get the total number of occurrences linked to them. However, take into account that such lists have to be actively maintained.
+
+Here below a minimal example with *Batoidea* and *Selachimorpha*:
+
+id | name | gbifUsageKey
+--- | --- | ---
+1 | Batoidea | [8214029](https://www.gbif.org/species/8214029)
+2 | Batoidea | [884](https://www.gbif.org/species/884)
+3 | Batoidea | [9412443](https://www.gbif.org/species/9412443)
+4 | Batoidea | [881](https://www.gbif.org/species/881)
+5 | Selachimorpha | [887](https://www.gbif.org/species/887)
+5 | Selachimorpha | [886](https://www.gbif.org/species/886)
+5 | Selachimorpha | [770](https://www.gbif.org/species/770)
+5 | Selachimorpha | [885](https://www.gbif.org/species/885)
+5 | Selachimorpha | [769](https://www.gbif.org/species/769)
+5 | Selachimorpha | [767](https://www.gbif.org/species/767)
+5 | Selachimorpha | [883](https://www.gbif.org/species/883)
+5 | Selachimorpha | [882](https://www.gbif.org/species/882)
+
+Ancillary information as vernacular names can be added in extra columns.
+
+# Inactive columns
+
+## `colid`
+
+Column `colid` contains the Catalogue of Life identifiers. However, it seems that they are not persistent as expected, which is the reason it is impossible to search by identifier on [Catalogue of Life](https://www.catalogueoflife.org/). To know more about, read [this blogpost](see this interesting blogpost: http://iphylo.blogspot.com/2013/11/catalogue-of-life-and-lsids-catalogue.html). Why maintaining this column in `biodiv.taxon`?
+
+# Synonyms
+
+In `identifiablespecies` all taxa linked to occurrences are present. In this table synonym relationships are maintained so that only accepted taxa are present in table `biodiv.taxon`. This explains the reason of calling the column with canonical names `acceptedname`. However, as shown below many taxa are not accepted:
+
+```{r n_taxa_taxonomicstatusen}
+taxa_output %>%
+  count(taxonomicstatusen) %>%
+  arrange(desc(n))
+```
+
+In particular, we find strange the use of *teleomorph* and *anamorph* as taxonomic status: they are related to life stages of some fungi and have nothing to do with taxonomic status. 
+
+Based on GBIF Backbone, it seems that 5746 taxa with `taxonomicstatusen` equal to `accepted` are synonyms:
+
+```{r}
+taxa_output %>%
+  count(taxonomicstatusen, gbif_status) %>%
+  arrange(desc(n))
+```
+
+The two-table solution proposed at the beginning of this document would authomatically solve this incoherence.
+
+# Improve parent IDs
+
+## Added taxa
+
+In order to complete taxonomic hierarchy we added some taxa from GBIF Backbone. We flagged them by using column `added_from_gbif`. Number of added taxa:
+
+```{r n_added_taxa}
+taxa_output %>%
+  filter(added_from_gbif == TRUE) %>%
+  nrow()
+```
+
+## Overview
+
+Number of taxa with changed parent IDs (`parentid` not equal to `parentid_corrected`, but both present):
+
+```{r n_taxa_changed_parentid}
+taxa_output %>%
+  filter(!is.na(parentid) & !is.na(parentid_corrected)) %>%
+  group_by(parentid == parentid_corrected) %>%
+  count()
+```
+
+Taxa with changed parent ID grouped by rank, status, and match type:
+
+```{r taxa_changed_parentid_grouped_rank_status_matchType}
+taxa_output %>%
+  filter(parentid != parentid_corrected) %>%
+  group_by(gbif_matchType, gbif_rank, gbif_status) %>%
+  count() %>%
+  arrange(desc(n))
+```
+
+Notice the high number of synonyms.
+
+Number of taxa with missing parent ID improved:
+
+```{r n_taxa_added_parentid}
+taxa_output %>%
+  filter(is.na(parentid) & !is.na(parentid_corrected)) %>%
+  nrow()
+```
+
+And viceversa, number of taxa where parent ID has been removed (due to unmatch to GBIF Backbone):
+
+```{r n_taxa_removed_parentid}
+taxa_output %>%
+  filter(!is.na(parentid) & is.na(parentid_corrected)) %>%
+  count()
+```
+
+As we focussed mainly on used taxa while controlling taxa against GBIF Backbone, it is normal that the majority of not assigned parent IDs belongs to the group of taxa labelled as unused.
+
+## Examples
+
+Example 1: [Rana lessonae Camerano, 1882](https://www.gbif.org/species/2426655) and [Rana ridibunda Pallas (1771)](https://www.gbif.org/species/2426662):
+
+```{r example_ranas}
+taxa_output %>%
+  filter(acceptedname %in% c("Rana lessonae", "Rana ridibunda")) %>%
+  filter(parentid != parentid_corrected) %>%
+  select(id, 
+         acceptedname, 
+         scientificnameauthorship, 
+         parentid, 
+         parentid_corrected, 
+         everything())
+```
+
+Following GBIF backbone, the old `parentid` 37158 ([Rana	Linnaeus, 1758](https://www.gbif.org/species/2422253)), should be replaced by `parentid_corrected` 50707 ([Pelophylax](https://www.gbif.org/species/2426629)):
+
+```{r example_ranas_parents}
+taxa_output %>%
+  filter(id %in% c(37158, 50707)) %>%
+  select(id, 
+         acceptedname, 
+         scientificnameauthorship, 
+         parentid, 
+         parentid_corrected, 
+         everything())
+```
+
+Example 2: [Amanita excelsa form. excelsa](https://www.gbif.org/species/7242029) and [Amanita excelsa form. spissa (Fr.)](https://www.gbif.org/species/7638757):
+
+```{r example_amanitas}
+taxa_output %>%
+  filter(acceptedname %in% c("Amanita excelsa form. excelsa",
+                             "Amanita excelsa form. spissa")) %>%
+  select(id, 
+         acceptedname, 
+         scientificnameauthorship, 
+         gbif_status,
+         parentid, 
+         parentid_corrected, 
+         everything())
+```
+
+Following GBIF Backbone, the old `parentid` 26780 ([Amanita excelsa (Fr.) Bertill., 1866](https://www.gbif.org/species/8340529)), should be replaced by `parentid_corrected` 41810 ([Amanita Pers.](https://www.gbif.org/species/2526057)):
+
+```{r example_amanitas_parents}
+taxa_output %>%
+  filter(id %in% c(26780, 41810)) %>%
+  select(id, 
+         acceptedname, 
+         scientificnameauthorship, 
+         parentid, 
+         parentid_corrected, 
+         everything())
+```
+
+Notice how the old parent ID is a species, while the new one is a genus. This is due to the fact that *Amanita excelsa form. excelsa* and *Amanita excelsa form. spissa*	are both synonyms of species [Amanita excelsa (Fr.) Bertill., 1866](https://www.gbif.org/species/8340529), so for GBIF their parent is the genus *Amanita*.
