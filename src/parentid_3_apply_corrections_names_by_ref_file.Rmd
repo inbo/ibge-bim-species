@@ -30,7 +30,7 @@ library(here)       # To work with paths
 
 ## Read taxa
 
-We read taxa which we will further use to build the improved `taxa` table. In [previous pipeline](https://inbo.github.io/ibge-bim-species/parentid_2_detect_used_taxa.html) we added flag `used` to indicate whether the taxon is used in higher taxonomy or in linked tables.
+We read taxa which we will further use to build the improved `taxa` table. In [previous pipeline](https://github.com/inbo/ibge-bim-species/blob/master/src/parentid_2_detect_used_taxa.Rmd) we added flag `used` to indicate whether the taxon is used in higher taxonomy or in linked tables.
 
 ```{r apply_corrections_names_by_ref_file-read_flagged_taxa}
 flagged_taxa <- read_tsv(here("data", "interim", "flagged_taxa.tsv"),
