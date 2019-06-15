@@ -1,0 +1,111 @@
+---
+title: "How to connect to IBGE - BIM database"
+author:
+  - Damiano Oldoni
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(odbc)
+```
+
+## Check drivers
+
+Before testing connectivity be sure you have installed the psqlodbc drivers. For Windows users, click [here](https://www.postgresql.org/ftp/odbc/versions/msi/). We suggest to install the most recent drivers.
+
+Check the presence of the PostgreSQL drivers by running:
+
+```{r check-drivers}
+drvs <- odbcListDrivers()
+```
+
+If you find something like this within data.frame `drvs`, then you are ready to connect:
+
+```{r echo=FALSE}
+library(stringr)
+library(dplyr)
+drvs %>%
+  filter(str_detect(name, "PostgreSQL Unicode"))
+```
+
+# Connection to database
+
+## Store access informations in configuration file
+
+Database is not public, you need to have access rights. A typical way to store database accesses is to make a `config.yml` file in the parent directory of all repositories where access to databases are required. This file would look like this:
+
+```r
+default:
+  dbname1:
+    driver: "my fantastic driver"
+    server: "xxx"
+    port: 5432
+    database: "databasename"
+    uid: "username_db1"
+    pwd: "password_db1"
+  dbname2:
+    driver: "PostgreSQL Unicode(x64)"
+    server: "xxx"
+    port: 1433
+    uid: "username_db1"
+    pwd = "password_db2"
+```
+
+You can retrieve the access infos by `config::get("dbname")`. For example, in order to connect to `dbname1`:  `config::get("dbname1")`. In our case, if you save access informations under name `ibge_bim`, you can retrieve them by:
+
+```r
+config::get("ibge_bim")
+```
+
+## Connect to database
+
+### Retrieve access information
+
+Retrieve information from configuration file:
+
+```{r get_access_infos}
+ibge_bim <- config::get("ibge_bim")
+```
+
+### Access to database
+
+We can then connect to database:
+
+```{r connect}
+conn <- dbConnect(odbc(), 
+                  driver = ibge_bim$driver,
+                  server = ibge_bim$server,
+                  database = ibge_bim$database,
+                  port = ibge_bim$port,
+                  uid = ibge_bim$uid,
+                  pwd = ibge_bim$pwd,
+                  encoding = "Windows-1252"
+)
+```
+
+For more information about accessing PostgreSQL in RStudio, click [here](https://db.rstudio.com/databases/postgresql/).
+
+### Close connection
+
+Close connection:
+
+```{r close_connection}
+dbDisconnect(conn)
+```

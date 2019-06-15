@@ -8,20 +8,20 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 363	Debaryomyces hansenii var. fabryii	(M. Ota) Nakase & M. Suzuki, 1985	variety	Fungi	Debaryomyces hansenii var. fabryi				
 388	Emericella nidulans var. echinulata	(Fennell & Raper) Subram., 1955	variety	Fungi		Godeas			updated author from (Fennell & Raper) Subram., 1955
 489	Hygrocybe fornicata var. streptopus	(Fr.) Fr.	variety	Fungi		(Fr.) Arnolds			updated author from (Fr.) Fr.
-576	Lycoperdon perlatum var. bonordeni	(Massee) Perdeck	variety	Fungi		(Massee) Perdeck, 1950			updated author from (Massee) Perdeck
+576	Lycoperdon perlatum var. bonordeni	(Massee) Perdeck	variety	Fungi	Lycoperdon perlatum var. bonordenii	(Massee) Perdeck, 1950			updated author from (Massee) Perdeck
 629	Neosartorya fischeri var. glabra	(Fennell & Raper) Malloch & Cain	variety	Fungi		Fennell & Raper, 1973			updated author from (Fennell & Raper) Malloch & Cain
 645	Paxillus panuoides var. ionipus	Quél.	variety	Fungi		(Quél.) Tkalcec & Me			updated author from Quél.
 655	Peziza vesiculosa var. minor	(Sacc.) Grélet	variety	Fungi		Fr., 1822			udpate author from (Sacc.) Grélet
 848	Volvariella pusilla var. taylori	(Berk.) Boekhout	variety	Fungi	Volvariella pusilla var. taylorii				
-864	Teucrium chamaedrys germanicum	(F.Herm.) Rech.f.	subspecies	Plantae	Teucrium chamaedrys subsp. germanicum				
+864	Teucrium chamaedrys germanicum	(F.Herm.) Rech.f.	subspecies	Plantae	Teucrium chamaedrys subsp. germanicum				Correct version does not match to GBIF. Reported to GBIF Portal: https://github.com/gbif/portal-feedback/issues/2044
 887	Vicia tetrasperma gracilis	(DC.) Hook.f.	subspecies	Plantae	Vicia tetrasperma subsp. gracilis				
 1081	Sagina apetala erecta	(Hornem.) F.Herm.	subspecies	Plantae	Sagina apetala subsp. erecta				
-1085	Salsola kali kali	L.	subspecies	Plantae	Salsola kali subsp. kali				
-1087	Carex oederi oederi	Retz.	subspecies	Plantae	Carex oederi subsp. oederi				
+1085	Salsola kali kali	L.	subspecies	Plantae		EMPTY	variety		remove authorship and update rank
+1087	Carex oederi oederi	Retz.	subspecies	Plantae	Carex oederi subsp. oederi	EMPTY			remove authorship
 1105	Phleum pratense pratense	L.	subspecies	Plantae	Phleum pratense subsp. pratense				
 1110	Vulpia ciliata ciliata	Dumort.	subspecies	Plantae	Vulpia ciliata subsp. ciliata				
-1111	Montia fontana chondrosperma	Fenzl	subspecies	Plantae	Montia fontana subsp. chondrosperma				
-1117	Salix cinerea cinerea	L.	subspecies	Plantae	Salix cinerea subsp. cinerea				
+1111	Montia fontana chondrosperma	Fenzl	subspecies	Plantae	Montia fontana subsp. chondrosperma	(Fenzl) Walters			
+1117	Salix cinerea cinerea	L.	subspecies	Plantae	Salix cinerea subsp. cinerea	EMPTY			remove authorship: it is related to the species. However, such subspecies is not found in GBIF Backbone.
 1311	Leptosphaeria arundinacea godini	(Desm.) Sacc.	subspecies	Fungi	Leptosphaeria arundinacea var. godinii		variety		
 1312	doliolum		subspecies	Fungi	Leptosphaeria doliolum doliolum				
 1316	hoehnelii		subspecies	Fungi	Phoma hoehnelii hoehnelii				
@@ -77,7 +77,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 13257	Gymnomus caesia	(Meigen, 1830)	species	Animalia	Gymnomus caesius				
 13551	Dicranomyia stigmatica	(Philippi, 1866)	species	Animalia		(Meigen, 1830)			updated author from (Philippi, 1866)
 14007	Exechia rufithorax	Van der Wulp, 1874	species	Animalia		Wulp, 1874			
-15464	Sphaerophoria rueppelli	(Wiedemann, 1830)	species	Animalia		(Wiedemann, 1830)			updated from (Wiedemann, 1830)
+15464	Sphaerophoria rueppelli	(Wiedemann, 1830)	species	Animalia	Sphaerophoria rueppellii				
 15472	Sphiximorpha subsessilis	(Illiger in Rossi, 1807)	species	Animalia	Sphiximorpha subsessillis	(Illiger, 1807)			updated author from (Illiger in Rossi, 1807)
 15622	Dexiosoma caninum	(Fabricius, 1781)	species	Animalia	Dexiosoma canina				
 15646	Eriothrix rufomaculata	(De Geer, 1775)	species	Animalia	Eriothrix rufomaculatus	(De Geer, 1776)			updated from (De Geer, 1775)
@@ -106,9 +106,9 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 22047	Caryocolum marmoreum	(Haworth, 1828)	species	Animalia	Caryocolum marmorea				
 22198	Chloroclystis v-ata	(Haworth, 1809)	species	Animalia	Chloroclystis vata				
 22507	Phyllonorycter kleemannella	(Fabricius, 1781)	species	Animalia	Phyllonorycter klemannella				
-23765	Motacilla yarrellii Gould,	Gould, 1837	subspecies	Animalia	Motacilla yarrellii				
+23765	Motacilla yarrellii Gould,	Gould, 1837	subspecies	Animalia	Motacilla yarrellii		species		
 23778	Actitis macularius	(Linnaeus, 1766)	species	Animalia	Actitis macularia				
-24423	ephippius		species	Animalia	Parodontodynerus ephippius				
+24423	Parodontodynerus ephippius		species	Animalia		(Klug, 1817)			add authorship
 24425	Polistes dominulus	(Christ, 1791)	species	Animalia	Polistes dominula				
 24618	Botrytella sp.		species	Chromista	Botrytella		genus		
 24622	Elachista sp.		species	Chromista	Elachista		genus		
@@ -129,7 +129,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 25112	Myotis brandti	(Eversmann, 1845)	species	Animalia	Myotis brandtii				
 25113	Mesoplodon desirostris	(De Blainville, 1817)	species	Animalia	Mesoplodon densirostris	(Blainville, 1817)			updated acceptedname and author from (De Blainville, 1817)
 26098	Peritrechus lundii	(Gmelin, 1790)	species	Animalia	Peritrechus lundi				
-26313	Polymerus nigrita	(Fallén, 1807)	species	Animalia	Polymerus nigritum				
+26313	Polymerus nigrita	(Fallén, 1807)	species	Animalia	Polymerus nigritus				
 26401	Podops inuncta	(Fabricius, 1775)	species	Animalia	Podops inunctus	(J.C.Fabricius, 1775)			
 26717	Agaricus silvaticus	Schaeff.:Fr.	species	Fungi	Agaricus sylvaticus	Schaeff.			updated acceptedname and author from Schaeff.:Fr.
 26718	Agaricus silvicola	(Vittad.) Peck	species	Fungi	Agaricus sylvicola	(Vittad.) Peck, 1872			updated acceptedname and author from (Vittad.) Peck
@@ -143,12 +143,13 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 27855	Corticium alboochraceum		species	Fungi	Corticium albo-ochraceum				
 28027	Crepidotus roseoornatus	Pöder & Ferrari	species	Fungi	Crepidotus roseo-ornatus				
 28312	Debaryomyces tyrocola		species	Fungi	Debaryomyces tyrocolus				
+28313	Debaryomyces yamadae	(Van der Walt & Johannsen) Van der Walt et al., 1980	species	Fungi	Schwanniomyces yamadae				see https://github.com/inbo/ibge-bim-species/issues/53
 28315	Dekkera bruxellensis	Van der Walt, 1964	species	Fungi		EMPTY			removed authorship. Rapported to GBIF: gbif/portal-feedback/#2014
 28505	Discostroma polymorpha	Brockmann	species	Fungi	Discostroma polymorphum				
 28659	Diaporthe rijckholti	(Westend.) Nitschke	species	Fungi	Diaporthe ryckholtii				
 28665	Diaporthe semiimmersa	Nitschke	species	Fungi	Diaporthe semi-immersa				
 28688	Dothichiza pityophila	(Corda) Petr.	species	Fungi	Dothichiza pithyophila				
-28905	Eurotium rubrum	Jos. König et al., 1901	species	Fungi		Thom & Church (Jos.König & al.)			updated author from Jos. König et al., 1901
+28905	Eurotium rubrum	Jos. König et al., 1901	species	Fungi		W.Bremer			updated author from Jos. König et al., 1901
 28964	Flammulaster ferruginea	(Maire ex Kühner) Watling	species	Fungi	Flammulaster ferrugineus				
 29149	Geopora semiimmersa	(P. Karst.) nom.prov.	species	Fungi	Geopora semi-immersa	(P.Karst.)			updated author from (P. Karst.) nom.prov.
 29173	Gloeosporium ulmicolum	Miles	species	Fungi	Gloeosporium ulmicola				
@@ -156,7 +157,6 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 29659	Hypocopra winterii	Oudem.	species	Fungi	Hypocopra winteri				
 29756	Kluyveromyces marxianus	(E.C. Hansen) Van der Walt 1971	species	Fungi		EMPTY			removed authorship. Rapported to GBIF: gbif/portal-feedback#2015
 29811	Lachnum soppitii	(Massee) Raitv.	species	Fungi	Lachnum soppittii				
-29943	Leucoagaricus wichanskyi	(Pilát) Singer	species	Fungi	Leucoagaricus wichanskyi				
 29943	Leucoagaricus wichanskyi	(Pilát) Singer	species	Fungi		(Pilát) Bon & Boiffard			upddated author from (Pilát) Singer
 30021	Leptosphaeria michoti	(Westend.) Sacc.	species	Fungi	Leptosphaeria michotii				
 30120	Lophiostoma aquatica	(J. Webster) Aptroot & K.D. Hyde	species	Fungi	Lophiostoma aquaticum				
@@ -188,14 +188,14 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 36404	Homoneura	Van der Wulp, 1891	genus	Animalia		Wulp, 1891			updated author from Van der Wulp, 1891
 40884	Trentepohlia		genus		Trentepholia				
 45920	Hirudinea		class	Animalia			subclass		taxon rank improved, but invalid GBIF taxonomic rank
+45927	Chondrichthyes		class	Animalia	Elasmobranchii				see https://github.com/inbo/ibge-bim-species/issues/55
 45964	Xanthophyta		phylum	Plantae				Chromista	
-45970	Myxomycota		phylum	Fungi			division		
-46177	Dama Linnaeus,	Linnaeus, 1758	species	Animalia	Dama				
-46188	Motacilla flavissima Blyth,	Blyth, 1834	subspecies	Animalia	Motacilla flavissima				
+45970	Myxomycota		phylum	Fungi			division		taxon rank improved, but invalid GBIF taxonomic rank
+46177	Dama Linnaeus,	Linnaeus, 1758	species	Animalia	Dama dama				
+46188	Motacilla flavissima Blyth,	Blyth, 1834	subspecies	Animalia	Motacilla flava subsp. flavissima				
 46189	Saxicola torquata	Linnaeus, 1766	species	Animalia	Saxicola torquatus				
 46191	Ciliophora	Doflein, 1901	phylum	Animalia				Chromista	
 46261	Halictoxenos sp.		species	Animalia	Halictoxenos		genus		
-46756	Heteroptera		suborder	Animalia			order		
 47106	Mesodasys litoralis	Remane, 1951	species		Mesodasys littoralis				
 47269	Calycella syringa	(Linnaeus, 1758)	species	Fungi				Animalia	
 47316	Actinonema pachydermatum	Cobb, 1920	species	Fungi				Animalia	
@@ -207,13 +207,13 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 49833	Cuon alpinus europaeus		species				subspecies		
 49842	Microtus malei	Schrank 1798	species			Hinton, 1927			updated author from Schrank 1798
 49939	Anas platyrhynchos f. domestica		forma	Animalia	Anas platyrhynchos f. domesticus				
-49942	Zygoribatula terricola	von der Hammen, 1952	species			der Hammen, 1952			
+49942	Zygoribatula terricola	von der Hammen, 1952	species			der Hammen, 1952	subspecies		updated rank and author from von der Hammen, 1952
 50009	Mustela nivalis rixosa		species				subspecies		
 50013	Radix peregra		forma				species		
 50015	Equus caballus germanicus		species				subspecies		
 50048	Anser anser domesticus		species				forma		
 50069	Crustacea		species				subphylum		taxon rank improved, but invalid GBIF taxonomic rank
-50092	Acari		genus				subclass		
+50092	Acari		genus				subclass		taxon rank improved, but invalid GBIF taxonomic rank
 50097	Aceria cephalonea		species		Aceria cephaloneus				
 50102	Aceria macrochela		species		Aceria macrochelus				
 50103	Aceria macrorhyncha		species		Aceria macrorhynchus				
@@ -222,15 +222,15 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 50124	Aethusa cynapium subsp. giganteum	Lej.	subspecies		Aethusa cynapium subsp. gigantea	(Lej.) P.D.Sell			
 50131	Agromyza idaeiana		family				species		
 50159	Andricus ostrea		species		Andricus ostreus				
-50170	Anomaloninae		genus				subfamily		
-50174	Aphidoidea		genus				superfamily		
+50170	Anomaloninae		genus				subfamily		taxon rank improved, but invalid GBIF taxonomic rank
+50174	Aphidoidea		genus				superfamily		taxon rank improved, but invalid GBIF taxonomic rank
 50185	Arabidopsis arenosa subsp. Arenosa	(L.) Lawalrée	subspecies		Arabidopsis arenosa subsp. arenosa				
 50188	Arctium minus subsp. minus	(Hill) Bernh.	subspecies		Arctium minus		species		Arctium minus var. minus and Arctium minus f. minus as synonyms
 50211	Atyaephyra desmaresti		species		Atyaephyra desmarestii				
 50230	Blattoptera		genus				order		
 50252	Calamagrostis epigeios	(L.) Roth	species		Calamagrostis epigejos				
-50279	Ceraphronoidea		genus				superfamily		
-50286	Chalcidoidea		genus				superfamily		
+50279	Ceraphronoidea		genus				superfamily		taxon rank improved, but invalid GBIF taxonomic rank
+50286	Chalcidoidea		genus				superfamily		taxon rank improved, but invalid GBIF taxonomic rank
 50289	Chamomilla chamomilla	L.	species			(L.) Rydb.			
 50302	Clogmia albipunctata		species		Clogmia albipunctatus				
 50305	Coleophora anatipennella	Hübner, 1796	species		Coleophora anatipenella				
@@ -261,7 +261,7 @@ id	acceptedname	scientificnameauthorship	taxonranken	bim_kingdom	acceptedname_co
 50846	Scopariinae		genus				subfamily		
 50882	Stenacis triradiata		species		Stenacis triradiatus	(Nalepa, 1892)			
 50931	Tripleurospermum maritimum subsp. maritima	(L.) W.D.J.Koch	subspecies		Tripleurospermum maritimum subsp. maritimum	EMPTY			authorship refers to species
-50935	Tryphoninae		genus				subfamily		
+50935	Tryphoninae		genus				subfamily		taxon rank improved, but invalid GBIF taxonomic rank
 50952	Vicia tetrasperma var. tetrasperma	(L.)Schreb.	variety		Vicia tetrasperma subsp. tetrasperma	(L.) Schreb.	subspecies		
 51057	Stellaria media media		unranked		Stellaria media subsp. media		subspecies		
 51059	Malus sylvestris sylvestris		unranked		Malus sylvestris subsp. sylvestris		subspecies		

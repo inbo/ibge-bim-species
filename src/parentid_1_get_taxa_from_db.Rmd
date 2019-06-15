@@ -1,0 +1,95 @@
+---
+title: "Get taxa from database"
+author:
+  - Damiano Oldoni
+  - Lien Reyserhove
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(odbc)       # To work with database
+library(tidyverse)  # To do data science
+library(here)       # To work with paths
+```
+
+## Load access informations
+
+Retrieve access informations from configuration file:
+
+```{r get_access_infos}
+ibge_bim <- config::get("ibge_bim")
+```
+
+# Get taxonomic data
+
+## Connect to database
+
+Connect to database:
+
+```{r connect_to_db}
+conn <- dbConnect(odbc(), 
+                  driver = ibge_bim$driver,
+                  server = ibge_bim$server,
+                  database = ibge_bim$database,
+                  port = ibge_bim$port,
+                  uid = ibge_bim$uid,
+                  pwd = ibge_bim$pwd,
+                  encoding = "Windows-1252"
+)
+```
+
+## Get data from table `taxon`
+
+Table `taxon` contains taxonomic data:
+
+```{r get_taxa}
+taxa <- dbGetQuery(conn, "SELECT * FROM biodiv.taxon") %>% 
+  as_tibble()
+```
+
+Overview:
+
+```{r overview_taxa}
+head(taxa)
+```
+
+Number of taxa:
+
+```{r n_taxa}
+nrow(taxa)
+```
+
+## Close connection
+
+Close connection:
+
+```{r close_connection}
+dbDisconnect(conn)
+```
+
+## Save taxa
+
+Save taxa as tab separated text file:
+
+```{r save_taxa}
+write_tsv(taxa,
+          path = here("data", "input", "taxa.tsv"),
+          na = "")
+```
