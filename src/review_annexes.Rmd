@@ -226,9 +226,11 @@ Save nonmatching taxa for final summary:
 ```{r}
 non_matches_bxl_2.1 <- 
   bind_cols(
-    as.tibble("bxl"),
+    as.tibble("BXL_2.1"),
     annex_bxl_2.1 %>% filter(matchType == "NONE") %>% count())
 ```
+
+
 
 `annex_bxl_2.1` contains no unverifiable taxa.
 
@@ -341,7 +343,7 @@ Save nonmatching taxa for final summary:
 ```{r}
 non_matches_bxl_2.2 <- 
   bind_cols(
-    as.tibble("bxl_2.2"),
+    as.tibble("BXL_2.2"),
     annex_bxl_2.2 %>% filter(matchType == "NONE") %>% count())
 ```
 
@@ -561,7 +563,7 @@ Save nonmatching taxa for final summary:
 ```{r}
 non_matches_bxl_2.3 <- 
   bind_cols(
-    as.tibble("bxl"),
+    as.tibble("BXL_2.3"),
     annex_bxl_2.3 %>% filter(matchType == "NONE") %>% count())
 ```
 
@@ -695,7 +697,7 @@ Save nonmatching taxa for final summary:
 ```{r}
 non_matches_bxl_2.4 <- 
   bind_cols(
-    as.tibble("bxl"),
+    as.tibble("BXL_2.4"),
     annex_bxl_2.4 %>% filter(matchType == "NONE") %>% count())
 ```
 
@@ -833,7 +835,7 @@ Save nonmatching taxa for final summary:
 ```{r}
 non_matches_bxl_2.5 <- 
   bind_cols(
-    as.tibble("bxl"),
+    as.tibble("BXL_2.5"),
     annex_bxl_2.5 %>% filter(matchType == "NONE") %>% count())
 ```
 
@@ -1036,7 +1038,7 @@ Save nonmatching taxa for final summary:
 ```{r}
 non_matches_bxl_3 <- 
   bind_cols(
-    as.tibble("bxl"),
+    as.tibble("BXL_3"),
     annex_bxl_3 %>% filter(matchType == "NONE") %>% count())
 ```
 
@@ -1136,7 +1138,7 @@ Save nonmatching taxa for final summary:
 ```{r}
 non_matches_bxl_4 <- 
   bind_cols(
-    as.tibble("bxl"),
+    as.tibble("BXL_4"),
     annex_bxl_4 %>% filter(matchType == "NONE") %>% count())
 ```
 
@@ -1275,7 +1277,7 @@ Save nonmatching taxa for final summary:
 ```{r}
 non_matches_bern_1 <- 
   bind_cols(
-    as.tibble("bxl"),
+    as.tibble("BXL_4"),
     annex_bern_1 %>% filter(matchType == "NONE") %>% count())
 ```
 
@@ -1373,7 +1375,7 @@ Save nonmatching taxa for final summary:
 ```{r}
 non_matches_bern_2 <- 
   bind_cols(
-    as.tibble("bxl"),
+    as.tibble("BERN_2"),
     annex_bern_2 %>% filter(matchType == "NONE") %>% count())
 ```
 
@@ -1707,7 +1709,7 @@ Save nonmatching taxa for final summary:
 ```{r}
 non_matches_bern_3 <- 
   bind_cols(
-    as.tibble("bxl"),
+    as.tibble("BERN_3"),
     annex_bern_3 %>% filter(matchType == "NONE") %>% count())
 ```
 
@@ -1919,8 +1921,25 @@ Not all species from the annex species list matched the GBIF backbone. These wer
 ```{r}
 bind_rows(
   non_matches_bxl_2.1,
-  non_matches_bxl_2.2)
+  non_matches_bxl_2.2,
+  non_matches_bxl_2.3,
+  non_matches_bxl_2.4,
+  non_matches_bxl_2.5,
+  non_matches_bxl_3,
+  non_matches_bxl_4,
+  non_matches_bern_1,
+  non_matches_bern_2,
+  non_matches_bern_3) %>% 
+  rename("dataset" = "value") %>% 
+  rename("records" = "n")
 ```
+
+To do:
+1. Deal with unmatched taxa
+2. Deal with synonymy
+
+
+
 
 ## Inspect Annex BONN-2 Information
 
