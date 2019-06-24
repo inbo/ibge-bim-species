@@ -96,13 +96,25 @@ _Annex species list_ in this context refers to the official documents published 
 
 The approach is to screen each annex list _separately_ for lacking and/or erroneous taxa. 
 
-1. Retrieve and copypaste each annex species list in a [gsheets file](https://docs.google.com/spreadsheets/d/1Od5YYgMsTHvIFkrdeyWxkiARCya2yHKkAJrNM0-dnnw/edit#gid=1779940747). Each annex list is put into a different tab.
+1. Retrieve and copypaste each annex species list in a [gsheets file](https://docs.google.com/spreadsheets/d/1Od5YYgMsTHvIFkrdeyWxkiARCya2yHKkAJrNM0-dnnw/edit#gid=1779940747). 
+
 2. Import the annex species list in Rstudio.
-3. To match the species list from the BIM database with the annex list, we need the _GBIF backbone_. In this way, we avoid nonmatches due to erroneous spelling or lacking authorship.
-- Match bim species list with GBIF backbone using [taxa_gbif.tsv](https://github.com/inbo/ibge-bim-species/blob/master/data/input/taxa.tsv).
-- Match annex species list with GBIF backbone by using `gbif_species_name_match()` function.
-4. Screen nonmatching scientific names in annex species lists for errors and correct. 
-5. TO BE CHANGED: Remove other non-matching scientificnames
+
+3. To match the BIM species list with the annex species list, we need the _GBIF backbone_. In this way, we avoid nonmatches due to erroneous spelling or lacking authorship.
+    - Match bim species list with GBIF backbone using [taxa_gbif.tsv](https://github.com/inbo/ibge-bim-species/blob/master/data/input/taxa.tsv).
+    - Match annex species list with GBIF backbone by using `gbif_species_name_match()` function.
+
+*4. Screen nonmatching scientific names in annex species lists for errors and correct. 
+
+5. For now, remove all non-matching taxa (in summary)
+
+5. Match BIM species list with the annex species list
+
+*6. Remove all unverifiable records from the BIM species list
+
+7. Results: species list with taxa occurring in BIM species list but not in the annex species list
+  - due to synonyms?
+  - due to unmatched taxa?
 
 
 # Pre-processing
@@ -198,7 +210,6 @@ gbif_terms <- c("matchType",
 
 ## Annex II.1: Dier- en plantensoorten van communautair belang waarvan de instandhouding de aanwijzing van Natura 2000 gebieden vereist
 
-
 Match `annex_bxl_2.1` to the GBIF backbone:
 
 ```{r}
@@ -229,8 +240,6 @@ non_matches_bxl_2.1 <-
     as.tibble("BXL_2.1"),
     annex_bxl_2.1 %>% filter(matchType == "NONE") %>% count())
 ```
-
-
 
 `annex_bxl_2.1` contains no unverifiable taxa.
 
@@ -1850,178 +1859,164 @@ bim_not_annex_bern_3 <-
 bim_not_annex_bern_3
 ```
 
-# Summary 
+# BONN Annexes
 
-The following table gives for each separate annex list:
-- Amount of records in the annex species list
-- Amount of records in the BIM species list (annex)
-- Full match between the records in the annex and BIM list
-- Amount of records present in the BIM species list not integrated in the annex species list
-- Amount of records present in the annex species list not integrated in the BIM species list
+## Annex I
 
 ```{r}
-summary <- bind_rows(
-  summary_bxl_2.1,
-  summary_bxl_2.2,
-  summary_bxl_2.3,
-  summary_bxl_2.4,
-  summary_bxl_2.5,
-  summary_bern_1,
-  summary_bern_2,
-  summary_bern_3) %>% 
-spread(source, number_of_taxa)
-summary[c(4,5,3,2,1),]
-```
-
-Several annex lists included _groups of taxa_ (e.g. _all european bird species_). For these groups, we were unable to check whether or not their presence of a certain species in the BIM annex list is correct.
-
-```{r}
-bind_rows(
-  bind_cols(
-    tibble(data = "unverifiable records"),
-    unverifiable_records_bern_1,
-    unverifiable_records_bern_2,
-    unverifiable_records_bern_3,
-    unverifiable_records_bxl_2.1,
-    unverifiable_records_bxl_2.2,
-    unverifiable_records_bxl_2.3,
-    unverifiable_records_bxl_2.4,
-    unverifiable_records_bxl_2.5,
-    unverifiable_records_bxl_3,
-    unverifiable_records_bxl_4
-  ),
-  filter(summary, data == "BIM not in annex"))
-```
-
-This is an overview of the taxon _groups_ per annex list:
-
-```{r}
-bind_rows(
-  unverifiable_records_bxl_2.2_taxa %>% mutate(source = "BXL_2.2"),
-  unverifiable_records_bxl_2.3_taxa %>% mutate(source = "BXL_2.3"),
-  unverifiable_records_bxl_2.5_taxa %>% mutate(source = "BXL_2.5"),
-  unverified_records_bern_2_taxa %>% mutate(source = "BERN_2"))
-```
-
-This is the full list of species names present in the BIM species list but absent in the annex species list:
-
-```{r}
-bind_rows(
-  bim_not_annex_bxl_2.2 %>% mutate(source = "BXL_2.2") %>% select(source, gbif_scientificName, everything()),
-  bim_not_annex_bxl_2.3 %>% mutate(source = "BXL_2.3") %>% select(source, gbif_scientificName, everything()),
-  bim_not_annex_bxl_2.4 %>% mutate(source = "BXL_2.4") %>% select(source, gbif_scientificName, everything()),
-  bim_not_annex_bxl_2.5 %>% mutate(source = "BXL_2.5") %>% select(source, gbif_scientificName, everything()),
-  bim_not_annex_bxl_4 %>% mutate(source = "BXL_4") %>% select(source, gbif_scientificName, everything()),
-  bim_not_annex_bern_2 %>% mutate(source = "BERN_2") %>% select(source, gbif_scientificName, everything()),
-  bim_not_annex_bern_3 %>% mutate(source = "BERN_3") %>% select(source, gbif_scientificName, everything()))
-```
-
-Not all species from the annex species list matched the GBIF backbone. These were excluded from this analysis:
-
-```{r}
-bind_rows(
-  non_matches_bxl_2.1,
-  non_matches_bxl_2.2,
-  non_matches_bxl_2.3,
-  non_matches_bxl_2.4,
-  non_matches_bxl_2.5,
-  non_matches_bxl_3,
-  non_matches_bxl_4,
-  non_matches_bern_1,
-  non_matches_bern_2,
-  non_matches_bern_3) %>% 
-  rename("dataset" = "value") %>% 
-  rename("records" = "n")
-```
-
-To do:
-1. Deal with unmatched taxa
-2. Deal with synonymy
-
-
-
-
-## Inspect Annex BONN-2 Information
-
-```{r}
-bonn_2 %<>% gbif_species_name_match(
+annex_bonn_1 %<>% gbif_species_name_match(
   name = "scientific_name",
   gbif_terms = gbif_terms,
   strict = TRUE)
 ```
 
-The column `gbif_matchType` informs us whether the match has been successful (`gbif_matchType` = `EXACT`), doubtful (`gbif_matchType` = `FUZZY`) or failed (`gbif_matchType` = `NONE`). The column  `confidence` is also informative. Number of taxa for each value of `gbif_matchType`:
+Evaluate match with the GBIF backbone, indicated by `matchType`:
+- succesfull: `matchType` = `EXACT`
+- doubtful: `matchType` = `FUZZY`
+- failed:  `matchType` = `NONE`
 
 ```{r}
-bonn_2 %>% 
+annex_bonn_1 %>% 
   group_by(matchType) %>% 
   count()
 ```
 
-Remove non-matches:
+Inspect non-matching taxa:
 
 ```{r}
-bonn_2 %<>% filter(matchType != "NONE")
+annex_bonn_1 %>% filter(matchType == "NONE") %>% arrange(scientific_name)
 ```
 
-
-Keep columns of interest and rename:
+Save nonmatching taxa for final summary:
 
 ```{r}
-bonn_2 <- 
-  bonn_2 %>%
-    select(scientific_name, scientificName, canonicalName, rank, kingdom, phylum, order, class, family, genus) %>% 
+non_matches_bonn_1 <- 
+  bind_cols(
+    as.tibble("BONN_1"),
+    annex_bonn_1 %>% filter(matchType == "NONE") %>% count())
+```
+
+`annex_bonn_1` contains no unverifiable taxa.
+
+```{r}
+unverifiable_records_bonn_1 <- tibble("BONN_1" = 0)
+```
+
+Remove non-matching taxa:
+
+```{r}
+annex_bonn_1 %<>% filter(matchType != "NONE")
+```
+
+Keep columns of interest:
+
+```{r}
+annex_bonn_1 <- 
+  annex_bonn_1 %>%
+    select(scientific_name, scientificName, canonicalName, kingdom, phylum, order, family, genus)
+```
+
+Rename columns:
+- `scientific_name` to `annex_scientificName`
+- `scientificName` to `gbif_scientificName`
+
+```{r}
+annex_bonn_1 <- 
+  annex_bonn_1 %>%  
     rename("gbif_scientificName" = "scientificName") %>% 
     rename("annex_scientificName" = "scientific_name") %>% 
     rename("gbif_canonicalName" = "canonicalName")
 ```
 
-Summarize inspection of `bonn_2`, `bim_bonn_2`:
+Compare species list of `annex_bonn_1` with `bim_bonn_1`:
 
 ```{r}
-bind_rows(
-  bonn_2 %>% 
-    summarize(number_of_taxa = n()) %>% 
-    mutate(dataset = "Official Annex") %>% 
-    select(dataset, number_of_taxa)
-  ,
-  bim_bonn_2 %>% 
-    summarize(number_of_taxa = n()) %>% 
-    mutate(dataset = "BIM database") %>% 
-    select(dataset, number_of_taxa)
-  ,
-  bonn_2 %>% 
-    inner_join(bim_bonn_2, by = "gbif_canonicalName") %>% 
-    summarize(number_of_taxa = n()) %>% 
-    mutate(dataset = "Full match") %>% 
-    select(dataset, number_of_taxa)
-  ,
-  bim_bonn_2 %>% 
-    anti_join(bonn_2, by = c("gbif_canonicalName")) %>%   
-    summarize(number_of_taxa = n()) %>% 
-    mutate(dataset = "BIM not in annex") %>% 
-    select(dataset, number_of_taxa)
-  ,
-  bonn_2 %>% 
-    anti_join(bim_bonn_2, by = c("gbif_canonicalName")) %>%   
-    summarize(number_of_taxa = n()) %>% 
-    mutate(dataset = "Annex not in BIM") %>% 
-    select(dataset, number_of_taxa)
-  )
+summary_bonn_1 <-
+  bind_cols(
+    tibble("source" = rep("BONN_1",5)),
+    bind_rows(
+      annex_bonn_1 %>% 
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "Records annex list") %>% 
+        select(data, number_of_taxa)
+      ,
+      bim_bonn_1 %>% 
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "Records BIM database") %>% 
+        select(data, number_of_taxa)
+      ,
+      annex_bonn_1 %>% 
+        inner_join(bim_bonn_1, by = "gbif_canonicalName") %>% 
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "Full match") %>% 
+        select(data, number_of_taxa)
+      ,
+      bim_bonn_1 %>% 
+        anti_join(annex_bonn_1, by = c("gbif_canonicalName")) %>%   
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "BIM not in annex") %>% 
+        select(data, number_of_taxa)
+      ,
+      annex_bonn_1 %>% 
+        anti_join(bim_bonn_1, by = c("gbif_canonicalName")) %>%   
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "Annex not in BIM") %>% 
+        select(data, number_of_taxa)
+      ))
+summary_bonn_1
 ```
 
-The following taxa occur in `bim_bonn_2` but not in `bonn_2`:
+We focus on the species occurring in `bim_bonn_1` but not in `annex_bonn_1`:
 
 ```{r}
-bim_bonn_2 %>% 
-  anti_join(bonn_2, by = c("gbif_canonicalName")) %>% 
+bim_not_annex_bonn_1 <- 
+  bim_bonn_1 %>% anti_join(annex_bonn_1, by = c("gbif_canonicalName")) %>% 
+    select(bim_scientificName, gbif_scientificName) %>% 
     arrange(bim_scientificName)
+bim_not_annex_bonn_1
 ```
+
+## Annex II
+
+```{r}
+annex_bonn_2 %<>% gbif_species_name_match(
+  name = "scientific_name",
+  gbif_terms = gbif_terms,
+  strict = TRUE)
+```
+
+Evaluate match with the GBIF backbone, indicated by `matchType`:
+- succesfull: `matchType` = `EXACT`
+- doubtful: `matchType` = `FUZZY`
+- failed:  `matchType` = `NONE`
+
+```{r}
+annex_bonn_2 %>% 
+  group_by(matchType) %>% 
+  count()
+```
+
+Inspect non-matching taxa:
+
+```{r}
+annex_bonn_2 %>% filter(matchType == "NONE") %>% arrange(scientific_name)
+```
+
+Save nonmatching taxa for final summary:
+
+```{r}
+non_matches_bonn_2 <- 
+  bind_cols(
+    as.tibble("BONN_2"),
+    annex_bonn_2 %>% filter(matchType == "NONE") %>% count())
+```
+
+Unverifiable records:
 
 Summary of all these records:
 
 ```{r}
-unclear_records <- bind_rows(
+unverifiable_records_bonn_2_taxa <- bind_rows(
   bim_bonn_2 %>% filter(gbif_family == "Acanthizidae") %>% summarize(number_of_taxa = n()) %>% mutate(records = "Acanthizidae") %>% select(records, number_of_taxa)  ,
   bim_bonn_2 %>% filter(gbif_family == "Accipitridae") %>% summarize(number_of_taxa = n()) %>% mutate(records = "Accipitridae") %>% select(records, number_of_taxa)  ,
   bim_bonn_2 %>% filter(gbif_family == "Acrocephalidae") %>% summarize(number_of_taxa = n()) %>% mutate(records = "Acrocephalidae") %>% select(records, number_of_taxa)  ,
@@ -2092,173 +2087,181 @@ unclear_records <- bind_rows(
   bim_bonn_2 %>% filter(gbif_family == "Vespertilionidae") %>% summarize(number_of_taxa = n()) %>% mutate(records = "Vespertilionidae") %>% select(records, number_of_taxa)  ,
   bim_bonn_2 %>% filter(gbif_family == "Vireonidae") %>% summarize(number_of_taxa = n()) %>% mutate(records = "Vireonidae") %>% select(records, number_of_taxa)  ,
   bim_bonn_2 %>% filter(gbif_family == "Zosteropidae") %>% summarize(number_of_taxa = n()) %>% mutate(records = "Zosteropida") %>% select(records, number_of_taxa))
-
-
-unclear_records %<>% 
-  summarize(records = "sum", number_of_taxa = sum(number_of_taxa)) %>% 
-  bind_rows(unclear_records,.)
-
-bind_rows(unclear_records,
-          bim_bonn_2 %>% 
-            anti_join(bonn_2, by = c("gbif_canonicalName")) %>%   
-            summarize(number_of_taxa = n()) %>% 
-            mutate(records = "BIM not in annex") %>% 
-            select(records, number_of_taxa))
+unverifiable_records_bonn_2_taxa
 ```
-
-We filter out these records and inspect which are left over:
 
 ```{r}
-bim_bonn_2 %>% anti_join(bonn_2, by = c("gbif_canonicalName")) %>% 
-    arrange(bim_scientificName) %>% 
-    filter(!(
-      gbif_family == "Acanthizidae" |
-      gbif_family == "Accipitridae" |
-      gbif_family == "Acrocephalidae" |
-      gbif_family == "Aegithalidae" |
-      gbif_family == "Anatidae" |
-      gbif_family == "Anseranatidae" |
-      gbif_genus == "Anthropoides" |
-      gbif_genus == "Antigone" |
-      gbif_family == "Artamidae" |
-      gbif_family == "Bernieridae" |
-      gbif_family == "Cathartidae" |
-      gbif_family == "Chaetopidae" |
-      gbif_family == "Charadriidae" |
-      gbif_family == "Cheloniidae" |
-      gbif_family == "Cinclosomatidae" |
-      gbif_family == "Cisticolidae" |
-      gbif_family == "Dasyornithidae" |
-      gbif_family == "Dermochelyidae" |
-      gbif_family == "Eulacestomidae" |
-      gbif_family == "Eupetidae" |
-      gbif_family == "Falconidae" |
-      gbif_family == "Falcunculidae" |
-      gbif_genus == "Grus" |
-      gbif_family == "Haematopodidae" |
-      gbif_family == "Hyliotidae" |
-      gbif_family == "Hylocitreidae" |
-      gbif_family == "Ibidorhynchidae" |
-      gbif_family == "Ifritidae" |
-      gbif_family == "Leiotrichidae" |
-      gbif_family == "Locustellidae" |
-      gbif_family == "Machaerirhynchidae" |
-      gbif_family == "Macrosphenidae" |
-      gbif_family == "Maluridae" |
-      gbif_family == "Melampittidae" |
-      gbif_family == "Meliphagidae" |
-      gbif_family == "Mohouidae" |
-      gbif_family == "Monarchidae" |
-      gbif_family == "Motacillidae" |
-      gbif_family == "Muscicapidae" |
-      gbif_family == "Oreoicidae" |
-      gbif_family == "Oriolidae" |
-      gbif_family == "Orthonychidae" |
-      gbif_family == "Pachycephalidae" |
-      gbif_family == "Panuridae" |
-      gbif_family == "Pellorneidae" |
-      gbif_family == "Petroicidae" |
-      gbif_family == "Phoenicopteridae" |
-      gbif_family == "Phylloscopidae" |
-      gbif_family == "Picathartidae" |
-      gbif_family == "Platysteiridae" |
-      gbif_family == "Pluvianellidae" |
-      gbif_family == "Pnoepygidae" |
-      gbif_family == "Polioptilidae" |
-      gbif_family == "Pomatostomidae" |
-      gbif_family == "Psophodidae" |
-      gbif_family == "Recurvirostridae" |
-      gbif_family == "Regulidae" |
-      gbif_family == "Rhagologidae" |
-      gbif_family == "Rhinolophidae" |
-      gbif_family == "Rhipiduridae" |
-      gbif_family == "Scolopacidae" |
-      gbif_family == "Scotocercidae" |
-      gbif_family == "Stenostiridae" |
-      gbif_family == "Sylviidae" |
-      gbif_family == "Timaliidae" |
-      gbif_family == "Turdidae" |
-      gbif_family == "Vangidae" |
-      gbif_family == "Vespertilionidae" |
-      gbif_family == "Vireonidae" |
-      gbif_family == "Zosteropida")
-) %>% 
-  select(gbif_scientificName, gbif_kingdom, gbif_phylum, gbif_class, gbif_family)
+unverifiable_records_bonn_2 <- 
+  unverifiable_records_bonn_2_taxa %>% 
+    summarize(BONN_2 = sum(number_of_taxa))
+unverifiable_records_bonn_2
 ```
-
-## Inspect Annex HAB-2 Information
-
-```{r}
-hab_2 %<>% gbif_species_name_match(
-  name = "scientific_name",
-  gbif_terms = gbif_terms,
-  strict = TRUE)
-```
-
-The column `gbif_matchType` informs us whether the match has been successful (`gbif_matchType` = `EXACT`), doubtful (`gbif_matchType` = `FUZZY`) or failed (`gbif_matchType` = `NONE`). The column  `confidence` is also informative. Number of taxa for each value of `gbif_matchType`:
-
-```{r}
-hab_2 %>% 
-  group_by(matchType) %>% 
-  count()
-```
-
-Remove non-matches:
-
-```{r}
-hab_2 %<>% filter(matchType != "NONE")
-```
-
 
 Keep columns of interest and rename:
 
 ```{r}
-hab_2 <- 
-  hab_2 %>%
+annex_bonn_2 <- 
+  annex_bonn_2 %>%
     select(scientific_name, scientificName, canonicalName, rank, kingdom, phylum, order, class, family, genus) %>% 
     rename("gbif_scientificName" = "scientificName") %>% 
     rename("annex_scientificName" = "scientific_name") %>% 
     rename("gbif_canonicalName" = "canonicalName")
 ```
 
-Summarize inspection of `hab_2`, `bim_hab_2`:
+Summarize inspection of `bonn_2`, `bim_bonn_2`:
+
+```{r}
+summary_bonn_2 <-
+  bind_cols(
+    tibble("source" = rep("BONN_2",5)),
+    bind_rows(
+      annex_bonn_2 %>% 
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "Records annex list") %>% 
+        select(data, number_of_taxa)
+      ,
+      bim_bonn_2 %>% 
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "Records BIM database") %>% 
+        select(data, number_of_taxa)
+      ,
+      annex_bonn_2 %>% 
+        inner_join(bim_bonn_2, by = "gbif_canonicalName") %>% 
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "Full match") %>% 
+        select(data, number_of_taxa)
+      ,
+      bim_bonn_2 %>% 
+        anti_join(annex_bonn_2, by = c("gbif_canonicalName")) %>%   
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "BIM not in annex") %>% 
+        select(data, number_of_taxa)
+      ,
+      annex_bonn_2 %>% 
+        anti_join(bim_bonn_2, by = c("gbif_canonicalName")) %>%   
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "Annex not in BIM") %>% 
+        select(data, number_of_taxa)
+      ))
+summary_bonn_2
+```
+
+We focus on the species occurring in `bim_bonn_2` but not in `annex_bonn_2`:
+
+```{r}
+bim_not_annex_bonn_2 <- 
+  bim_bonn_2 %>% anti_join(annex_bonn_2, by = c("gbif_canonicalName")) %>% 
+    select(bim_scientificName, gbif_scientificName) %>% 
+    arrange(bim_scientificName)
+bim_not_annex_bonn_2
+```
+
+Filter out the unverifiable records:
+
+```{r}
+bim_not_annex_bonn_2 <-
+  bim_bonn_2 %>% anti_join(annex_bonn_2, by = c("gbif_canonicalName")) %>% 
+    arrange(bim_scientificName) %>% 
+    filter(!(gbif_family %in% unverifiable_records_bonn_2_taxa$records)) %>% 
+  select(gbif_scientificName, gbif_kingdom, gbif_phylum, gbif_class, gbif_family)
+```
+
+
+# Summary 
+
+The following table gives for each separate annex list:
+- Amount of records in the annex species list
+- Amount of records in the BIM species list (annex)
+- Full match between the records in the annex and BIM list
+- Amount of records present in the BIM species list not integrated in the annex species list
+- Amount of records present in the annex species list not integrated in the BIM species list
+
+```{r}
+summary <- bind_rows(
+  summary_bxl_2.1,
+  summary_bxl_2.2,
+  summary_bxl_2.3,
+  summary_bxl_2.4,
+  summary_bxl_2.5,
+  summary_bern_1,
+  summary_bern_2,
+  summary_bern_3,
+  summary_bonn_1,
+  summary_bonn_2) %>% 
+spread(source, number_of_taxa)
+summary[c(4,5,3,2,1),]
+```
+
+Several annex lists included _groups of taxa_ (e.g. _all european bird species_). For these groups, we were unable to check whether or not their presence of a certain species in the BIM annex list is correct.
 
 ```{r}
 bind_rows(
-  hab_2 %>% 
-    summarize(number_of_taxa = n()) %>% 
-    mutate(dataset = "Official Annex") %>% 
-    select(dataset, number_of_taxa)
-  ,
-  bim_hab_2 %>% 
-    summarize(number_of_taxa = n()) %>% 
-    mutate(dataset = "BIM database") %>% 
-    select(dataset, number_of_taxa)
-  ,
-  hab_2 %>% 
-    inner_join(bim_hab_2, by = "gbif_canonicalName") %>% 
-    summarize(number_of_taxa = n()) %>% 
-    mutate(dataset = "Full match") %>% 
-    select(dataset, number_of_taxa)
-  ,
-  bim_hab_2 %>% 
-    anti_join(hab_2, by = c("gbif_canonicalName")) %>%   
-    summarize(number_of_taxa = n()) %>% 
-    mutate(dataset = "BIM not in annex") %>% 
-    select(dataset, number_of_taxa)
-  ,
-  hab_2 %>% 
-    anti_join(bim_hab_2, by = c("gbif_canonicalName")) %>%   
-    summarize(number_of_taxa = n()) %>% 
-    mutate(dataset = "Annex not in BIM") %>% 
-    select(dataset, number_of_taxa)
-  )
+  bind_cols(
+    tibble(data = "unverifiable records"),
+    unverifiable_records_bern_1,
+    unverifiable_records_bern_2,
+    unverifiable_records_bern_3,
+    unverifiable_records_bxl_2.1,
+    unverifiable_records_bxl_2.2,
+    unverifiable_records_bxl_2.3,
+    unverifiable_records_bxl_2.4,
+    unverifiable_records_bxl_2.5,
+    unverifiable_records_bxl_3,
+    unverifiable_records_bxl_4,
+    unverifiable_records_bonn_1,
+    unverifiable_records_bonn_2
+  ),
+  filter(summary, data == "BIM not in annex"))
 ```
 
-The following taxa occur in `bim_hab_2` but not in `hab_2`:
+This is an overview of the taxon _groups_ per annex list:
 
 ```{r}
-bim_hab_2 %>% 
-  anti_join(hab_2, by = c("gbif_canonicalName")) %>% 
-    arrange(bim_scientificName)
+bind_rows(
+  unverifiable_records_bxl_2.2_taxa %>% mutate(source = "BXL_2.2"),
+  unverifiable_records_bxl_2.3_taxa %>% mutate(source = "BXL_2.3"),
+  unverifiable_records_bxl_2.5_taxa %>% mutate(source = "BXL_2.5"),
+  unverifiable_records_bern_2_taxa %>% mutate(source = "BERN_2"))
 ```
+
+This is the full list of species names present in the BIM species list but absent in the annex species list:
+
+```{r}
+bind_rows(
+  bim_not_annex_bxl_2.2 %>% mutate(source = "BXL_2.2") %>% select(source, gbif_scientificName, everything()),
+  bim_not_annex_bxl_2.3 %>% mutate(source = "BXL_2.3") %>% select(source, gbif_scientificName, everything()),
+  bim_not_annex_bxl_2.4 %>% mutate(source = "BXL_2.4") %>% select(source, gbif_scientificName, everything()),
+  bim_not_annex_bxl_2.5 %>% mutate(source = "BXL_2.5") %>% select(source, gbif_scientificName, everything()),
+  bim_not_annex_bxl_4 %>% mutate(source = "BXL_4") %>% select(source, gbif_scientificName, everything()),
+  bim_not_annex_bern_2 %>% mutate(source = "BERN_2") %>% select(source, gbif_scientificName, everything()),
+  bim_not_annex_bern_3 %>% mutate(source = "BERN_3") %>% select(source, gbif_scientificName, everything()),
+  bim_not_annex_bonn_1 %>% mutate(source = "BONN_1") %>% select(source, gbif_scientificName, everything()),
+  bim_not_annex_bonn_2 %>% mutate(source = "BONN_2") %>% select(source, gbif_scientificName, everything())
+    ) %>% 
+  select(source, gbif_scientificName, bim_scientificName) %>% 
+  filter(source == "BERN_3")
+```
+
+Not all species from the annex species list matched the GBIF backbone. These were excluded from this analysis:
+
+```{r}
+bind_rows(
+  non_matches_bxl_2.1,
+  non_matches_bxl_2.2,
+  non_matches_bxl_2.3,
+  non_matches_bxl_2.4,
+  non_matches_bxl_2.5,
+  non_matches_bxl_3,
+  non_matches_bxl_4,
+  non_matches_bern_1,
+  non_matches_bern_2,
+  non_matches_bern_3,
+  non_matches_bonn_1) %>% 
+  rename("dataset" = "value") %>% 
+  rename("records" = "n")
+```
+
+To do in remaining hours:
+1. Deal with unmatched taxa to include as many taxa as possible
+2. Deal with synonymy.
+
