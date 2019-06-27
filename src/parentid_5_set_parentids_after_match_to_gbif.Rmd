@@ -296,3 +296,35 @@ write_tsv(taxa_gbif_parent_key_complete,
           here("data", "output", "taxa_parentid_corrected.tsv"),
           na = "")
 ```
+
+We also save the new version of table `biodiv.taxon`. This file is saved following the technical specifications provided by BIM's IT expert, who is in charge to apply changes to BIM database. These specifications are:
+
+- file contains only the same columns as in  `biodiv.taxon`
+- encoding UTF-8
+- pipe separated text file
+
+Columns of `biodiv.taxon` table:
+
+```{r columns_biodiv_taxon, results="hide"}
+columns_biodiv_taxon <- 
+  read_tsv(here("data", "input", "taxa.tsv"), n_max = 1) %>%
+  names()
+```
+
+Select columns to include:
+
+```{r save_new_biodiv_taxon}
+new_biodiv_taxon <- 
+  taxa_gbif_parent_key_complete %>%
+  mutate(parentid = parentid_corrected) %>%
+  select(one_of(columns_biodiv_taxon))
+```
+
+Save taxa as UTF-8 (default) using pipe `|` as delimiter:
+
+```{r save_new_biodiv_taxon}
+write_delim(new_biodiv_taxon, 
+            path = here("data", "output", "taxa.txt"), 
+            na = "",
+            delim = "|")
+```
