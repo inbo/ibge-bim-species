@@ -90,6 +90,6 @@ Save taxa as tab separated text file:
 
 ```{r save_taxa}
 write_tsv(taxa,
-          path = here("data", "input", "taxa.tsv"),
+          path = here("data", "raw", "taxa.tsv"),
           na = "")
 ```

@@ -307,7 +307,7 @@ Columns of `biodiv.taxon` table:
 
 ```{r columns_biodiv_taxon, results="hide"}
 columns_biodiv_taxon <- 
-  read_tsv(here("data", "input", "taxa.tsv"), n_max = 1) %>%
+  read_tsv(here("data", "raw", "taxa.tsv"), n_max = 1) %>%
   names()
 ```
 
