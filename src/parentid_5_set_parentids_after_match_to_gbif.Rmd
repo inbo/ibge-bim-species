@@ -293,7 +293,7 @@ We save the taxa with corrected parent IDs:
 
 ```{r save_taxa_parentid_corrected}
 write_tsv(taxa_gbif_parent_key_complete,
-          here("data", "output", "taxa_parentid_corrected.tsv"),
+          here("data", "processed", "taxa_parentid_corrected.tsv"),
           na = "")
 ```
 
@@ -324,7 +324,7 @@ Save taxa as UTF-8 (default) using pipe `|` as delimiter:
 
 ```{r save_new_biodiv_taxon}
 write_delim(new_biodiv_taxon, 
-            path = here("data", "output", "taxa.txt"), 
+            path = here("data", "processed", "biodiv.taxon.txt"), 
             na = "",
             delim = "|")
 ```
