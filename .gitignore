@@ -54,4 +54,4 @@ src/*_files/
 *.zip
 
 # Occurrences
-data/input/occurrences.tsv
+data/raw/occurrences.tsv
