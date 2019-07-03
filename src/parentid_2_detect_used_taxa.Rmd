@@ -355,7 +355,7 @@ Save occurrences locally, but not push to repo via `.gitignore`:
 
 ```{r save_occurrences}
 write_tsv(occurrences,
-          path = here("data", "input", "occurrences.tsv"),
+          path = here("data", "raw", "occurrences.tsv"),
           na = "")
 ```
 
@@ -363,7 +363,7 @@ write_tsv(occurrences,
 
 ```{r save_identifiable_species}
 write_tsv(identifiable_species,
-          path = here("data", "input", "identifiable_species.tsv"),
+          path = here("data", "raw", "identifiable_species.tsv"),
           na = ""
 )
 ```

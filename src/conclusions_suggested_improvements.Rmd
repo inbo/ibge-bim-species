@@ -44,7 +44,7 @@ Read taxa containing the match with GBIF (columns  `gbif_***`) and the corrected
 
 ```{r read_taxa_parentid_corrected}
 taxa_output <- read_tsv(
-  here("data", "output", "taxa_parentid_corrected.tsv"),
+  here("data", "processed", "taxa_parentid_corrected.tsv"),
   na = "", 
   col_types = cols(
     .default = col_character(),
@@ -214,6 +214,20 @@ taxa_output %>%
 ```
 
 Some of them are not used or linked to very few occurrences.
+
+Total number of occurrences: 
+
+```{r tot_n_occs}
+taxa_output %>%
+  filter(taxonranken %in% c("subfamily",
+                            "subgenus",
+                            "suborder",
+                            "subphylum",
+                            "superfamily",
+                            "superorder",
+                            "infraorder")) %>%
+  summarize(n_occs = sum(n_occs, na.rm = TRUE))
+```
 
 Among these taxa, the following ones are parents of other taxa:
 

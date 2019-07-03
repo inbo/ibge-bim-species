@@ -30,7 +30,7 @@ library(here)       # To work with paths
 Read taxa from `./data/input/taxa.tsv`:
 
 ```{r add_kingdom-read_taxa_from_tsv_file}
-taxa <- read_tsv(here("data", "input", "taxa.tsv"),
+taxa <- read_tsv(here("data", "raw", "taxa.tsv"),
                  col_types = cols(
                    .default = col_character(),
                    id = col_double(),
