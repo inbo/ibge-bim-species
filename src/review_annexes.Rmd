@@ -83,7 +83,7 @@ bim_annex_species %>% distinct(annexcode)
 Import `taxa_parentid_corrected.tsv` to link `taxonid` with scientific names and related gbif taxonomic information:
 
 ```{r}
-taxa_parentid_corrected <- read_delim(file = here("data", "output", "taxa_parentid_corrected.tsv"), delim = "\t")
+taxa_parentid_corrected <- read_delim(file = here("data", "processed", "taxa_parentid_corrected.tsv"), delim = "\t")
 ```
 
 Join the information with `bim_annex_species`:
@@ -121,51 +121,10 @@ bim_hab_2   <- bim_annex_species %>% filter(annexcode == "EUR-DIR-HAB_Annex II")
 bim_hab_2   <- bim_annex_species %>% filter(annexcode == "EUR-DIR-HAB_Annex IV")
 ```
 
-Import annex species list.
-Retrieve the spreadsheet:
-
-```{r connect_google_spreadsheets}
-retrieve_spreadsheet <- gs_title("bim annexes")
-```
-
-Select the data in the worksheet `summary`:
-
-```{r read_source_data}
-annexes <- retrieve_spreadsheet %>% gs_read("summary") # Also trims values
-```
-
-We want to add a copy of the source data to the repository:
+Import `annexes_gbif_match.csv`:
 
 ```{r}
-write_csv(annexes, here("data", "raw", "annexes_dump.csv"), na = "")
-```
-
-Preview data: 
-
-```{r}
-annexes %>% head()
-```
-`
-Specify `gbif_terms` for retrieving specific information from GBIF. 
-
-```{r}
-gbif_terms <- c("matchType",
-                "confidence", 
-                "rank", 
-                "scientificName",
-                "kingdom",
-                "phylum",
-                "status",
-                "synonym")
-```
-
-Match `summary` with the GBIF backbone:
-
-```{r}
-annexes %<>% gbif_species_name_match(
-  name = "scientific_name_original",
-  gbif_terms = gbif_terms,
-  strict = TRUE)
+annexes <- read_delim(file = here("data", "interim", "annexes_gbif_match.csv"), delim = ",")
 ```
 
 Evaluate match with the GBIF backbone, indicated by `matchType`:
@@ -179,20 +138,11 @@ annexes %>%
   count()
 ```
 
-Save nonmatching taxa for final summary:
-
-```{r}
-non_matches_annexes <- annexes %>% filter(matchType == "NONE")
-```
-
-
 Remove non-matching taxa from dataset:
 
 ```{r}
 annexes %<>% filter(matchType != "NONE") 
 ```
-
-
 
 Save annexes as separate dataframes:
 
@@ -212,7 +162,6 @@ annex_bonn_2  <- annexes %>% filter(annex_code == "bonn_2")
 annex_hab_2   <- annexes %>% filter(annex_code == "hab_2")
 annex_hab_4   <- annexes %>% filter(annex_code == "hab_4")
 ```
-
 
 # Ordonnance BXL: Ordonnantie betreffende het natuurbehoud (2012-03-01)
 
