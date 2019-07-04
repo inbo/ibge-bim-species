@@ -1,0 +1,87 @@
+---
+title: "Match annexes to GBIF backbone"
+author:
+  - Lien Reyserhove
+  - Damiano Oldoni
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(tidyverse)      # To do data science
+library(here)           # To work with paths
+library(magrittr)       # 
+library(rgbif)          # 
+library(inborutils)     #
+library(googlesheets)   # To import and read Google spreadsheets 
+```
+
+## Match annex list to GBIF backbone
+
+Retrieve the [annex list](https://docs.google.com/spreadsheets/d/1Od5YYgMsTHvIFkrdeyWxkiARCya2yHKkAJrNM0-dnnw/edit#gid=486013476) which is a google spreadheet:
+
+```{r connect_google_spreadsheets}
+retrieve_spreadsheet <- gs_title("bim annexes")
+```
+
+Select the data in the worksheet `summary`:
+
+```{r read_source_data}
+annexes <- retrieve_spreadsheet %>% gs_read("summary") # Also trims values
+```
+
+We want to add a copy of the source data to the repository:
+
+```{r}
+write_csv(annexes, here("data", "raw", "annexes_dump.csv"), na = "")
+```
+
+Preview data: 
+
+```{r}
+annexes %>% head()
+```
+`
+Specify `gbif_terms` for retrieving specific information from GBIF. 
+
+```{r}
+gbif_terms <- c("matchType",
+                "confidence", 
+                "rank", 
+                "scientificName",
+                "kingdom",
+                "phylum",
+                "status",
+                "synonym")
+```
+
+Match `summary` with the GBIF backbone:
+
+```{r}
+annexes %<>% gbif_species_name_match(
+  name = "scientific_name_original",
+  gbif_terms = gbif_terms,
+  strict = TRUE)
+```
+
+Export as `annexes_gbif_match.csv`
+
+```{r}
+write_csv(annexes, here("data", "interim", "annexes_gbif_match.csv"), na = "")
+```
