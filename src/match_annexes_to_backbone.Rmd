@@ -29,7 +29,6 @@ library(here)           # To work with paths
 library(magrittr)       # 
 library(rgbif)          # 
 library(inborutils)     #
-library(googlesheets)   # To import and read Google spreadsheets 
 ```
 
 ## Match annex list to GBIF backbone
@@ -37,13 +36,7 @@ library(googlesheets)   # To import and read Google spreadsheets
 Retrieve the [annex list](https://docs.google.com/spreadsheets/d/1Od5YYgMsTHvIFkrdeyWxkiARCya2yHKkAJrNM0-dnnw/edit#gid=486013476) which is a google spreadheet:
 
 ```{r connect_google_spreadsheets}
-retrieve_spreadsheet <- gs_title("bim annexes")
-```
-
-Select the data in the worksheet `summary`:
-
-```{r read_source_data}
-annexes <- retrieve_spreadsheet %>% gs_read("summary") # Also trims values
+retrieve_spreadsheet <- read.csv(file = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThGvIdFkyd_jnTr9ej_dvfIisK18dUdjNXlPU9Y-J7XStKNT95AD4WSVjA553GKEjvrqF-227VU8e2/pub?gid=486013476&single=true&output=csv")
 ```
 
 We want to add a copy of the source data to the repository:
