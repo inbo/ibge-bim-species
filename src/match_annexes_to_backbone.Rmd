@@ -91,16 +91,46 @@ annexes %>%
   count()
 ```
 
-Scan `scientific_name_original` for obvious errors and correct. Rematch `scientific_name_corrected` with the GBIF backbone
+Scan `scientific_name_original` for obvious errors and correct. Rematch `scientific_name_corrected` with the GBIF backbone:
 
+```{r}
+annexes <-
+  annexes %>% 
+    select(scientific_name_corrected, annex_code) %>% 
+    gbif_species_name_match(
+      name = "scientific_name_corrected",
+      gbif_terms = gbif_terms,
+      strict = TRUE)
+```
+
+Evaluate match with the GBIF backbone again:
+
+```{r}
+annexes %>% 
+  group_by(matchType) %>% 
+  count()
+```
+
+Save non-matching taxa as a separate dataframe for later:
+
+```{r}
+unmatchted_annex_taxa <- 
+  annexes %>% 
+    filter(matchType == "NONE") %>% 
+    select(annex_code, scientific_name_corrected)
+```
+
+Export as `unmatched_taxa_annexes.csv`
+
+```{r}
+write_csv(unmatchted_annex_taxa, here("data", "processed", "unmatched_taxa_annexes.csv"), na = "")
+```
 
 Remove non-matching taxa from dataset:
 
 ```{r}
 annexes %<>% filter(matchType != "NONE") 
 ```
-
-
 
 Export as `annexes_gbif_match.csv`
 
