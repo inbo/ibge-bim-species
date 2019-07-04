@@ -80,6 +80,28 @@ annexes %<>% gbif_species_name_match(
   strict = TRUE)
 ```
 
+Evaluate match with the GBIF backbone, indicated by `matchType`:
+- succesfull: `matchType` = `EXACT`
+- doubtful: `matchType` = `FUZZY`
+- failed:  `matchType` = `NONE`
+
+```{r}
+annexes %>% 
+  group_by(matchType) %>% 
+  count()
+```
+
+Scan `scientific_name_original` for obvious errors and correct. Rematch `scientific_name_corrected` with the GBIF backbone
+
+
+Remove non-matching taxa from dataset:
+
+```{r}
+annexes %<>% filter(matchType != "NONE") 
+```
+
+
+
 Export as `annexes_gbif_match.csv`
 
 ```{r}
