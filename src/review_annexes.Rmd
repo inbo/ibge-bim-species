@@ -31,7 +31,7 @@ library(magrittr)       #
 library(rgbif)          # 
 library(inborutils)     #
 library(googlesheets)   # To import and read Google spreadsheets 
-
+library(janitor)
 ```
 
 ## Load access informations
@@ -62,22 +62,14 @@ Extract annex information from the database (`biodiv.speciesannex`):
 bim_annex_species <- dbGetQuery(conn, "
   SELECT
     sa.taxonid,
-    t.acceptedname,
-    t.scientificnameauthorship,
-    t.vernacularnamenl,
-    t.taxonranken,
-    t.taxonomicstatusen,
     sa.annexcode,
     a.descriptionnl
-
   FROM biodiv.speciesannex AS sa
     LEFT JOIN biodiv.annex AS a
       ON sa.annexcode = a.annexcode
-    LEFT JOIN biodiv.taxon AS t
-      ON sa.taxonid = t.id
   ORDER BY
     sa.annexcode,
-    t.acceptedname
+    sa.taxonid
 ") %>% 
   as_tibble()
 ```
@@ -88,59 +80,16 @@ Overview of the annexes:
 bim_annex_species %>% distinct(annexcode) 
 ```
 
-# Introducing the workflow
-
-**Important Note:**
-_BIM species list_ in this context refers to the annex species list as available in the BIM database.
-_Annex species list_ in this context refers to the official documents published by the respective instances (Habitat richtlijn, etc.)
-
-The approach is to screen each annex list _separately_ for lacking and/or erroneous taxa. 
-
-1. Retrieve and copypaste each annex species list in a [gsheets file](https://docs.google.com/spreadsheets/d/1Od5YYgMsTHvIFkrdeyWxkiARCya2yHKkAJrNM0-dnnw/edit#gid=1779940747). 
-
-2. Import the annex species list in Rstudio.
-
-3. To match the BIM species list with the annex species list, we need the _GBIF backbone_. In this way, we avoid nonmatches due to erroneous spelling or lacking authorship.
-    - Match bim species list with GBIF backbone using [taxa_gbif.tsv](https://github.com/inbo/ibge-bim-species/blob/master/data/input/taxa.tsv).
-    - Match annex species list with GBIF backbone by using `gbif_species_name_match()` function.
-
-*4. Screen nonmatching scientific names in annex species lists for errors and correct. 
-
-5. For now, remove all non-matching taxa (in summary)
-
-5. Match BIM species list with the annex species list
-
-*6. Remove all unverifiable records from the BIM species list
-
-7. Results: species list with taxa occurring in BIM species list but not in the annex species list
-  - due to synonyms?
-  - due to unmatched taxa?
-
-
-# Pre-processing
-
-Filter out minimal information from `bim_annex_species`: `acceptedname`, `taxonomicstatusen` and `annexcode`:
+Import `taxa_parentid_corrected.tsv` to link `taxonid` with scientific names and related gbif taxonomic information:
 
 ```{r}
-bim_annex_species %<>% select(acceptedname, taxonomicstatusen, annexcode) 
+taxa_parentid_corrected <- read_delim(file = here("data", "output", "taxa_parentid_corrected.tsv"), delim = "\t")
 ```
 
-Import`taxa_gbif.tsv` to add information from the GBIF backbone to the annex species list:
+Join the information with `bim_annex_species`:
 
 ```{r}
-taxa_gbif <- read.delim("~/GitHub/ibge-bim-species/data/interim/taxa_gbif.tsv")
-```
-
-Join GBIF information with annex_species:
-
-```{r}
-bim_annex_species <-
-  bim_annex_species %>% 
-    left_join(
-      select(taxa_gbif, acceptedname, gbif_scientificName, gbif_kingdom, gbif_phylum, gbif_class, gbif_order, gbif_family, gbif_genus, gbif_matchType, gbif_canonicalName, gbif_status),
-      by = "acceptedname") %>% 
-  rename("bim_scientificName" = "acceptedname") %>% 
-  distinct()
+bim_annex_species  %<>% left_join(taxa_parentid_corrected, by = c("taxonid" = "id")) %>% arrange(taxonid)
 ```
 
 Inspect `gbif_matchType` for nonmatching taxa:
@@ -148,11 +97,10 @@ Inspect `gbif_matchType` for nonmatching taxa:
 ```{r}
 bim_annex_species %>% 
   group_by(gbif_matchType) %>% 
-  filter(gbif_matchType  == "NONE" | is.na(gbif_matchType)) %>% 
   count()
 ```
 
-**For now, we remove these taxa.** TO BE CHANGED (potentially)
+Save non-matching taxa in a dataframe and remove for now
 
 Create subsets of for each annex for further inspection:
 
@@ -173,25 +121,31 @@ bim_hab_2   <- bim_annex_species %>% filter(annexcode == "EUR-DIR-HAB_Annex II")
 bim_hab_2   <- bim_annex_species %>% filter(annexcode == "EUR-DIR-HAB_Annex IV")
 ```
 
-Import annex species list. At this point they are saved as .csv files to allow import in Rstudio. 
+Import annex species list.
+Retrieve the spreadsheet:
 
-```{r}
-annex_bxl_2.1 <- read_delim(here("data", "input", "annex_bxl_2.1.csv"), delim = ",")
-annex_bxl_2.2 <- read_delim(here("data", "input", "annex_bxl_2.2.csv"), delim = ",")
-annex_bxl_2.3 <- read_delim(here("data", "input", "annex_bxl_2.3.csv"), delim = ",")
-annex_bxl_2.4 <- read_delim(here("data", "input", "annex_bxl_2.4.csv"), delim = ",")
-annex_bxl_2.5 <- read_delim(here("data", "input", "annex_bxl_2.5.csv"), delim = ",")
-annex_bxl_3   <- read_delim(here("data", "input", "annex_bxl_3.csv"), delim = ",")
-annex_bxl_4   <- read_delim(here("data", "input", "annex_bxl_4.csv"), delim = ",")
-annex_bern_1   <- read_delim(here("data", "input", "annex_bern_1.csv"), delim = ",")
-annex_bern_2   <- read_delim(here("data", "input", "annex_bern_2.csv"), delim = ",")
-annex_bern_3   <- read_delim(here("data", "input", "annex_bern_3.csv"), delim = ",")
-annex_bonn_1   <- read_delim(here("data", "input", "annex_bonn_1.csv"), delim = ",")
-annex_bonn_2   <- read_delim(here("data", "input", "annex_bonn_2.csv"), delim = ",")
-annex_hab_2   <- read_delim(here("data", "input", "annex_hab_2.csv"), delim = ",")
-annex_hab_4   <- read_delim(here("data", "input", "annex_hab_4.csv"), delim = ",")
+```{r connect_google_spreadsheets}
+retrieve_spreadsheet <- gs_title("bim annexes")
 ```
 
+Select the data in the worksheet `summary`:
+
+```{r read_source_data}
+annexes <- retrieve_spreadsheet %>% gs_read("summary") # Also trims values
+```
+
+We want to add a copy of the source data to the repository:
+
+```{r}
+write_csv(annexes, here("data", "raw", "annexes_dump.csv"), na = "")
+```
+
+Preview data: 
+
+```{r}
+annexes %>% head()
+```
+`
 Specify `gbif_terms` for retrieving specific information from GBIF. 
 
 ```{r}
@@ -205,16 +159,11 @@ gbif_terms <- c("matchType",
                 "synonym")
 ```
 
-
-# Ordonnance BXL: Ordonnantie betreffende het natuurbehoud (2012-03-01)
-
-## Annex II.1: Dier- en plantensoorten van communautair belang waarvan de instandhouding de aanwijzing van Natura 2000 gebieden vereist
-
-Match `annex_bxl_2.1` to the GBIF backbone:
+Match `summary` with the GBIF backbone:
 
 ```{r}
-annex_bxl_2.1 %<>% gbif_species_name_match(
-  name = "scientific_name",
+annexes %<>% gbif_species_name_match(
+  name = "scientific_name_original",
   gbif_terms = gbif_terms,
   strict = TRUE)
 ```
@@ -225,26 +174,59 @@ Evaluate match with the GBIF backbone, indicated by `matchType`:
 - failed:  `matchType` = `NONE`
 
 ```{r}
-annex_bxl_2.1 %>% 
+annexes %>% 
   group_by(matchType) %>% 
   count()
 ```
 
-All scientific names match with the GBIF backbone.
-
 Save nonmatching taxa for final summary:
 
 ```{r}
-non_matches_bxl_2.1 <- 
-  bind_cols(
-    as.tibble("BXL_2.1"),
-    annex_bxl_2.1 %>% filter(matchType == "NONE") %>% count())
+non_matches_annexes <- annexes %>% filter(matchType == "NONE")
 ```
+
+
+Remove non-matching taxa from dataset:
+
+```{r}
+annexes %<>% filter(matchType != "NONE") 
+```
+
+
+
+Save annexes as separate dataframes:
+
+```{r}
+annex_bxl_2.1 <- annexes %>% filter(annex_code == "bxl_2.1")
+annex_bxl_2.2 <- annexes %>% filter(annex_code == "bxl_2.2")
+annex_bxl_2.3 <- annexes %>% filter(annex_code == "bxl_2.3")
+annex_bxl_2.4 <- annexes %>% filter(annex_code == "bxl_2.4")
+annex_bxl_2.5 <- annexes %>% filter(annex_code == "bxl_2.5")
+annex_bxl_3   <- annexes %>% filter(annex_code == "bxl_3")
+annex_bxl_4   <- annexes %>% filter(annex_code == "bxl_4")
+annex_bern_1  <- annexes %>% filter(annex_code == "bern_1")
+annex_bern_2  <- annexes %>% filter(annex_code == "bern_2")
+annex_bern_3  <- annexes %>% filter(annex_code == "bern_3")
+annex_bonn_1  <- annexes %>% filter(annex_code == "bonn_1")
+annex_bonn_2  <- annexes %>% filter(annex_code == "bonn_2")
+annex_hab_2   <- annexes %>% filter(annex_code == "hab_2")
+annex_hab_4   <- annexes %>% filter(annex_code == "hab_4")
+```
+
+
+# Ordonnance BXL: Ordonnantie betreffende het natuurbehoud (2012-03-01)
+
+## Annex II.1: Dier- en plantensoorten van communautair belang waarvan de instandhouding de aanwijzing van Natura 2000 gebieden vereist
+
 
 `annex_bxl_2.1` contains no unverifiable taxa.
 
 ```{r}
-unverifiable_records_bxl_2.1 <- tibble("BIM_2.1" = 0)
+unverifiable_records_bxl_2.1 <- 
+  as.tibble(
+    list(
+      data = "Unverifiable records",
+      number_of_taxa = 0))
 ```
 
 Keep columns of interest:
@@ -267,17 +249,24 @@ annex_bxl_2.1 <-
     rename("gbif_canonicalName" = "canonicalName")
 ```
 
-Inspect of `annex_bxl_2.1` and `bim_bxl_2.1`:
+The following table summarizes the match between `annex_bxl_2.1` and `bim_bxl_2.1`:
+1. NUmber of records in `annex_blx_2.1`
+2. Number of records in `bim_bxl_2.1`
+3. Full match between records in both datasets
+4. Records present in `bim_bxl_2.1` but not in `annex_bxl_2.1`
+5. Records present in `annex_bxl_2.1` but not in `bim_bxl_2.1`
 
 ```{r}
 summary_bxl_2.1 <-
   bind_cols(
-    tibble("source" = rep("BIM_2.1",5)),
+    tibble("source" = rep("BIM_2.1",7)),
     bind_rows(
       annex_bxl_2.1 %>% 
         summarize(number_of_taxa = n()) %>% 
         mutate(data = "Records annex list") %>% 
         select(data, number_of_taxa)
+      ,
+      non_matches_bxl_2.1
       ,
       bim_bxl_2.1 %>% 
         summarize(number_of_taxa = n()) %>% 
@@ -295,6 +284,8 @@ summary_bxl_2.1 <-
         summarize(number_of_taxa = n()) %>% 
         mutate(data = "BIM not in annex") %>% 
         select(data, number_of_taxa)
+      ,
+      unverifiable_records_bxl_2.1
       ,
       annex_bxl_2.1 %>% 
         anti_join(bim_bxl_2.1, by = c("gbif_canonicalName")) %>%   
@@ -321,6 +312,12 @@ bim_bxl_2.1 %>%
   select(bim_scientificName, gbif_scientificName)
 ```
 
+Export `bim_bxl_2.1_corrected`
+
+```{r}
+
+```
+
 ## Annex II.2: Soorten die een strikte bescherming genieten op het hele gewestelijke grondgebied: 
 
 ```{r}
@@ -341,19 +338,20 @@ annex_bxl_2.2 %>%
   count()
 ```
 
-Inspect non-matching taxa:
-
-```{r}
-annex_bxl_2.2 %>% filter(matchType == "NONE") %>% arrange(scientific_name)
-```
-
 Save nonmatching taxa for final summary:
 
 ```{r}
-non_matches_bxl_2.2 <- 
+non_matches_bxl_2.2 <- annex_bxl_2.2 %>% filter(matchType == "NONE")
+```
+
+```{r}
+non_matches_summary_bxl_2.2 <- 
   bind_cols(
-    as.tibble("BXL_2.2"),
-    annex_bxl_2.2 %>% filter(matchType == "NONE") %>% count())
+    as.tibble(
+      list(
+        data = "GBIF NON matches annex")),
+      annex_bxl_2.2 %>% filter(matchType == "NONE") %>% count())
+colnames(non_matches_summary_bxl_2.2)[2] <- "number_of_taxa"
 ```
 
 Remove non-matching taxa:
@@ -423,26 +421,19 @@ unverifiable_records_bxl_2.2_taxa
 
 ```{r}
 unverifiable_records_bxl_2.2 <- 
-  unverifiable_records_bxl_2.2_taxa %>% 
-    summarize(BIM_2.2 = sum(number_of_taxa))
+  bind_cols(
+    tibble(data = "Unverifiable records"),
+    unverifiable_records_bxl_2.2_taxa %>% 
+      summarize(number_of_taxa = sum(number_of_taxa)))
 unverifiable_records_bxl_2.2
 ```
 
-Keep columns of interest:
+Keep columns of interest and rename:
 
 ```{r}
 annex_bxl_2.2 <- 
   annex_bxl_2.2 %>%
-    select(scientific_name, scientificName, canonicalName, kingdom, phylum, order, family, genus)
-```
-
-Rename columns:
-- `scientific_name` to `annex_scientificName`
-- `scientificName` to `gbif_scientificName`
-
-```{r}
-annex_bxl_2.2 <- 
-  annex_bxl_2.2 %>%  
+    select(scientific_name, scientificName, canonicalName, kingdom, phylum, order, family, genus) %>%  
     rename("gbif_scientificName" = "scientificName") %>% 
     rename("annex_scientificName" = "scientific_name") %>% 
     rename("gbif_canonicalName" = "canonicalName")
@@ -453,50 +444,44 @@ Compare species list of `annex_bxl_2.2` with `bim_bxl_2.2`:
 ```{r}
 summary_bxl_2.2 <-
   bind_cols(
-    tibble("source" = rep("BIM_2.2",5)),
+    tibble("source" = rep("BIM_2.2",7)),
     bind_rows(
       annex_bxl_2.2 %>% 
         summarize(number_of_taxa = n()) %>% 
-        mutate(data = "Records annex list") %>% 
+        mutate(data = "GBIF matches annex list") %>% 
         select(data, number_of_taxa)
+      ,
+       non_matches_summary_bxl_2.2
       ,
       bim_bxl_2.2 %>% 
         summarize(number_of_taxa = n()) %>% 
-        mutate(data = "Records BIM database") %>% 
+        mutate(data = "GBIF matches BIM database") %>% 
         select(data, number_of_taxa)
       ,
       annex_bxl_2.2 %>% 
         inner_join(bim_bxl_2.2, by = "gbif_canonicalName") %>% 
         summarize(number_of_taxa = n()) %>% 
-        mutate(data = "Full match") %>% 
+        mutate(data = "BIM and Annex") %>% 
         select(data, number_of_taxa)
       ,
       bim_bxl_2.2 %>% 
         anti_join(annex_bxl_2.2, by = c("gbif_canonicalName")) %>%   
         summarize(number_of_taxa = n()) %>% 
-        mutate(data = "BIM not in annex") %>% 
+        mutate(data = "BIM not annex") %>% 
         select(data, number_of_taxa)
+      ,
+      unverifiable_records_bxl_2.2
       ,
       annex_bxl_2.2 %>% 
         anti_join(bim_bxl_2.2, by = c("gbif_canonicalName")) %>%   
         summarize(number_of_taxa = n()) %>% 
-        mutate(data = "Annex not in BIM") %>% 
+        mutate(data = "Annex not BIM") %>% 
         select(data, number_of_taxa)
       ))
 summary_bxl_2.2
 ```
 
-We focus on the species occurring in `bim_bxl_2.2` but not in `annex_bxl_2.2`:
-
-```{r}
-bim_not_annex_bxl_2.2 <- 
-  bim_bxl_2.2 %>% anti_join(annex_bxl_2.2, by = c("gbif_canonicalName")) %>% 
-    select(bim_scientificName, gbif_scientificName) %>% 
-    arrange(bim_scientificName)
-bim_not_annex_bxl_2.2
-```
-
-Filter out the unverifiable records:
+We focus on the species occurring in `bim_bxl_2.2` but not in `annex_bxl_2.2`, with the unverified records filtered out:
 
 ```{r}
 bim_not_annex_bxl_2.2 <-
@@ -505,7 +490,8 @@ bim_not_annex_bxl_2.2 <-
     filter(!(gbif_class %in% unverifiable_records_bxl_2.2_taxa$records)) %>% 
     filter(!(gbif_family %in% unverifiable_records_bxl_2.2_taxa$records)) %>% 
     filter(!(gbif_genus %in% unverifiable_records_bxl_2.2_taxa$records)) %>% 
-  select(gbif_scientificName, gbif_kingdom, gbif_phylum, gbif_class, gbif_family)
+  select(gbif_scientificName, gbif_kingdom, gbif_phylum, gbif_class, gbif_family, gbif_genus)
+bim_not_annex_bxl_2.2
 ```
 
 The followin taxa occur in `annex_bxl_2.2` but not in `bim_bxl_2.2`:
@@ -570,16 +556,17 @@ annex_bxl_2.3 %>%
 Save nonmatching taxa for final summary:
 
 ```{r}
-non_matches_bxl_2.3 <- 
-  bind_cols(
-    as.tibble("BXL_2.3"),
-    annex_bxl_2.3 %>% filter(matchType == "NONE") %>% count())
+non_matches_bxl_2.3 <- annex_bxl_2.3 %>% filter(matchType == "NONE")
 ```
 
-Remove non-matching taxa for now:
-
 ```{r}
-annex_bxl_2.3 %<>% filter(matchType != "NONE")
+non_matches_summary_bxl_2.3 <- 
+  bind_cols(
+    as.tibble(
+      list(
+        data = "GBIF NON matches annex")),
+      annex_bxl_2.3 %>% filter(matchType == "NONE") %>% count())
+colnames(non_matches_summary_bxl_2.3)[2] <- "number_of_taxa"
 ```
 
 The following taxa are included in `annex_bxl_2.3` but are not with their scienfic name. For these species, we are unable to check whether or not their presence in the BIM annex list is correct:
