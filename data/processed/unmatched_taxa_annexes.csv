@@ -44,6 +44,7 @@ bxl_2.2,Centaurea immanueli
 bxl_2.2,Centaurea pulvinata (G. Bianca) G. Bianca
 bxl_2.2,Senecio jacobea L. subsp. gotlandicus (Neuman) Sterner
 bxl_2.2,Convolvulus argyrothamnus Greuter
+bxl_2.2,Convolvulus pulvinatus Saâ€™ad
 bxl_2.2,Alyssum borzaeanum E. I. Nayardy
 bxl_2.2,Braya purpurasceus (R.Br.) Bunge
 bxl_2.2,Crambe litwinonowii K. Gross.
@@ -54,15 +55,16 @@ bxl_2.2,Jonopsiditum savianum (Caruel) Ball ex Arcang.
 bxl_2.2,Lepidium turezaninowii Lipsky.
 bxl_2.2,Rhynchosinapis erucastrum (L.) Dandy ex Clapham subsp. cintrana (Coutinho)
 bxl_2.2,Gentianella angelica (Pugsley) E. F. Warburg
+bxl_2.2,Erodium chrysanthum Lâ€™Herit. ex DC.
 bxl_2.2,Festuca summilusitanica Franco & R. Afonso
 bxl_2.2,Poariphaea (Ascher et Graebner) Fritsch
 bxl_2.2,Stipa syreistschikown P. Smirn.
 bxl_2.2,Ribes sardum Martelli
-bxl_2.2,Iris humilis Georgi subsp. arenaria (Waldst. et Kit.) A. et D.Léve
+bxl_2.2,Iris humilis Georgi subsp. arenaria (Waldst. et Kit.) A. et D.LÃ©ve
 bxl_2.2,Iris marisca Ricci & Colasante
 bxl_2.2,Origanum cordifolium (Auch. & Montbr.) Vogel (Amaracus cordifolium Montr. & Auch.)
 bxl_2.2,Rosmarinus tomentosus Hube
-bxl_2.2,Teucrium lamiufolium D’Urv.
+bxl_2.2,Teucrium lamiufolium Dâ€™Urv.
 bxl_2.2,Thymus lotocephalus G. Lopez & R. Morales (Thymus cephalotos L.)
 bxl_2.2,Astragalus centrealpinus Brau
 bxl_2.2,Astragalus psedopurpureus Gusul.
@@ -89,6 +91,7 @@ bxl_2.2,Alle Nymphaeaceae soorten waarvan het natuurlijk verspreidingsgebied geh
 bxl_2.2,"Alle Orchidaceae soorten waarvan het natuurlijk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvatt, met uitsluiting van Epipactis helleborine"
 bxl_2.2,Calypso bulbosa L.
 bxl_2.2,Orchis scopulorum Simsmerh.
+bxl_2.2,Corydalis gotlandica LidÃ©n
 bxl_2.2,Plantago algarbiensis Sampaio (Plantago bracteosa (Willk.) G. Sampaio)
 bxl_2.2,Armeria negleta Girard
 bxl_2.2,Armeria soleirotii (Duby) Godron
@@ -128,7 +131,9 @@ bxl_2.2,Parolinia schizogunoides Svent.
 bxl_2.2,Simapidendron rupestre (Ait.) Lowe
 bxl_2.2,Sinapidendron sempervivifolium Mnzs.
 bxl_2.2,Carex malato belizi Raymond
-bxl_2.2,Teucrium betonicum L’ Héer
+bxl_2.2,Micromeria leucantha Svent. ex PÃ©rez
+bxl_2.2,Teucrium abutiloides Lâ€™HÃ©r
+bxl_2.2,Teucrium betonicum Lâ€™ HÃ©er
 bxl_2.2,Cicer canariensis Santos & Gweil
 bxl_2.2,Doryenium spectabile Webb & Berthel
 bxl_2.2,Lotus callis viridis D.Bramwell & D.H.Davis
@@ -139,7 +144,7 @@ bxl_2.2,Plantago malato belizii Lawalree
 bxl_2.2,Dendriopterium pulidoi Svent.
 bxl_2.2,Sorbus maderensis (Lowe) Docle
 bxl_2.2,Euphrasia grandiflora Hochst. ex Seub.
-bxl_2.2,Jsoplexis chalcantha Svent. & O’Shanahan
+bxl_2.2,Jsoplexis chalcantha Svent. & Oâ€™Shanahan
 bxl_2.2,Jsoplexis isabelliana (Webb & Berthel.) Masferrer
 bxl_2.2,Melanoselinum decipiens (Schrader & Wendl.) Hoftm.
 bxl_2.3,Carabus aronitens var. putsysi
@@ -147,7 +152,7 @@ bxl_2.3,Satyrium w
 bxl_2.3,Erythromma linden
 bxl_2.3,Ophiogomphus Cecilia
 bxl_2.3,Oecanthus pelluscens
-bxl_2.3,Oe¢cdipoda caerulescens
+bxl_2.3,OeÂ¢cdipoda caerulescens
 bxl_2.3,Tetrix undulate
 bxl_2.3,Cirstum acaule
 bxl_2.3,Euphorbia amyegdaloides
@@ -200,29 +205,32 @@ bern_1,Onosma polyphyllum Lebed.
 bern_1,Centaurea akamatis Th. Georgiades & G. Chatzikiriakou
 bern_1,Centaurea balearica J.D.Rodriguez
 bern_1,Alyssum borzaeanum E. I. Nayardy
+bern_1,Thlaspi cariense A.CarlstrÃƒÂ¶m
 bern_1,Hedysarum razoumovianum Fisch. et Helm.
 bern_1,Caulinia tenuissima (A. br. ex Magnus) Tzvel.
-bern_1,Aconitum lasiocarpum (Reichenb.) GÃ¡yer
-bern_1,Ranunculus weyleri MarÃ¨s
+bern_1,Aconitum lasiocarpum (Reichenb.) GÃƒÂ¡yer
+bern_1,Ranunculus weyleri MarÃƒÂ¨s
 bern_1,Potentilla emilii-popii E. I. Nayardy
 bern_1,Typha minima Funk
 bern_1,"Centranthus kellereri (Stoj., Stef. et Georg.) J.K.B. Richardson."
-bern_1,Centranthus trinervis (Viv.) BÃ©guinot
-bern_1,Viola jaubertiana MarÃ¨s & Vigineix
+bern_1,Centranthus trinervis (Viv.) BÃƒÂ©guinot
+bern_1,Viola jaubertiana MarÃƒÂ¨s & Vigineix
 bern_1,Riella helicophylla (Mont.) Hook.
 bern_1,Cystoseira spinosa (inclus C. adriatica)
 bern_1,Lithophyllum lichenoides
 bern_1,Musschia aurea (L.f.) DC.
-bern_1,Cistus chinamadensis BaÃ±ares & Romero
+bern_1,Cistus chinamadensis BaÃƒÂ±ares & Romero
 bern_1,Cheirolophus metlesicsii Montelongo
 bern_1,Hypochoeris oligocephala (Svent. & D.Bramwell) Lack
 bern_1,Pericallis hadrosoma Svent.
+bern_1,Tolpis glabrescens KÃƒÂ¤mmer
 bern_1,Aeonium gomeraense Praeger
 bern_1,Aichrysum dumosum (Lowe) Praeg.
-bern_1,Monanthes wildpretii BaÃ±ares & Scholz
+bern_1,Monanthes wildpretii BaÃƒÂ±ares & Scholz
 bern_1,Sinapidendron sempervivifolium Mnzs.
 bern_1,Phalaris maderensis (Mnzs.) Mnzs.
-bern_1,Micromeria leucantha Svent. ex PÃ©rez
+bern_1,Micromeria glomerata P. PÃƒÂ©rez
+bern_1,Micromeria leucantha Svent. ex PÃƒÂ©rez
 bern_1,Picconia azorica (Tutin) Knbol.
 bern_2,all species of microchiroptera except Pipistrellus pipistrellus
 bern_2,all species of Ursidae
@@ -276,7 +284,7 @@ bern_3,Rutilus racovitzai
 bern_3,Sabanejewia calderoni
 bern_3,Siluris aristotelis
 bern_3,Puntitius platygaster
-bern_3,SciÃ¦na umbra
+bern_3,SciÃƒÂ¦na umbra
 bern_3,Gobius fluviatilis
 bern_3,Gobius thressalus
 bern_3,Scyllarides pigmaeus
@@ -373,22 +381,31 @@ hab_2,Paladilhia hungarica
 hab_2,Dryopteris fragans (L.) Schott
 hab_2,Leucojum nicaeense Ard.
 hab_2,Echium russicum J.F.Gemlin
+hab_2,Campanula romanica SÄƒvul.
 hab_2,Convolvulus argyrothamnus Greuter
 hab_2,Senecio jacobea L. subsp. gotlandicus (Neuman) Sterner
 hab_2,Convolvulus argyrothamnus Greuter
+hab_2,Cochlearia polonica E. FrÃ¶hlich
+hab_2,Diplotaxis ibicensis (Pau) GÃ³mez-Campo
 hab_2,Rhynchosinapis erucastrum (L.) Dandy ex Clapham subsp. cintrana (Coutinho) Franco & P. Silva (Coincya cintrana (P. Cout.) Pinto da Silva)
-hab_2,Thymus lotocephalus G. López & R. Morales (Thymus cephalotos L.)
+hab_2,Sisymbrium cavanillesianum ValdÃ©s & Castroviejo
+hab_2,Poa granitica Br.-Bl. subsp. disparilis (E. I. NyÃ¡rÃ¡dy) E. I. NyÃ¡rÃ¡dy
+hab_2,Iris humilis Georgi subsp. arenaria (Waldst. et Kit.) A. et D.LÃ¶ve
+hab_2,Thymus lotocephalus G. LÃ³pez & R. Morales (Thymus cephalotos L.)
+hab_2,Astragalus peterfii JÃ¡v.
 hab_2,Hyacinthoides vicentina (Hoffmans. & Link) Rothm.
 hab_2,Linum muelleri Moris (Linum maritimum muelleri)
 hab_2,Calypso bulbosa L.
 hab_2,Himantoglossum caprinum (Bieb.) V. Koch
+hab_2,Corydalis gotlandica LidÃ©n
 hab_2,Plantago algarbiensis Sampaio (Plantago bracteosa (Willk.) G. Sampaio)
 hab_2,Aconitum corsicum Gayer (Aconitum napellus subsp. corsicum)
+hab_2,Potentilla emilii-popii NyÃ¡rÃ¡dy
 hab_2,Chaenorrhinum serpyllifolium (Lange) Lange subsp. lusitanicum R. Fernandes
 hab_2,Ferula sadleriana Lebed.
 hab_2,Herzogiella turfacea (Lindb.) I. Wats.
 hab_2,Nothothylas orbicularis (Schwein.) Sull.
-hab_2,Scapania massolongi (K. Müll.) K. Müll.
+hab_2,Scapania massolongi (K. MÃ¼ll.) K. MÃ¼ll.
 hab_2,Hymenophyllum maderensis Gibby & Lovis
 hab_2,Musschia aurea (L. f.) DC.
 hab_2,Atractylis preauxiana Schultz.
@@ -396,6 +413,8 @@ hab_2,Hypochoeris oligocephala (Svent. & Bramw.) Lack
 hab_2,Onorpordum carduelinum Bolle
 hab_2,Tanacetum ptarmiciflorum Webb & Berth
 hab_2,Aeonium gomeraense Praeger
+hab_2,Teucrium abutiloides Lâ€™HÃ©r.
+hab_2,Teucrium betonicum Lâ€™HÃ©r.
 hab_2,Scilla maderensis Menezes
 hab_4,All species except Glis glis and Eliomys quercinus
 hab_4,Lacerta bonnali (Lacerta monticola)
@@ -415,8 +434,18 @@ hab_4,Iris marisca Ricci & Colasante
 hab_4,Fritillaria conica Boix
 hab_4,Ornithogalum reverchonii Degen & Herv.-Bass.
 hab_4,Dryopteris fragans (L.) Schott
+hab_4,Campanula romanica SÄƒvul.
 hab_4,Senecio jacobea L. subsp. gotlandicus (Neuman) Sterner
 hab_4,Convolvulus argyrothamnus Greuter
+hab_4,Cochlearia polonica E. FrÃ¶hlich
+hab_4,Diplotaxis ibicensis (Pau) GÃ³mez-Campo
 hab_4,Rhynchosinapis erucastrum (L.) Dandy ex Clapham subsp. cintrana (Coutinho) Franco & P. Silva (Coincya cintrana (P. Cout.) Pinto da Silva)
+hab_4,Sisymbrium cavanillesianum ValdÃ©s & Castroviejo
+hab_4,Poa granitica Br.-Bl. subsp. disparilis (E. I. NyÃ¡rÃ¡dy) E. I. NyÃ¡rÃ¡dy
+hab_4,Iris humilis Georgi subsp. arenaria (Waldst. et Kit.) A. et D.LÃ¶ve
+hab_4,Astragalus peterfii JÃ¡v.
 hab_4,Himantoglossum caprinum (Bieb.) V. Koch
+hab_4,Corydalis gotlandica LidÃ©n
+hab_4,Potentilla emilii-popii NyÃ¡rÃ¡dy
 hab_4,Chaenorrhinum serpyllifolium (Lange) Lange subsp. lusitanicum R. Fernandes
+bird_1,Lagopus mutus helveticus

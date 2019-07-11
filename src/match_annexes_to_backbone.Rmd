@@ -36,7 +36,7 @@ library(inborutils)     #
 Retrieve the [annex list](https://docs.google.com/spreadsheets/d/1Od5YYgMsTHvIFkrdeyWxkiARCya2yHKkAJrNM0-dnnw/edit#gid=486013476) which is a google spreadheet:
 
 ```{r connect_google_spreadsheets}
-retrieve_spreadsheet <- read.csv(file = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThGvIdFkyd_jnTr9ej_dvfIisK18dUdjNXlPU9Y-J7XStKNT95AD4WSVjA553GKEjvrqF-227VU8e2/pub?gid=486013476&single=true&output=csv")
+annexes <- read.csv(file = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThGvIdFkyd_jnTr9ej_dvfIisK18dUdjNXlPU9Y-J7XStKNT95AD4WSVjA553GKEjvrqF-227VU8e2/pub?gid=486013476&single=true&output=csv")
 ```
 
 We want to add a copy of the source data to the repository:
@@ -44,6 +44,21 @@ We want to add a copy of the source data to the repository:
 ```{r}
 write_csv(annexes, here("data", "raw", "annexes_dump.csv"), na = "")
 ```
+
+The following documents were consulted to generate the annex lists:
+
+- Ordonnance BXL: copy retrieved by Brussels Environment
+- Bern Convention: 
+  - [Annex I](https://rm.coe.int/CoERMPublicCommonSearchServices/DisplayDCTMContent?documentId=0900001680304354)
+  - [Annex II](https://rm.coe.int/168078e2ff)
+  - [Annex III](https://rm.coe.int/CoERMPublicCommonSearchServices/DisplayDCTMContent?documentId=0900001680304356)
+- Bonn Convention:
+  - [Annex I and Annex II](https://www.cms.int/sites/default/files/basic_page_documents/cms_cop12_appendices_e_0.pdf)
+- Habitat Directive:
+  - [Annex II and Annex IV](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:01992L0043-20130701)
+- Bird Directive:
+  - [Annex I](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32009L0147)
+
 
 Preview data: 
 
