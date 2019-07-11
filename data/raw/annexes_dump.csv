@@ -1,9 +1,9 @@
-annex_code,scientific_name_original,scientific_name_corrected,page_number,remarks
+annex_code,scientific_name_original,scientific_name_corrected,page_number,corrected
 bxl_2.1,Barbastella barbastellus,Barbastella barbastellus,48,""
 bxl_2.1,Myotis bechsteini,Myotis bechsteini,48,""
 bxl_2.1,Myotis dasycneme,Myotis dasycneme,48,""
 bxl_2.1,Myotis emarginatus,Myotis emarginatus,48,""
-bxl_2.1,Myotis Myotis,Myotis Myotis,48,""
+bxl_2.1,Myotis Myotis,Myotis myotis,48,decapitalize myotis
 bxl_2.1,Rhinolophus ferrumequinum,Rhinolophus ferrumequinum,48,""
 bxl_2.1,Rhodeus sericeus amarus,Rhodeus sericeus amarus,48,""
 bxl_2.1,Lucanus cervus,Lucanus cervus,48,""
@@ -12,9 +12,9 @@ bxl_2.1,Vertigo moulinsiana,Vertigo moulinsiana,48,""
 bxl_2.1,Mergus albellus,Mergus albellus,48,""
 bxl_2.1,Pernis apivorus,Pernis apivorus,48,""
 bxl_2.1,Falco peregrinus,Falco peregrinus,48,""
-bxl_2.1,Caprimulgus europacus,Caprimulgus europacus,48,""
+bxl_2.1,Caprimulgus europacus,Caprimulgus europaeus,48,Change c to e
 bxl_2.1,Alcedo atthis,Alcedo atthis,48,""
-bxl_2.1,Dendrocopos martius,Dendrocopos martius,48,""
+bxl_2.1,Dendrocopos martius,Dryocopus martius,48,""
 bxl_2.1,Dendrocopos medius,Dendrocopos medius,48,""
 bxl_2.2,Alle europese soorten Mammalia,Alle europese soorten Mammalia,50,""
 bxl_2.2,Barbastella barbastellus,Barbastella barbastellus,50,""

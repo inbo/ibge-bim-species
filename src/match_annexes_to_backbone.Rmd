@@ -59,7 +59,6 @@ The following documents were consulted to generate the annex lists:
 - Bird Directive:
   - [Annex I](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32009L0147)
 
-
 Preview data: 
 
 ```{r}
