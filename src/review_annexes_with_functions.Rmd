@@ -136,6 +136,36 @@ bim_annex_species %>%
   count()
 ```
 
+## Get accepted taxa
+
+Number of synonyms following GBIF Taxonomy Backbone :
+
+```{r n_synonyms}
+bim_annex_species %>%
+  filter(gbif_matchType != "NONE") %>%
+  group_by(gbif_synonym) %>%
+  count()
+```
+
+Find accepted (scientific) names of synonyms in BIM annexes. Add them in column `gbif_accepted_name`. For accepted taxa, `gbif_accepted_name` = `gbif_scientificname`:
+
+```{r get_accepted_names_bim_annexes}
+bim_annex_species <- 
+  bim_annex_species %>%
+  mutate(gbif_accepted_name = map2_chr(
+    bim_annex_species$gbif_acceptedUsageKey,
+    bim_annex_species$gbif_scientificName,
+    function(key, gbif_scientificname){
+      if (!is.na(key)) {
+        name_usage(key, return = "data")$scientificName
+      } else {
+        gbif_scientificname
+      }
+    })
+)
+```
+
+
 ## Group BIM annexes by annex code
 
 BIM-annex codes:
