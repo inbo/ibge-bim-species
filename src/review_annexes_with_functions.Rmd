@@ -24,32 +24,8 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ## Load libraries
 
 ```{r load_libs}
-library(odbc)           # To work with database
 library(tidyverse)      # To do data science
 library(here)           # To work with paths
-library(stringr)        # To work with strings
-```
-
-## Load access informations
-
-Retrieve access informations from configuration file:
-
-```{r get_access_infos}
-ibge_bim <- config::get("ibge_bim")
-```
-
-Connect to database:
-
-```{r connect_to_db}
-conn <- dbConnect(odbc(), 
-                  driver = ibge_bim$driver,
-                  server = ibge_bim$server,
-                  database = ibge_bim$database,
-                  port = ibge_bim$port,
-                  uid = ibge_bim$uid,
-                  pwd = ibge_bim$pwd,
-                  encoding = "Windows-1252"
-)
 ```
 
 # Read data
@@ -73,102 +49,46 @@ annexcode <- c("bxl_2.1",
                "hab_4")
 ```
 
-## BIM annex data
+This vector will be used later to identify the BIM annexes and the official annexes.
 
-Extract annex information from the database (`biodiv.speciesannex`):
+## Read BIM annex data
 
-```{r}
-bim_annex_species <- dbGetQuery(conn, "
-  SELECT
-    sa.taxonid,
-    sa.annexcode,
-    a.descriptionnl
-  FROM biodiv.speciesannex AS sa
-    LEFT JOIN biodiv.annex AS a
-      ON sa.annexcode = a.annexcode
-  ORDER BY
-    sa.annexcode,
-    sa.taxonid
-") %>% 
-  as_tibble()
-```
+Import the BIM annex data with full taxonomic information:
 
-Overview of the BIM annexes:
-
-```{r overview_bim_annex_species}
-bim_annex_species %>% distinct(annexcode) 
-```
-
-## BIM taxonomic data
-
-Import `taxa_parentid_corrected.tsv` to link `taxonid` with scientific names and related gbif taxonomic information:
-
-```{r read_taxa_parentid_corrected}
-taxa_parentid_corrected <- read_delim(
-  file = here("data", "processed", "taxa_parentid_corrected.tsv"), 
-  delim = "\t",
+```{r read_bim_annex_taxa}
+bim_annex_taxa <- read_csv(
+  here("data", "interim", "bim_annex_taxa_full_taxonomic_info.csv"),
+  na = "",
   col_types = cols(
     .default = col_character(),
-    id = col_double(),
+    taxonid = col_double(),
     parentid = col_double(),
     media = col_logical(),
     speciesbeparentid = col_double(),
-    bruenvi_created = col_date(format = "%Y-%m-%d"),
-    bruenvi_modified = col_date(format = "%Y-%m-%d"))
+    bruenvi_created = col_date(format = ""),
+    bruenvi_modified = col_date(format = ""),
+    used = col_logical(),
+    n_occs = col_double(),
+    kingdom_id = col_double(),
+    corrected = col_logical(),
+    gbif_confidence = col_double(),
+    gbif_usageKey = col_double(),
+    gbif_kingdomKey = col_double(),
+    gbif_phylumKey = col_double(),
+    gbif_classKey = col_double(),
+    gbif_orderKey = col_double(),
+    gbif_familyKey = col_double(),
+    gbif_genusKey = col_double(),
+    gbif_speciesKey = col_double(),
+    gbif_synonym = col_logical(),
+    gbif_acceptedUsageKey = col_double(),
+    gbif_parentKey = col_double(),
+    added_from_gbif = col_logical(),
+    parentid_corrected = col_double())
 )
 ```
 
-## Add taxonomic information to BIM annex
-
-Join the information with `bim_annex_species`:
-
-```{r join_bim_annex_species_taxa_parentid_corrected}
-bim_annex_species  %<>% 
-  left_join(taxa_parentid_corrected, by = c("taxonid" = "id")) %>% 
-  arrange(taxonid)
-```
-
-Inspect `gbif_matchType` for nonmatching taxa:
-
-```{r inspect_gbif_matchType}
-bim_annex_species %>% 
-  group_by(gbif_matchType) %>% 
-  count()
-```
-
-## Get accepted taxa
-
-Number of synonyms following GBIF Taxonomy Backbone :
-
-```{r n_synonyms}
-bim_annex_species %>%
-  filter(gbif_matchType != "NONE") %>%
-  group_by(gbif_synonym) %>%
-  count()
-```
-
-Find accepted (scientific) names of synonyms in BIM annexes. Add them in column `gbif_accepted_name`. For accepted taxa, `gbif_accepted_name` = `gbif_scientificname`:
-
-```{r get_accepted_names_bim_annexes}
-bim_annex_species <- 
-  bim_annex_species %>%
-  mutate(gbif_accepted_name = map2_chr(
-    bim_annex_species$gbif_acceptedUsageKey,
-    bim_annex_species$gbif_scientificName,
-    function(key, gbif_scientificname){
-      if (!is.na(key)) {
-        name_usage(key, return = "data")$scientificName
-      } else {
-        gbif_scientificname
-      }
-    })
-)
-```
-
-
-## Group BIM annexes by annex code
-
-BIM-annex codes:
+Group BIM annexes by annex code:
 
 ```{r define_bim_annexcode}
 bim_annexcode <- c(
@@ -195,7 +115,7 @@ Separate them based on annex code and group them in a list of data.frames called
 ```{r list_bim_annexes}
 bim_annex <- map(
   bim_annexcode, function(code){
-    bim_annex_species %>%
+    bim_annex_taxa %>%
       filter(annexcode == code)
     }
 )
@@ -241,7 +161,7 @@ annex_df <-
   rename("gbif_canonicalName" = "canonicalName")
 ```
 
-Create separate annexes and group them in a list of data.frames called `annexes`:
+Create separate annexes and group them in a list of data.frames called `annex`:
 
 ```{r create_list_annex}
 annex <- map(annexcode, function(code){
@@ -279,6 +199,10 @@ unmatched_annex_taxa <- map(
 )
 names(unmatched_annex_taxa) <- annexcode
 ```
+
+# Review BIM annex data
+
+In this section we compare BIM annex data with the information contained in the official annexes.
 
 ## Unverifiable taxa 
 
