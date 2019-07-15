@@ -210,17 +210,36 @@ Some BIM annexes contain taxa which are not verifiable as in the official annex 
 
 ### Function to get unverifiable taxa
 
-We write first the function called `get_summarize_unverifiables` to find how many they are. Such function is general and can be aplied to each `bim_*` and the related unverified names and ranks.
+We define first the functions:
+1. `get_unverifiable_records` to find the unverifiable records
+2. `get_summarize_unverifiables` to find how many they are. 
+
+Such functions are general and can be aplied to each `bim_*` and its related unverified names.
 
 ```{r define_function_get_summarize_unverifiables}
-get_summarize_unverifiables <- function(df, name, rank){
-  rank_col <- paste0("gbif_", rank)
+get_unverifiable_records <- function(df, name, rank){
   map2_dfr(name,
-           rank_col,
-           function(name, rank_col) {
-             if (!is.na(name)) {
-               df %>%
-                 filter((!!sym(rank_col)) == name) %>%
+           rank,
+           function(name, rank) {
+             if (!is.na(rank)) {
+               rank_col <- paste0("gbif_", rank)
+               df %>% filter((!!sym(rank_col)) == name)
+             } else {
+             # empty df
+               df %>% head(0)
+             }
+           }
+  )
+}
+
+get_summarize_unverifiables <- function(unverifiables, name, rank){
+  map2_dfr(name,
+           rank,
+           function(name, rank) {
+             if (!is.na(rank)) {
+               rank_col <- paste0("gbif_", rank)
+               unverifiables %>%
+                 filter(!!sym(rank_col) == name) %>%
                  summarize(number_of_taxa = n()) %>% 
                  mutate(records = name) %>% 
                  select(records, number_of_taxa)
@@ -511,6 +530,7 @@ unverifiable_taxa_bxl_4 <- unverifiable_taxa_empty
 unverifiable_taxa_bern_1 <- unverifiable_taxa_empty
 unverifiable_taxa_bern_2 <- unverifiable_taxa_empty
 unverifiable_taxa_bonn_1 <- unverifiable_taxa_empty
+unverifiable_taxa_bird_1 <- unverifiable_taxa_empty
 ```
 
 ### Create list of unverifiable taxa
@@ -524,16 +544,25 @@ unverifiable_taxa <- map(annexcode, function(code){
 names(unverifiable_taxa) <- annexcode
 ```
 
-And we apply function `get_summarize_unverifiables` to all elements of `unverifiable_taxa`. We get a new list of data.frames called `unverifiable_records`, where each of it cointains the number of taxa in the specific BIM-annex for each unverifiable taxon from the correspondent annex:
+
+We first apply funtion  `get_unverifiable_records`  to group all the unverifiable records of each BIM annex and related names/ranks:
+
+```{r get_unverfiables}
+unverifiable_dfs <-  map2(
+  bim_annex, unverifiable_taxa, function(df, names) {
+    get_unverifiable_records(df, names$name, names$rank)}
+)
+```
+
+And now apply function `get_summarize_unverifiables` to get a new list of data.frames called `unverifiable_records`, where each of it cointains the number of taxa in the specific BIM-annex for each unverifiable taxon from the correspondent annex:
 
 ```{r apply_function_to_all_annexes}
-n_taxa_unverifiable_taxa <- map2(bim_annex, unverifiable_taxa,
+n_taxa_unverifiable_taxa <- map2(unverifiable_dfs, unverifiable_taxa,
                              function(df, names) {
                                get_summarize_unverifiables(df, 
                                                            names$name, 
                                                            names$rank)
                              })
-names(n_taxa_unverifiable_taxa) <- annexcode
 ```
 
 Example: unverifiable taxa from BONN 2:
