@@ -46,7 +46,8 @@ annexcode <- c("bxl_2.1",
                "bonn_1",
                "bonn_2",
                "hab_2",
-               "hab_4")
+               "hab_4",
+               "bird_1")
 ```
 
 This vector will be used later to identify the BIM annexes and the official annexes.
@@ -105,8 +106,8 @@ bim_annexcode <- c(
   "UN-CON-BON-Annex I",
   "UN-CON-BON-Annex II",
   "EUR-DIR-HAB_Annex II",
-  "EUR-DIR-HAB_Annex IV"
-  # "EUR-DIR-BIR_Annex I"
+  "EUR-DIR-HAB_Annex IV",
+  "EUR-DIR-BIR_Annex I"
 )
 ```
 
@@ -799,3 +800,14 @@ Summary:
 ```{r show_summary_bonn_2}
 summaries$bonn_2
 ```
+
+# Bird Habitat annex
+
+## Annex I 
+
+Summary:
+
+```{r show_summary_bird_1}
+summaries$bird_1
+```
+
