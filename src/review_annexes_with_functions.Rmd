@@ -843,3 +843,17 @@ pmap_dfr(
   }
 )
 ```
+
+# Save unverifiable higher ranks from official annexes
+
+We save the taxa from official annexes related to higher ranks and therefore not findable in BIM annexes:
+
+```{r save_unverifiable_taxa}
+unverifiable_taxa %>%
+  map_dfr(bind_rows) %>%
+  distinct() %>%
+  filter(!is.na(rank)) %>%
+  write_csv(path = here("data", "interim", "unverifiable_taxa_annexes.csv"),
+            na = "")
+```
+
