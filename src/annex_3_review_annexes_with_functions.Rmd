@@ -856,4 +856,3 @@ unverifiable_taxa %>%
   write_csv(path = here("data", "interim", "unverifiable_taxa_annexes.csv"),
             na = "")
 ```
-
