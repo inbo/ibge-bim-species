@@ -390,8 +390,8 @@ unverifiable_taxa_bern_2 <- tibble(
 1. Taxa belonging to genus  `Coregonus` (in annex list: _all species of Coregonus _)
 2. Taxa belonging to  family `Soricidae` (in annex list: _all species of Soricidae_)
 3. Taxa belonging to  family `Gliridae` (in annex list: _all species of Gliridae_)
-4. Taxa belonging to  family `Cetacea` (in annex list: _all species of Cetacea not mentioned in Appendix II_)
-5. Taxa belonging to family `Cervidae` (in annex list: _all species of Cervidae_)
+4. Taxa belonging to family `Cervidae` (in annex list: _all species of Cervidae_)
+5. Taxa belonging to  order `Cetacea` (in annex list: _all species of Cetacea not mentioned in Appendix II_)
 6. Taxa belonging to  class `Aves` (in annex list: _all species of Birds not included in Appendix II with the exception of Columba palumbus, Corvus corone (corone and/et cornix), Corvus frugilegus, Corvus monedula, Garrulus glandarius, Larus argentatus, Larus fuscus, Larus marinus, Passer domesticus, Sturnus vulgaris, Pica pica_)
 7. Taxa belonging to  class `Reptilia` (in annex list: _all species of reptiles not included in Appendix II_)
 8. Taxa belonging to  class `Amphibia` (in annex list: _all species of amphibia not included in Appendeix II_)
@@ -399,13 +399,14 @@ unverifiable_taxa_bern_2 <- tibble(
 ```{r unverifiable_taxa_bern_3}
 unverifiable_taxa_bern_3 <- tibble(
   rank = c("genus",
-           rep("family", 4),
+           rep("family", 3),
+           "order",
            rep("class", 3)),
   name = c("Coregonus",
            "Soricidae",
            "Gliridae",
-           "Cetacea",
            "Cervidae",
+           "Cetacea",
            "Aves",
            "Reptilia",
            "Amphibia")
@@ -418,15 +419,17 @@ All taxa belonging to the following families:
 
 ```{r unverifiable_taxa_bonn_2}
 unverifiable_taxa_bonn_2 <- tibble(
-  rank = rep("family", 68),
-  name = c("Acanthizidae",
+  rank = c(rep("genus", 3),
+           rep("family", 65)),
+  name = c("Anthropoides",
+           "Antigone",
+           "Grus",
+           "Acanthizidae",
            "Accipitridae",
            "Acrocephalidae",
            "Aegithalidae",
            "Anatidae",
            "Anseranatidae",
-           "Anthropoides",
-           "Antigone",
            "Artamidae",
            "Bernieridae",
            "Cathartidae",
@@ -435,11 +438,10 @@ unverifiable_taxa_bonn_2 <- tibble(
            "Cisticolidae",
            "Dasyornithidae",
            "Dermochelyidae",
-           "Eulacestomidae",
+           "Eulacestomatidae",
            "Eupetidae",
            "Falconidae",
            "Falcunculidae",
-           "Grus",
            "Haematopodidae",
            "Hyliotidae",
            "Hylocitreidae",
