@@ -811,3 +811,35 @@ Summary:
 summaries$bird_1
 ```
 
+# Remove unverifiable taxa from BIM annexes
+
+Remove unverifiable taxa from BIM annexes
+
+```{r remove_unverifiable_taxa}
+remove_unverifiable_taxa <- function(df, df_unverifiables){
+  df %>%
+    anti_join(df_unverifiables, by = "taxonid")
+}
+
+bim_annex_without_unverifiable_taxa <- map2(
+  bim_annex, 
+  unverifiable_dfs, 
+  remove_unverifiable_taxa
+)
+```
+
+Number of taxa left:
+
+```{r summary_teaxa_left}
+pmap_dfr(
+  list(
+    bim_annex,
+    bim_annex_without_unverifiable_taxa,
+    names(bim_annex)),
+  function(df1, df2, name_df) {
+    tibble(`bim_annex` = name_df,
+           `total number of taxa` = nrow(df1),
+           `without unverifiable taxa` = nrow(df2))
+  }
+)
+```
