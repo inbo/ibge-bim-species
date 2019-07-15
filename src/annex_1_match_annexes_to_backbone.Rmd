@@ -1,5 +1,5 @@
 ---
-title: "Match annexes to GBIF backbone"
+title: "Match annexes to GBIF Backbone"
 author:
   - Lien Reyserhove
   - Damiano Oldoni
@@ -31,7 +31,7 @@ library(rgbif)          #
 library(inborutils)     #
 ```
 
-## Match annex list to GBIF backbone
+## Match annex list to GBIF Backbone
 
 Retrieve the [annex list](https://docs.google.com/spreadsheets/d/1Od5YYgMsTHvIFkrdeyWxkiARCya2yHKkAJrNM0-dnnw/edit#gid=486013476) which is a google spreadheet:
 
@@ -78,7 +78,7 @@ gbif_terms <- c("matchType",
                 "synonym")
 ```
 
-Match `summary` with the GBIF backbone:
+Match `summary` with the GBIF Backbone:
 
 ```{r}
 annexes %<>% gbif_species_name_match(
@@ -87,7 +87,7 @@ annexes %<>% gbif_species_name_match(
   strict = TRUE)
 ```
 
-Evaluate match with the GBIF backbone, indicated by `matchType`:
+Evaluate match with the GBIF Backbone, indicated by `matchType`:
 - succesfull: `matchType` = `EXACT`
 - doubtful: `matchType` = `FUZZY`
 - failed:  `matchType` = `NONE`
@@ -98,7 +98,7 @@ annexes %>%
   count()
 ```
 
-Scan `scientific_name_original` for obvious errors and correct. Rematch `scientific_name_corrected` with the GBIF backbone:
+Scan `scientific_name_original` for obvious errors and correct. Rematch `scientific_name_corrected` with the GBIF Backbone:
 
 ```{r}
 annexes <-
@@ -110,7 +110,7 @@ annexes <-
       strict = TRUE)
 ```
 
-Evaluate match with the GBIF backbone again:
+Evaluate match with the GBIF Backbone again:
 
 ```{r}
 annexes %>% 
