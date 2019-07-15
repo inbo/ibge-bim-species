@@ -82,10 +82,6 @@ taxa_match_gbif %>%
 The match to GBIF Backbone doesn't return a field with the parent key. However, we can retrieve it easily by using another rgbif function: `name_usage`. We add this information in column `gbif_parentKey`. We apply it at the moment only to used taxa. **Note: this step can take long**.
 
 ```{r set_gbif_parentKey, cache=TRUE}
-# used_taxa_match_gbif <- 
-#   taxa_match_gbif %>%
-#   filter(used == TRUE)
-# progress bar 
 pb <- progress_estimated(nrow(taxa_match_gbif))
 
 # function to get parent key - wrapper around name_usage
