@@ -26,6 +26,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```{r load_libs}
 library(odbc)           # To work with database
 library(tidyverse)      # To do data science
+library(tidylog)        # To provide feedback on dplyr functions
 library(here)           # To work with paths
 library(rgbif)          # To work with GBIF data
 ```

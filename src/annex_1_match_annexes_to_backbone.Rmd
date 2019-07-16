@@ -25,10 +25,11 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 ```{r load_libs}
 library(tidyverse)      # To do data science
+library(tidylog)        # To provide feedback on dplyr functions
 library(here)           # To work with paths
-library(magrittr)       # 
-library(rgbif)          # 
-library(inborutils)     #
+library(magrittr)       # To use %<>%
+library(rgbif)          # To work with GBIF data
+library(inborutils)     # To use function 'gbif_species_name_match'
 ```
 
 ## Match annex list to GBIF Backbone
