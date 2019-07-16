@@ -1,0 +1,390 @@
+---
+title: "Add missing unverifiable taxa to taxon table"
+author:
+  - Lien Reyserhove
+  - Damiano Oldoni
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(tidyverse)      # To do data science
+library(tidylog)        # To provide feedback on dplyr functions
+library(here)           # To work with paths
+library(rgbif)          # To work with GBIF data
+library(inborutils)     # To use wrapper around rgbif::name_backbone
+```
+
+# Read data
+
+## Unverifiable taxa
+
+We load the unverifiable taxa from official annexes.
+
+```{r read_unverifiable_taxa_official_anenexes}
+unverifiable_taxa_df <- read_csv(
+  here("data", "interim", "unverifiable_taxa_annexes.csv"),
+  na = "",
+  col_types = cols(
+    rank = col_character(),
+    name = col_character())
+)
+```
+
+## Taxon table
+
+We save the taxon table which we obtained after working on parent IDs improvement:
+
+```{r read_taxon_table}
+taxa <- read_delim(
+  file = here("data", "processed", "taxa_parentid_corrected.tsv"), 
+  delim = "\t",
+  col_types = cols(
+    .default = col_character(),
+    id = col_double(),
+    parentid = col_double(),
+    media = col_logical(),
+    speciesbeparentid = col_double(),
+    bruenvi_created = col_date(format = "%Y-%m-%d"),
+    bruenvi_modified = col_date(format = "%Y-%m-%d"),
+    gbif_confidence = col_double(),
+    gbif_usageKey = col_double(),
+    gbif_speciesKey = col_double(),
+    gbif_genusKey = col_double(),
+    gbif_parentKey = col_double(),
+    gbif_familyKey = col_double(),
+    gbif_classKey = col_double(),
+    gbif_orderKey = col_double(),
+    gbif_phylumKey = col_double(),
+    gbif_kingdomKey = col_double(),
+    gbif_acceptedUsageKey = col_double(),
+    gbif_synonym = col_logical(),
+    added_from_gbif = col_logical())
+)
+```
+
+# Add unverifiable to taxa
+
+## Check presence of unverifiable taxa in taxon table
+
+Check whether the unverifiable taxa are still present in the general taxon table:
+
+```{r check_presence_unverifiables_annexes_in_taxon_table_add_flag}
+unverifiable_taxa_df <-
+  unverifiable_taxa_df %>%
+  mutate(present_in_taxon = 
+           map2_lgl(unverifiable_taxa_df$rank,
+                   unverifiable_taxa_df$name,
+                   function(rank, name){
+                     any(taxa$taxonranken == rank & 
+                           taxa$acceptedname == name)})
+)
+```
+
+Summary:
+
+```{r n_in_out_taxon_table}
+unverifiable_taxa_df %>%
+  group_by(present_in_taxon) %>%
+  count()
+```
+
+## Match to GBIF
+
+We extract the unverifiable taxa missing from taxon table:
+
+```{r select_the missing_ones_only}
+missing_unverifiable_taxa <-
+  unverifiable_taxa_df %>%
+  filter(present_in_taxon == FALSE)
+missing_unverifiable_taxa
+```
+
+Adn we match to GBIF Backbone. While matching, we add these GBIF terms:
+
+```{r define_gbif_terms}
+gbif_terms <- c("matchType",
+                "confidence", 
+                "rank", 
+                "usageKey", 
+                "scientificName",
+                "canonicalName",
+                "kingdom",
+                "phylum",
+                "order", 
+                "class", 
+                "family",
+                "genus",
+                "kingdomKey",
+                "phylumKey",
+                "classKey",
+                "orderKey",
+                "familyKey",
+                "genusKey",
+                "status",
+                "synonym", 
+                "acceptedUsageKey")
+```
+
+```{r add_info_from_gbif}
+missing_unverifiable_taxa <-
+  missing_unverifiable_taxa %>%
+  rename(bim_rank = rank) %>%
+  gbif_species_name_match(rank = "bim_rank",
+                          gbif_terms = gbif_terms,
+                          strict = TRUE)
+```
+
+We add the prefix `gbif_` to the columns coming from GBIF Backbone:
+
+```{r match_taxa_gbif_backbone-add_gbif_prefix}
+missing_unverifiable_taxa <- 
+  missing_unverifiable_taxa %>%
+  select(gbif_terms) %>%
+  setNames(paste0('gbif_', names(.))) %>%
+  bind_cols(missing_unverifiable_taxa %>%
+              select(-gbif_terms)) %>%
+  select(-contains("gbif_"), everything())
+```
+
+Check match:
+
+```{r check_match}
+missing_unverifiable_taxa
+```
+
+We check again the presence of these taxa based on  `gbif_usageKey`:
+
+```{r missing_unverifiable_taxa_based_on_gbif_usageKey}
+missing_unverifiable_taxa <- 
+  missing_unverifiable_taxa %>%
+  anti_join(taxa, by = "gbif_usageKey")
+```
+
+# Set parent ID based on GBIF match
+
+As we did in pipeline `parentid_5_set_parentids_after_match_to_gbif` while improving parent IDs of taxon table, we need to define parent ID of these missing taxa before adding them to taxon table.
+
+## Get GBIF parent key
+
+We add them by using GBIF parent keys, which we retrieve via a wrapper around `rgbif` function `name_usage()`:
+
+```{r set_gbif_parentKey, cache=TRUE}
+pb <- progress_estimated(nrow(missing_unverifiable_taxa))
+
+# function to get parent key - wrapper around name_usage
+get_gbif_parent_key <- function(gbif_usageKey) {
+  pb$tick()$print()
+  parent_key <- NA_real_
+  if (!is.na(gbif_usageKey)) {
+    data <- name_usage(gbif_usageKey, 
+             return = "data")
+    if ("parentKey" %in% names(data)) {
+      parent_key <- 
+        data %>% 
+        select(parentKey) %>%
+        pull()
+    }
+  }
+  return(parent_key)
+}
+
+# apply function to all taxa
+missing_unverifiable_taxa_parent_key <- 
+  missing_unverifiable_taxa %>%
+  mutate(gbif_parentKey = map_dbl(gbif_usageKey,
+                                   get_gbif_parent_key))
+```
+
+
+```{r show_missing_unverifiable_taxa_parent_key}
+missing_unverifiable_taxa_parent_key
+```
+
+Rank of these missing taxa:
+
+```{r rank_missing_taxa}
+missing_unverifiable_taxa_parent_key %>%
+  group_by(gbif_rank) %>%
+  count()
+```
+
+## Check completeness GBIF parent keys
+
+We check the completeness of the taxonomic tree as provided by GBIF. Number of taxa whose GBIF parent keys are (not) present in taxa:
+
+```{r parent_in_db_unverifiable_missing_taxa}
+missing_unverifiable_taxa_parent_key %>% 
+  group_by(gbif_parentKey %in% 
+             (taxa$gbif_usageKey)) %>%
+  summarize(n_taxa = n()) %>%
+  rename(parent_in_db = 
+           "gbif_parentKey %in% (taxa$gbif_usageKey)")
+```
+
+So, all parents of unverifiable taxa are present in `taxa`. We have to add only the missing unverifiable taxa.
+
+## Add missing unverifiable taxa
+
+We add now the missing taxa pointed by parent keys in order to complete the taxonomic tree. To add them to other taxa we need to set `acceptedname` and `scientificnameauthorship` equal to `gbif_canonicalName` and `gbif_authorship` respectively. We can also fill the taxonomic rank in  `taxonranken`:
+
+```{r set_acceptedname_authorship}
+get_authorship <- function(gbif_usageKey) {
+  authorship <- NA_character_
+  suppressMessages(
+    if (!is.na(gbif_usageKey)) {
+      data <- name_usage(gbif_usageKey, 
+               return = "data")
+      if ("authorship" %in% names(data)) {
+        authorship <- 
+          data %>% 
+          select(authorship) %>%
+          pull()
+      }
+    })
+  return(authorship)
+}
+missing_unverifiable_taxa_parent_key <-
+  missing_unverifiable_taxa_parent_key %>%
+  mutate(acceptedname = gbif_canonicalName) %>%
+  mutate(scientificnameauthorship = map_chr(gbif_usageKey, get_authorship)) %>%
+  mutate(taxonranken = tolower(gbif_rank))
+```
+
+We also add column `id` with unique identifier. As done in `parentid_5_set_parentids_after_match_to_gbif`, we assign them numbers higher than 100000 (maximum `id` of taxa in `biodiv.taxon` table: 51833). **Note: while inserting new taxa to a database, the id will be created authomatically. Column `id` is therefore not needed, but it is handy as it acts as a unique identifier.**
+
+```{r set-id_missing_unverifiable_taxa_parent_key}
+missing_unverifiable_taxa_parent_key <-
+  missing_unverifiable_taxa_parent_key %>%
+  mutate(id = seq(1:nrow(missing_unverifiable_taxa_parent_key))+
+           max(taxa$id)) %>%
+  select(id, acceptedname, scientificnameauthorship, taxonranken, everything())
+```
+
+These taxa are now ready to be added to the other taxa. We flag them by adding column `added_from_gbif` with value `TRUE`, while the other ones get value `FALSE`:
+
+```{r add_missing_unverifiable_taxa_parent_key_to_taxa_gbif_parent_key}
+taxa_complete <-
+  taxa %>%
+  bind_rows(missing_unverifiable_taxa_parent_key)
+taxa_complete <-
+  taxa_complete %>%
+  mutate(added_from_gbif = ifelse(id > 100000, TRUE, FALSE))
+```
+
+## Assign parent ID based on GBIF parent keys
+
+We map now all GBIF parent keys to internal parent IDs. This is the same function as in `parentid_5_set_parentids_after_match_to_gbif`:
+
+```{r assign_parent_id_copy, cache=TRUE}
+find_parentid <- function(parent_key) {
+  suppressMessages(
+    parent_id <- 
+      taxa_gbif_parent_key_complete %>%
+      filter(gbif_usageKey == parent_key)
+  )
+  if (nrow(parent_id) > 1) {
+    # remove duplicates based on number of occurences and id number
+    if (any(!is.na(parent_id$n_occs))) {
+      suppressMessages(
+        parent_id <- 
+          parent_id %>%
+          filter(n_occs == max(n_occs, na.rm =  TRUE)) %>%
+          # if same n_occs, choose based on id number
+          filter(id == min(id))
+      )
+    } else {
+      # remove duplicates based on id number
+      suppressMessages(
+        parent_id <- 
+          parent_id %>%
+          filter(id == min(id))
+      )
+    }
+  }
+  if (nrow(parent_id) > 0) {
+    parent_id <- 
+      parent_id %>%
+      pull(id)
+  } else {
+    NA_real_
+  }
+}
+
+gbif_parent_keys_complete <- 
+  taxa_complete %>%
+  filter(!is.na(gbif_parentKey)) %>%
+  distinct(gbif_parentKey)
+
+gbif_parent_keys_complete <- 
+  gbif_parent_keys_complete %>%
+  mutate(parentid_corrected = map_dbl(gbif_parentKey, find_parentid))
+```
+
+We can now add the new parent IDs to data.frame. In order to keep track of changes and compare the new parent IDs with the old ones, we add these values in new column called `parentid_corrected`:
+
+```{r add_new_parentids_to_df}
+taxa_complete <- 
+  taxa_complete %>%
+  select(-parentid_corrected) %>%
+  left_join(gbif_parent_keys_complete,
+            by = "gbif_parentKey")
+```
+
+# Save final version of taxa
+
+We save the taxa with corrected parent IDs:
+
+```{r save_taxa_parentid_corrected}
+write_tsv(taxa_complete,
+          here("data", "processed", "taxa_parentid_corrected_unverifiable_taxa_added.tsv"),
+          na = "")
+```
+
+We also save the new version of table `biodiv.taxon`. This file is saved following the technical specifications provided by BIM's IT expert, who is in charge to apply changes to BIM database. These specifications are:
+
+- file contains only the same columns as in  `biodiv.taxon`
+- encoding UTF-8
+- pipe separated text file
+
+Columns of `biodiv.taxon` table:
+
+```{r columns_biodiv_taxon, results="hide"}
+columns_biodiv_taxon <- 
+  read_tsv(here("data", "raw", "taxa.tsv"), n_max = 1) %>%
+  names()
+```
+
+Select columns to include:
+
+```{r save_new_biodiv_taxon}
+new_biodiv_taxon <- 
+  taxa_complete %>%
+  mutate(parentid = parentid_corrected) %>%
+  select(one_of(columns_biodiv_taxon))
+```
+
+Save taxa as UTF-8 (default) using pipe `|` as delimiter:
+
+```{r save_new_biodiv_taxon}
+write_delim(new_biodiv_taxon, 
+            path = here("data", "processed", "biodiv.taxon.txt"), 
+            na = "",
+            delim = "|")
+```
