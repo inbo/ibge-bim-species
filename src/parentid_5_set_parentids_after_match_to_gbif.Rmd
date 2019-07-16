@@ -194,7 +194,7 @@ gbif_info_missing_taxa <-
 
 Rank of these missing taxa:
 
-```{r}
+```{r rank_of_gbif_info_missing_taxa}
 gbif_info_missing_taxa %>%
   group_by(gbif_rank) %>%
   count()
@@ -215,7 +215,7 @@ missing_gbif_keys_2 <-
   pull()
 ```
 
-Numebr of parent keys not foud:
+Numebr of parent keys not found:
 
 ```{r length(missing_gbif_keys_2)}
 length(missing_gbif_keys_2)
