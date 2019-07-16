@@ -117,9 +117,10 @@ Separate them based on annex code and group them in a list of data.frames called
 ```{r list_bim_annexes}
 bim_annex <- map(
   bim_annexcode, function(code){
+    suppressMessages(
     bim_annex_taxa %>%
       filter(annexcode == code)
-    }
+    )}
 )
 names(bim_annex) <- annexcode
 ```
@@ -143,6 +144,7 @@ annex_df <-
            scientific_name_corrected, 
            scientificName, 
            canonicalName, 
+           gbif_accepted_name,
            kingdom, 
            phylum, 
            order, 
@@ -167,7 +169,7 @@ Create separate annexes and group them in a list of data.frames called `annex`:
 
 ```{r create_list_annex}
 annex <- map(annexcode, function(code){
-  annex_df %>% filter(annex_code == code)}
+  suppressMessages(annex_df %>% filter(annex_code == code))}
 )
 names(annex) <- annexcode
 ```
@@ -188,15 +190,17 @@ Separate them based on annex code and group them in a list of data.frames called
 ```{r make_subsets_unmatched_annex}
 unmatched_annex_taxa <- map(
   annexcode, function(code){
-    if (code %in% pull(distinct(unmatched_annex_taxa_df, annex_code))) {
-      unmatched_annex_taxa_df %>%
-      filter(annex_code == code)
-    } else {
-      tibble(
-        annex_code = NA_character_,
-        scientific_name_corrected = NA_character_
-      )
-    }
+    suppressMessages(
+      if (code %in% pull(distinct(unmatched_annex_taxa_df, annex_code))) {
+        unmatched_annex_taxa_df %>%
+        filter(annex_code == code)
+      } else {
+        tibble(
+          annex_code = NA_character_,
+          scientific_name_corrected = NA_character_
+        )
+      }
+    )
   }
 )
 names(unmatched_annex_taxa) <- annexcode
@@ -225,10 +229,12 @@ get_unverifiable_records <- function(df, name, rank){
            function(name, rank) {
              if (!is.na(rank)) {
                rank_col <- paste0("gbif_", rank)
-               df %>% filter((!!sym(rank_col)) == name)
+               suppressMessages(
+                 df %>% filter((!!sym(rank_col)) == name)
+               )
              } else {
              # empty df
-               df %>% head(0)
+               suppressMessages(df %>% head(0))
              }
            }
   )
@@ -563,9 +569,11 @@ And now apply function `get_summarize_unverifiables` to get a new list of data.f
 ```{r apply_function_to_all_annexes}
 n_taxa_unverifiable_taxa <- map2(unverifiable_dfs, unverifiable_taxa,
                              function(df, names) {
+                               suppressMessages(
                                get_summarize_unverifiables(df, 
                                                            names$name, 
                                                            names$rank)
+                               )
                              })
 ```
 
@@ -583,10 +591,12 @@ For each BIM-annex, we calculate the total number of unverifiable taxa:
 n_taxa_unverifiable_taxa_summarized <- map(
   n_taxa_unverifiable_taxa,
   function(df){
-    df %>%
-      summarize(number_of_taxa = sum(number_of_taxa)) %>%
-      mutate(data = "Unverifiable records") %>%
-      select(data, number_of_taxa)
+    suppressMessages(
+      df %>%
+        summarize(number_of_taxa = sum(number_of_taxa)) %>%
+        mutate(data = "Unverifiable records") %>%
+        select(data, number_of_taxa)
+    )
   })
 names(n_taxa_unverifiable_taxa_summarized) <- annexcode
 ```
@@ -609,10 +619,12 @@ Calculate number of taxa in each official annex:
 ```{r n_taxa_in_annexes}
 n_taxa_annex <- map(annex,
                       function(df){
-                        df %>% 
-                          summarize(number_of_taxa = n()) %>% 
-                          mutate(data = "Records annex list") %>% 
-                          select(data, number_of_taxa)
+                        suppressMessages(
+                          df %>% 
+                            summarize(number_of_taxa = n()) %>% 
+                            mutate(data = "Records annex list") %>% 
+                            select(data, number_of_taxa)
+                        )
                       })
 names(n_taxa_annex) <- annexcode
 ```
@@ -624,10 +636,12 @@ Calculate number of unmatched taxa in each annex:
 ```{r}
 n_taxa_unmatched_annex <- map(unmatched_annex_taxa,
                               function(df){
-                                df %>% 
-                                  summarize(number_of_taxa = n()) %>% 
-                                  mutate(data = "GBIF NON matches annex") %>% 
-                                  select(data, number_of_taxa)
+                                  suppressMessages(
+                                    df %>% 
+                                    summarize(number_of_taxa = n()) %>% 
+                                    mutate(data = "GBIF NON matches annex") %>% 
+                                    select(data, number_of_taxa)
+                                  )
                               })
 names(n_taxa_unmatched_annex) <- annexcode
 ```
@@ -639,28 +653,30 @@ Calculate number of taxa in each BIM-annex:
 ```{r n_taxa_in_annex}
 n_taxa_bim_annex <- map(bim_annex,
                       function(df){
-                        df %>% 
+                        suppressMessages(
+                          df %>% 
                           summarize(number_of_taxa = n()) %>% 
                           mutate(data = "Records BIM database") %>% 
                           select(data, number_of_taxa)
+                        )
                       })
-names(n_taxa_bim_annex) <- annexcode
 ```
 
 ## Full match
 
-Find number of taxa with full match between each pair (annex, BIM-annex)
+Find number of taxa with full match between each pair (annex, BIM-annex). We match based on GBIF accepted name as `gbif_accepted_name`
 
 ```{r n_taxa_full_match}
 n_taxa_full_match <- map2(
   annex, bim_annex, function(df1, df2){
-    df1 %>% 
-      inner_join(df2, by = "gbif_canonicalName") %>% 
+    suppressMessages(
+      df1 %>% 
+      inner_join(df2, by = "gbif_accepted_name") %>% 
       summarize(number_of_taxa = n()) %>% 
       mutate(data = "Full match") %>% 
       select(data, number_of_taxa)
+    )
 })
-names(n_taxa_full_match) <- annexcode
 ```
 
 ## BIM taxa not in annex
@@ -670,13 +686,14 @@ Find number of taxa in BIM-annexes not in correspondent annex:
 ```{r n_taxa_bim_not_in_annex}
 n_taxa_bim_not_in_annex <- map2(
   bim_annex, annex, function(df1, df2){
-    df1 %>% 
-      anti_join(df2, by = c("gbif_canonicalName")) %>%   
-      summarize(number_of_taxa = n()) %>% 
-      mutate(data = "BIM not in annex") %>% 
-      select(data, number_of_taxa)
+    suppressMessages(
+      df1 %>% 
+        anti_join(df2, by = c("gbif_accepted_name")) %>%   
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "BIM not in annex") %>% 
+        select(data, number_of_taxa)
+    )
 })
-names(n_taxa_bim_not_in_annex) <- annexcode
 ```
 
 ## Annex taxa not in BIM annexes
@@ -686,13 +703,14 @@ Find number of taxa in official annexes not in correspondent BIM-annexes:
 ```{r n_taxa_annex_not_in_bim}
 n_taxa_annex_not_in_bim <- map2(
   annex, bim_annex, function(df1, df2){
-    df1 %>% 
-      anti_join(df2, by = c("gbif_canonicalName")) %>%   
-      summarize(number_of_taxa = n()) %>% 
-      mutate(data = "Annex not in BIM") %>% 
-      select(data, number_of_taxa)
+    suppressMessages(
+      df1 %>% 
+        anti_join(df2, by = c("gbif_accepted_name")) %>%   
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "Annex not in BIM") %>% 
+        select(data, number_of_taxa)
+    )
 })
-names(n_taxa_annex_not_in_bim) <- annexcode
 ```
 
 ## Create summaries
