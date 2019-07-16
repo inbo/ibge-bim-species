@@ -1,0 +1,167 @@
+---
+title: "Match annexes to GBIF Backbone"
+author:
+  - Lien Reyserhove
+  - Damiano Oldoni
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(tidyverse)      # To do data science
+library(tidylog)        # To provide feedback on dplyr functions
+library(here)           # To work with paths
+library(magrittr)       # To use %<>%
+library(rgbif)          # To work with GBIF data
+library(inborutils)     # To use function 'gbif_species_name_match'
+```
+
+## Match annex list to GBIF Backbone
+
+Retrieve the [annex list](https://docs.google.com/spreadsheets/d/1Od5YYgMsTHvIFkrdeyWxkiARCya2yHKkAJrNM0-dnnw/edit#gid=486013476) which is a google spreadheet:
+
+```{r connect_google_spreadsheets}
+annexes <- read.csv(file = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThGvIdFkyd_jnTr9ej_dvfIisK18dUdjNXlPU9Y-J7XStKNT95AD4WSVjA553GKEjvrqF-227VU8e2/pub?gid=486013476&single=true&output=csv")
+```
+
+We want to add a copy of the source data to the repository:
+
+```{r}
+write_csv(annexes, here("data", "raw", "annexes_dump.csv"), na = "")
+```
+
+The following documents were consulted to generate the annex lists:
+
+- Ordonnance BXL: copy retrieved by Brussels Environment
+- Bern Convention: 
+  - [Annex I](https://rm.coe.int/CoERMPublicCommonSearchServices/DisplayDCTMContent?documentId=0900001680304354)
+  - [Annex II](https://rm.coe.int/168078e2ff)
+  - [Annex III](https://rm.coe.int/CoERMPublicCommonSearchServices/DisplayDCTMContent?documentId=0900001680304356)
+- Bonn Convention:
+  - [Annex I and Annex II](https://www.cms.int/sites/default/files/basic_page_documents/cms_cop12_appendices_e_0.pdf)
+- Habitat Directive:
+  - [Annex II and Annex IV](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:01992L0043-20130701)
+- Bird Directive:
+  - [Annex I](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32009L0147)
+
+Preview data: 
+
+```{r}
+annexes %>% head()
+```
+`
+Specify `gbif_terms` for retrieving specific information from GBIF. 
+
+```{r}
+gbif_terms <- c("matchType",
+                "confidence", 
+                "rank", 
+                "scientificName",
+                "kingdom",
+                "phylum",
+                "status",
+                "synonym")
+```
+
+Match `summary` with the GBIF Backbone:
+
+```{r}
+annexes %<>% gbif_species_name_match(
+  name = "scientific_name_original",
+  gbif_terms = gbif_terms,
+  strict = TRUE)
+```
+
+Evaluate match with the GBIF Backbone, indicated by `matchType`:
+- succesfull: `matchType` = `EXACT`
+- doubtful: `matchType` = `FUZZY`
+- failed:  `matchType` = `NONE`
+
+```{r}
+annexes %>% 
+  group_by(matchType) %>% 
+  count()
+```
+
+Scan `scientific_name_original` for obvious errors and correct. Rematch `scientific_name_corrected` with the GBIF Backbone:
+
+```{r}
+annexes <-
+  annexes %>% 
+    select(scientific_name_corrected, annex_code) %>% 
+    gbif_species_name_match(
+      name = "scientific_name_corrected",
+      gbif_terms = gbif_terms,
+      strict = TRUE)
+```
+
+Evaluate match with the GBIF Backbone again:
+
+```{r}
+annexes %>% 
+  group_by(matchType) %>% 
+  count()
+```
+
+Save non-matching taxa as a separate dataframe for later:
+
+```{r}
+unmatchted_annex_taxa <- 
+  annexes %>% 
+    filter(matchType == "NONE") %>% 
+    select(annex_code, scientific_name_corrected)
+```
+
+Export as `unmatched_taxa_annexes.csv`
+
+```{r}
+write_csv(unmatchted_annex_taxa, here("data", "processed", "unmatched_taxa_annexes.csv"), na = "")
+```
+
+Remove non-matching taxa from dataset:
+
+```{r}
+annexes %<>% filter(matchType != "NONE") 
+```
+
+Find GBIF **accepted** scientific names of `scientific_name_corrected` and add them as new column, `gbif_accepted_name`:
+
+Find GBIF **accepted** (scientific) names of `scientific_name_corrected` in `annexes`. Add them in column `gbif_accepted_name`. For accepted taxa, `gbif_accepted_name` will be equal to `gbif_scientificname`:
+
+```{r get_accepted_names_annexes}
+annexes <- 
+  annexes %>%
+  mutate(gbif_accepted_name = map2_chr(
+    annexes$acceptedUsageKey,
+    annexes$scientificName,
+    function(key, gbif_scientificname){
+      if (!is.na(key)) {
+        name_usage(key, return = "data")$scientificName
+      } else {
+        gbif_scientificname
+      }
+    })
+)
+```
+
+Export as `annexes_gbif_match.csv`
+
+```{r write_annexes}
+write_csv(annexes, here("data", "interim", "annexes_gbif_match.csv"), na = "")
+```

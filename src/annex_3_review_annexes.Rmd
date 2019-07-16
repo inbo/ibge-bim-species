@@ -1,0 +1,879 @@
+---
+title: "Review annexes"
+author:
+  - Lien Reyserhove
+  - Damiano Oldoni
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(tidyverse)      # To do data science
+library(tidylog)        # To provide feedback on dplyr functions
+library(here)           # To work with paths
+```
+
+# Read data
+
+We define first the annex codes we will use:
+
+```{r annex_codes}
+annexcode <- c("bxl_2.1",
+               "bxl_2.2",
+               "bxl_2.3",
+               "bxl_2.4",
+               "bxl_2.5",
+               "bxl_3",
+               "bxl_4",
+               "bern_1",
+               "bern_2",
+               "bern_3",
+               "bonn_1",
+               "bonn_2",
+               "hab_2",
+               "hab_4",
+               "bird_1")
+```
+
+This vector will be used later to identify the BIM annexes and the official annexes.
+
+## Read BIM annex data
+
+Import the BIM annex data with full taxonomic information:
+
+```{r read_bim_annex_taxa}
+bim_annex_taxa <- read_csv(
+  here("data", "interim", "bim_annex_taxa_full_taxonomic_info.csv"),
+  na = "",
+  col_types = cols(
+    .default = col_character(),
+    taxonid = col_double(),
+    parentid = col_double(),
+    media = col_logical(),
+    speciesbeparentid = col_double(),
+    bruenvi_created = col_date(format = ""),
+    bruenvi_modified = col_date(format = ""),
+    used = col_logical(),
+    n_occs = col_double(),
+    kingdom_id = col_double(),
+    corrected = col_logical(),
+    gbif_confidence = col_double(),
+    gbif_usageKey = col_double(),
+    gbif_kingdomKey = col_double(),
+    gbif_phylumKey = col_double(),
+    gbif_classKey = col_double(),
+    gbif_orderKey = col_double(),
+    gbif_familyKey = col_double(),
+    gbif_genusKey = col_double(),
+    gbif_speciesKey = col_double(),
+    gbif_synonym = col_logical(),
+    gbif_acceptedUsageKey = col_double(),
+    gbif_parentKey = col_double(),
+    added_from_gbif = col_logical(),
+    parentid_corrected = col_double())
+)
+```
+
+Group BIM annexes by annex code:
+
+```{r define_bim_annexcode}
+bim_annexcode <- c(
+  "BXL-ORD-2012_Annex II.1",
+  "BXL-ORD-2012_Annex II.2",
+  "BXL-ORD-2012_Annex II.3",
+  "BXL-ORD-2012_Annex II.4",
+  "BXL-ORD-2012_Annex II.5",
+  "BXL-ORD-2012_Annex III",
+  "BXL-ORD-2012_Annex IV",
+  "EUR-CON-BER_Annex I",
+  "EUR-CON-BER_Annex II",
+  "EUR-CON-BER_Annex III",
+  "UN-CON-BON-Annex I",
+  "UN-CON-BON-Annex II",
+  "EUR-DIR-HAB_Annex II",
+  "EUR-DIR-HAB_Annex IV",
+  "EUR-DIR-BIR_Annex I"
+)
+```
+
+Separate them based on annex code and group them in a list of data.frames called `bim_annex`:
+
+```{r list_bim_annexes}
+bim_annex <- map(
+  bim_annexcode, function(code){
+    suppressMessages(
+    bim_annex_taxa %>%
+      filter(annexcode == code)
+    )}
+)
+names(bim_annex) <- annexcode
+```
+
+## Read annex data
+
+Import `annexes_gbif_match.csv`:
+
+```{r read_annexes}
+annex_df <- read_delim(
+  file = here("data", "interim", "annexes_gbif_match.csv"), 
+  delim = ",")
+```
+
+Keep columns of interest:
+
+```{r select_cols_of_interest}
+annex_df <- 
+  annex_df %>%
+    select(annex_code,
+           scientific_name_corrected, 
+           scientificName, 
+           canonicalName, 
+           gbif_accepted_name,
+           kingdom, 
+           phylum, 
+           order, 
+           family, 
+           genus)
+```
+
+Rename columns:
+- `scientific_name_corrected` to `annex_scientificName`
+- `scientificName` to `gbif_scientificName`
+- `canonical` to `gbif_canonicalName`
+
+```{r rename_cols_scientificnames}
+annex_df <- 
+  annex_df %>%  
+  rename("gbif_scientificName" = "scientificName") %>% 
+  rename("annex_scientificName" = "scientific_name_corrected") %>%
+  rename("gbif_canonicalName" = "canonicalName")
+```
+
+Create separate annexes and group them in a list of data.frames called `annex`:
+
+```{r create_list_annex}
+annex <- map(annexcode, function(code){
+  suppressMessages(annex_df %>% filter(annex_code == code))}
+)
+names(annex) <- annexcode
+```
+
+## Read unmatched taxa
+
+Read unmatched taxa in official annexes:
+
+```{r read_unmatched_taxa_annex}
+unmatched_annex_taxa_df <- read_csv(
+  here("data", "processed", "unmatched_taxa_annexes.csv"),
+  na = ""
+)
+```
+
+Separate them based on annex code and group them in a list of data.frames called `unmatched_annex_taxa`:
+
+```{r make_subsets_unmatched_annex}
+unmatched_annex_taxa <- map(
+  annexcode, function(code){
+    suppressMessages(
+      if (code %in% pull(distinct(unmatched_annex_taxa_df, annex_code))) {
+        unmatched_annex_taxa_df %>%
+        filter(annex_code == code)
+      } else {
+        tibble(
+          annex_code = NA_character_,
+          scientific_name_corrected = NA_character_
+        )
+      }
+    )
+  }
+)
+names(unmatched_annex_taxa) <- annexcode
+```
+
+# Review BIM annex data
+
+In this section we compare BIM annex data with the information contained in the official annexes.
+
+## Unverifiable taxa 
+
+Some BIM annexes contain taxa which are not verifiable as in the official annex higher ranks are used, such as genus, family and order names. 
+
+### Function to get unverifiable taxa
+
+We define first the functions:
+1. `get_unverifiable_records` to find the unverifiable records
+2. `get_summarize_unverifiables` to find how many they are. 
+
+Such functions are general and can be aplied to each `bim_*` and its related unverified names.
+
+```{r define_function_get_summarize_unverifiables}
+get_unverifiable_records <- function(df, name, rank){
+  map2_dfr(name,
+           rank,
+           function(name, rank) {
+             if (!is.na(rank)) {
+               rank_col <- paste0("gbif_", rank)
+               suppressMessages(
+                 df %>% filter((!!sym(rank_col)) == name)
+               )
+             } else {
+             # empty df
+               suppressMessages(df %>% head(0))
+             }
+           }
+  )
+}
+
+get_summarize_unverifiables <- function(unverifiables, name, rank){
+  map2_dfr(name,
+           rank,
+           function(name, rank) {
+             if (!is.na(rank)) {
+               rank_col <- paste0("gbif_", rank)
+               unverifiables %>%
+                 filter(!!sym(rank_col) == name) %>%
+                 summarize(number_of_taxa = n()) %>% 
+                 mutate(records = name) %>% 
+                 select(records, number_of_taxa)
+             } else {
+               tibble(records = NA_character_,
+                      number_of_taxa = NA_integer_)
+             }
+           }
+  )
+}
+```
+
+### Unverifiable taxa in BXL 2.2
+
+1. Taxa belonging to class `Mammalia` (in annex list: _Alle europese soorten_)
+2. Taxa belonging to class `Aves` (in annex list: _Alle europese soorten_)
+3. Taxa belonging to class `Amphibia` (in annex list: _All europese soorten_)
+4. Taxa belonging to class `Reptilia` (in annex list: _All europese soorten_)
+5. Taxa belonging to family `Nymphaeaceae` (in annex list: _Alle Nymphaeaceae soorten waarvan het natuurlijk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvat_)
+6. Taxa belonging to family `Orchidaceae` (in annex list: _Alle Orchidaceae soorten waarvan het natuurlijk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvatt, met uitsluiting van_ Epipactis helleborine)
+7. Taxa belonging to genus `Rosa` (in annex list: _Alle soorten van het geslacht Rosa waarvan het natuurlijk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvat, met uitzondering van_ Rosa arvensis _en_ Rosa canina L.)
+
+We define them in a data.frame:
+
+```{r unverifiable_taxa_bxl_2_2}
+unverifiable_taxa_bxl_2.2 <- tibble(
+  rank = c("genus", 
+           rep("family", 2),
+           rep("class", 4)),
+  name = c("Rosa",
+           "Orchidaceae",
+           "Nymphaeaceae",
+           "Mammalia",
+           "Aves",
+           "Amphibia",
+           "Reptilia")
+)
+```
+ 
+### Unverifiable taxa in BXL 2.3
+
+Taxa belonging to phylum `Bryophyta` (in annex list: _Bryophyta spp._)
+
+```{r unverifiable_taxa_bxl_2.3}
+unverifiable_taxa_bxl_2.3 <- tibble(
+  rank = "phylum",
+  name = "Bryophyta"
+)
+```
+
+### Unverifiable taxa in BXL 2.5
+
+The following taxa are not included in `annex_bxl_2.5` with their scientific name at species level. So, we are unable to check whether or not their presence in the BIM annex list is correct.
+
+1. Taxa belonging to genus `Coregonus` (in annex list: _Alle europese soorten van Coregonus, behalve Coregonus oxyrhyn_)
+2. Taxa belonging to genus `Sphagnum` (in annex list: _Alle europese Sphagnum-soorten_)
+3. Taxa belonging to genus `Lycopodium` (in annex list: _Alle europese Lycopodium soorten_)
+4. Taxa belonging to genus `Salicornia` ( _Alle Salicornia soorten waarvan het natuurliyk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvat_)
+5. Taxa belonging to family `Acipenseridae` (in annex list: _Alle europese soorten Acipenseridae niet vermeld in bijlage II.2 of II.3_)
+6. Taxa belonging to family `macrofunghi` (in annex list: _Alle inheemse macrofunghi soorten_ Epipactis helleborine)
+7. Taxa belonging to class `Actinopterygii` (in annex list: _Alle inheemse soorten van vissen niet vermeld in bijlage II.2 of II.3_)
+8. _alle inheemse lichenen_ (included in Fungi)
+
+```{r unverifiable_records_bxl_2.5}
+unverifiable_taxa_bxl_2.5 <- tibble(
+  rank = c(rep("genus", 4),
+           "family",
+           rep("class", 2),
+           "kingdom"),
+  name = c("Coregonus",
+           "Sphagnum",
+           "Lycopodium",
+           "Salicornia",
+           "Acipenseridae",
+           "Elasmobranchii",
+           "Actinopterygii",
+           "Fungi")
+)
+```
+
+### Unverifiable taxa in BERN 2
+
+1. Taxa belonging to genus `Hydrobatidae` (in annex list: _all species of Hydrobatidae_)
+2. Taxa belonging to genus `Ciconiidae` (in annex list: _all species of Ciconiidae_)
+3. Taxa belonging to genus `Otididae` (in annex list: _all species of Otididae_)
+4. Taxa belonging to genus `Recurvirostridae` ( _all species of Recurvirostridae_)
+5. Taxa belonging to genus `Phalaropodidae` ( _all species of Phalaropodidae_)
+6. Taxa belonging to genus `Laridae` ( _all species of Laridae_)
+7. Taxa belonging to genus `Pteroclididae` ( _all species of Pteroclididae_)
+8. Taxa belonging to family `Threskiornithidae` (in annex list: _all species of Threskiornithidae_)
+9. Taxa belonging to family `Gaviidae` (in annex list: _all species of Gaviidae_)
+10. Taxa belonging to family `Caprimulgidae` ( _all species of Caprimulgidae_)
+11. Taxa belonging to family `Hirundinidae` ( _all species of Hirundinidae_)
+12. Taxa belonging to family `Motacillidae` ( _all species of Motacillidae_)
+13. Taxa belonging to family `Laniidae` ( _all species of Laniidae_)
+14. Taxa belonging to family `Sylviinae` ( _all species of Sylviinae_)
+15. Taxa belonging to family `Regulinae` ( _all species of Regulinae_)
+16. Taxa belonging to family `Muscicapinae` ( _all species of Muscicapinae_)
+17. Taxa belonging to family `Paridae` ( _all species of Paridae_)
+18. Taxa belonging to family `Sittidae` ( _all species of Sittidae_)
+19. Taxa belonging to family `Certhiidae` ( _all species of Certhiidae_)
+20. Taxa belonging to family `Pelicanidae` ( _all species of Pelicanidae_)
+21. Taxa belonging to family `Gruidae` ( _all species of Gruidae_)
+22. Taxa belonging to order `Falconiformes` ( _all species of Falconiformes_)
+23. Taxa belonging to order `Piciformes` ( _all species of Piciformes_)
+24. Taxa belonging to order `Strigiformes` ( _all species of Strigiformes_)
+25. Taxa belonging to class `Ursidae` (in annex list: _all species of Ursidae_)
+
+We define them in a data.frame:
+
+```{r unverifiable_taxa_bern_2}
+unverifiable_taxa_bern_2 <- tibble(
+  rank = c(rep("genus", 7), 
+    rep("family", 14), 
+    rep("order", 3),
+    "class"),
+  name = c("Hydrobatidae",
+    "Ciconiidae",
+    "Otididae",
+    "Recurvirostridae",
+    "Phalaropodidae",
+    "Laridae",
+    "Pteroclididae",
+    "Threskiornithidae",
+    "Gaviidae",
+    "Caprimulgidae",
+    "Hirundinidae",
+    "Motacillidae",
+    "Laniidae",
+    "Sylviinae",
+    "Regulinae",
+    "Muscicapinae",
+    "Paridae",
+    "Sittidae",
+    "Certhiidae",
+    "Pelicanidae",
+    "Gruidae",
+    "Falconiformes",
+    "Piciformes",
+    "Strigiformes",
+    "Ursidae")
+)
+```
+
+### Unverifiable taxa in BERN 3
+
+1. Taxa belonging to genus  `Coregonus` (in annex list: _all species of Coregonus _)
+2. Taxa belonging to  family `Soricidae` (in annex list: _all species of Soricidae_)
+3. Taxa belonging to  family `Gliridae` (in annex list: _all species of Gliridae_)
+4. Taxa belonging to family `Cervidae` (in annex list: _all species of Cervidae_)
+5. Taxa belonging to  order `Cetacea` (in annex list: _all species of Cetacea not mentioned in Appendix II_)
+6. Taxa belonging to  class `Aves` (in annex list: _all species of Birds not included in Appendix II with the exception of Columba palumbus, Corvus corone (corone and/et cornix), Corvus frugilegus, Corvus monedula, Garrulus glandarius, Larus argentatus, Larus fuscus, Larus marinus, Passer domesticus, Sturnus vulgaris, Pica pica_)
+7. Taxa belonging to  class `Reptilia` (in annex list: _all species of reptiles not included in Appendix II_)
+8. Taxa belonging to  class `Amphibia` (in annex list: _all species of amphibia not included in Appendeix II_)
+
+```{r unverifiable_taxa_bern_3}
+unverifiable_taxa_bern_3 <- tibble(
+  rank = c("genus",
+           rep("family", 3),
+           "order",
+           rep("class", 3)),
+  name = c("Coregonus",
+           "Soricidae",
+           "Gliridae",
+           "Cervidae",
+           "Cetacea",
+           "Aves",
+           "Reptilia",
+           "Amphibia")
+)
+```
+
+### Unverifiable taxa in BONN 2
+
+All taxa belonging to the following families:
+
+```{r unverifiable_taxa_bonn_2}
+unverifiable_taxa_bonn_2 <- tibble(
+  rank = c(rep("genus", 3),
+           rep("family", 65)),
+  name = c("Anthropoides",
+           "Antigone",
+           "Grus",
+           "Acanthizidae",
+           "Accipitridae",
+           "Acrocephalidae",
+           "Aegithalidae",
+           "Anatidae",
+           "Anseranatidae",
+           "Artamidae",
+           "Bernieridae",
+           "Cathartidae",
+           "Cheloniidae",
+           "Cinclosomatidae",
+           "Cisticolidae",
+           "Dasyornithidae",
+           "Dermochelyidae",
+           "Eulacestomatidae",
+           "Eupetidae",
+           "Falconidae",
+           "Falcunculidae",
+           "Haematopodidae",
+           "Hyliotidae",
+           "Hylocitreidae",
+           "Ibidorhynchidae",
+           "Ifritidae",
+           "Leiotrichidae",
+           "Locustellidae",
+           "Machaerirhynchidae",
+           "Macrosphenidae",
+           "Maluridae",
+           "Melampittidae",
+           "Meliphagidae",
+           "Mohouidae",
+           "Monarchidae",
+           "Motacillidae",
+           "Muscicapidae",
+           "Oreoicidae",
+           "Oriolidae",
+           "Orthonychidae",
+           "Pachycephalidae",
+           "Panuridae",
+           "Pellorneidae",
+           "Petroicidae",
+           "Phoenicopteridae",
+           "Phylloscopidae",
+           "Picathartidae",
+           "Platysteiridae",
+           "Pluvianellidae",
+           "Pnoepygidae",
+           "Polioptilidae",
+           "Pomatostomidae",
+           "Psophodidae",
+           "Recurvirostridae",
+           "Regulidae",
+           "Rhagologidae",
+           "Rhinolophidae",
+           "Rhipiduridae",
+           "Scolopacidae",
+           "Scotocercidae",
+           "Stenostiridae",
+           "Sylviidae",
+           "Timaliidae",
+           "Turdidae",
+           "Vangidae",
+           "Vespertilionidae",
+           "Vireonidae",
+           "Zosteropidae")
+)
+```
+
+### Unverifiable taxa in HAB 2
+
+1. Taxa belonging to genus `Eudontomyzon` (in annex list: _Eudontomyzon spp._)
+2. Taxa belonging to genus `Alosa` (in annex list: _Alosa spp._)
+3. Taxa belonging to genus `Phoxinellus` (in annex list: _Phoxinellus spp._)
+4. Taxa belonging to genus `Zingel` (in annex list: _Zingel spp. (except Zingel asper and Zingel zingel)_)
+
+```{r unverifiable_taxa_hab_2}
+unverifiable_taxa_hab_2 <- tibble(
+  rank = rep("genus", 4),
+  name = c("Eudontomyzon",
+           "Alosa",
+           "Phoxinellus",
+           "Zingel")
+)
+```
+
+### Unverifiable taxa in HAB 4
+
+Taxa belonging to family `Gliridae` (in annex list: _All species except Glis glis and Eliomys quercinus_)
+
+```{r unverifiable_taxa_hab_4}
+unverifiable_taxa_hab_4 <- tibble(
+  rank = "family",
+  name = "Gliridae")
+```
+
+### BIM-annexes without unverifiable taxa
+
+The other BIM-annexes don't contain any unverifiable taxa:
+
+```{r unverifiable_taxa}
+unverifiable_taxa_empty <- tibble(rank = NA_character_,
+                                  name = NA_character_)
+unverifiable_taxa_bxl_2.1 <- unverifiable_taxa_empty
+unverifiable_taxa_bxl_2.4 <- unverifiable_taxa_empty
+unverifiable_taxa_bxl_3 <- unverifiable_taxa_empty
+unverifiable_taxa_bxl_4 <- unverifiable_taxa_empty
+unverifiable_taxa_bern_1 <- unverifiable_taxa_empty
+unverifiable_taxa_bern_2 <- unverifiable_taxa_empty
+unverifiable_taxa_bonn_1 <- unverifiable_taxa_empty
+unverifiable_taxa_bird_1 <- unverifiable_taxa_empty
+```
+
+### Create list of unverifiable taxa
+
+We group all subsets in a list called `unverifiable_taxa`:
+
+```{r list_unverifiable_taxa}
+unverifiable_taxa <- map(annexcode, function(code){
+  get(paste0("unverifiable_taxa_",code))
+})
+names(unverifiable_taxa) <- annexcode
+```
+
+
+We first apply funtion  `get_unverifiable_records`  to group all the unverifiable records of each BIM annex and related names/ranks:
+
+```{r get_unverfiables}
+unverifiable_dfs <-  map2(
+  bim_annex, unverifiable_taxa, function(df, names) {
+    get_unverifiable_records(df, names$name, names$rank)}
+)
+```
+
+And now apply function `get_summarize_unverifiables` to get a new list of data.frames called `unverifiable_records`, where each of it cointains the number of taxa in the specific BIM-annex for each unverifiable taxon from the correspondent annex:
+
+```{r apply_function_to_all_annexes}
+n_taxa_unverifiable_taxa <- map2(unverifiable_dfs, unverifiable_taxa,
+                             function(df, names) {
+                               suppressMessages(
+                               get_summarize_unverifiables(df, 
+                                                           names$name, 
+                                                           names$rank)
+                               )
+                             })
+```
+
+Example: unverifiable taxa from BONN 2:
+
+```{r example_unverifiable_bonn_2}
+n_taxa_unverifiable_taxa$bonn_2
+```
+
+### Total number of unverifiable taxa
+
+For each BIM-annex, we calculate the total number of unverifiable taxa:
+
+```{r calulate_total_unverifiable_records}
+n_taxa_unverifiable_taxa_summarized <- map(
+  n_taxa_unverifiable_taxa,
+  function(df){
+    suppressMessages(
+      df %>%
+        summarize(number_of_taxa = sum(number_of_taxa)) %>%
+        mutate(data = "Unverifiable records") %>%
+        select(data, number_of_taxa)
+    )
+  })
+names(n_taxa_unverifiable_taxa_summarized) <- annexcode
+```
+
+# Create summaries
+
+We define summaries of the match between each pair (BIM-annex, official annex) containing:
+1. Number of taxa in `annex_*`
+2. Number of taxa in  `annex_*`not matched to GBIF Backbone in `annex_*`
+3. Number of taxa in `bim_*`
+4. Full match between taxa in both datasets
+5. Records present in `bim_*` but not in `annex_*`
+6. Unverifiable records in `annex_*`
+7. Records present in `annex_*` but not in `bim_*`
+
+## Number of taxa in annexes
+
+Calculate number of taxa in each official annex:
+
+```{r n_taxa_in_annexes}
+n_taxa_annex <- map(annex,
+                      function(df){
+                        suppressMessages(
+                          df %>% 
+                            summarize(number_of_taxa = n()) %>% 
+                            mutate(data = "Records annex list") %>% 
+                            select(data, number_of_taxa)
+                        )
+                      })
+names(n_taxa_annex) <- annexcode
+```
+
+## Number of unmatched taxa
+
+Calculate number of unmatched taxa in each annex:
+
+```{r}
+n_taxa_unmatched_annex <- map(unmatched_annex_taxa,
+                              function(df){
+                                  suppressMessages(
+                                    df %>% 
+                                    summarize(number_of_taxa = n()) %>% 
+                                    mutate(data = "GBIF NON matches annex") %>% 
+                                    select(data, number_of_taxa)
+                                  )
+                              })
+names(n_taxa_unmatched_annex) <- annexcode
+```
+
+## Number of taxa in BIM-annexes
+
+Calculate number of taxa in each BIM-annex:
+
+```{r n_taxa_in_annex}
+n_taxa_bim_annex <- map(bim_annex,
+                      function(df){
+                        suppressMessages(
+                          df %>% 
+                          summarize(number_of_taxa = n()) %>% 
+                          mutate(data = "Records BIM database") %>% 
+                          select(data, number_of_taxa)
+                        )
+                      })
+```
+
+## Full match
+
+Find number of taxa with full match between each pair (annex, BIM-annex). We match based on GBIF accepted name as `gbif_accepted_name`
+
+```{r n_taxa_full_match}
+n_taxa_full_match <- map2(
+  annex, bim_annex, function(df1, df2){
+    suppressMessages(
+      df1 %>% 
+      inner_join(df2, by = "gbif_accepted_name") %>% 
+      summarize(number_of_taxa = n()) %>% 
+      mutate(data = "Full match") %>% 
+      select(data, number_of_taxa)
+    )
+})
+```
+
+## BIM taxa not in annex
+
+Find number of taxa in BIM-annexes not in correspondent annex:
+
+```{r n_taxa_bim_not_in_annex}
+n_taxa_bim_not_in_annex <- map2(
+  bim_annex, annex, function(df1, df2){
+    suppressMessages(
+      df1 %>% 
+        anti_join(df2, by = c("gbif_accepted_name")) %>%   
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "BIM not in annex") %>% 
+        select(data, number_of_taxa)
+    )
+})
+```
+
+## Annex taxa not in BIM annexes
+
+Find number of taxa in official annexes not in correspondent BIM-annexes:
+
+```{r n_taxa_annex_not_in_bim}
+n_taxa_annex_not_in_bim <- map2(
+  annex, bim_annex, function(df1, df2){
+    suppressMessages(
+      df1 %>% 
+        anti_join(df2, by = c("gbif_accepted_name")) %>%   
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "Annex not in BIM") %>% 
+        select(data, number_of_taxa)
+    )
+})
+```
+
+## Create summaries
+
+```{r create_summaries}
+summaries <- pmap(list(
+  n_taxa_annex,
+  n_taxa_unmatched_annex,
+  n_taxa_bim_annex,
+  n_taxa_full_match,
+  n_taxa_bim_not_in_annex,
+  n_taxa_unverifiable_taxa_summarized,
+  n_taxa_annex_not_in_bim),
+  bind_rows
+)
+```
+
+# Ordonnance BXL: Ordonnantie betreffende het natuurbehoud (2012-03-01)
+
+## Annex II.1: Dier- en plantensoorten van communautair belang waarvan de instandhouding de aanwijzing van Natura 2000 gebieden vereist
+
+Summary:
+
+```{r show_summary_2.1}
+summaries$bxl_2.1
+```
+
+## Annex II.2: Soorten die een strikte bescherming genieten op het hele gewestelijke grondgebied
+
+Summary:
+
+```{r show_summary_2.2}
+summaries$bxl_2.2
+```
+
+## Annex II.3: Soorten die een geografisch beperkte strikte bescherming genieten
+
+Summary:
+
+```{r show_summary_2.1}
+summaries$bxl_2.3
+```
+
+## Annex II.4: Soorten van gewestelijk belang
+
+Summary:
+
+```{r show_summary_2.4}
+summaries$bxl_2.4
+```
+
+## Annex III: Wildsoorten
+
+Summary:
+
+```{r show_summary_bxl_3}
+summaries$bxl_3
+```
+
+## Annex IV: Invasieve soorten
+
+Summary:
+
+```{r show_summary_bxl_4}
+summaries$bxl_4
+```
+
+# Bern Convention: Convention on the Conservation of European Wildlife and Natural Habitats 
+
+## Annex I: Strictly protected flora species
+
+Summary:
+
+```{r show_summary_bern_1}
+summaries$bern_1
+```
+
+## Annex II: Strictly protected fauna species 
+
+Summary:
+
+```{r show_summary_bern_2}
+summaries$bern_2
+```
+
+## Annex III: Protected fauna species
+
+Summary:
+
+```{r show_summary_bern_3}
+summaries$bern_3
+```
+
+# BONN Annexes
+
+## Annex I
+
+Summary:
+
+```{r show_summary_bonn_1}
+summaries$bonn_1
+```
+
+## Annex II
+
+Summary:
+
+```{r show_summary_bonn_2}
+summaries$bonn_2
+```
+
+# Bird Habitat annex
+
+## Annex I 
+
+Summary:
+
+```{r show_summary_bird_1}
+summaries$bird_1
+```
+
+# Remove unverifiable taxa from BIM annexes
+
+Remove unverifiable taxa from BIM annexes
+
+```{r remove_unverifiable_taxa}
+remove_unverifiable_taxa <- function(df, df_unverifiables){
+  df %>%
+    anti_join(df_unverifiables, by = "taxonid")
+}
+
+bim_annex_without_unverifiable_taxa <- map2(
+  bim_annex, 
+  unverifiable_dfs, 
+  remove_unverifiable_taxa
+)
+```
+
+Number of taxa left:
+
+```{r summary_teaxa_left}
+pmap_dfr(
+  list(
+    bim_annex,
+    bim_annex_without_unverifiable_taxa,
+    names(bim_annex)),
+  function(df1, df2, name_df) {
+    tibble(`bim_annex` = name_df,
+           `total number of taxa` = nrow(df1),
+           `without unverifiable taxa` = nrow(df2))
+  }
+)
+```
+
+# Save unverifiable higher ranks from official annexes
+
+We save the taxa from official annexes related to higher ranks and therefore not findable in BIM annexes:
+
+```{r save_unverifiable_taxa}
+unverifiable_taxa %>%
+  map_dfr(bind_rows) %>%
+  distinct() %>%
+  filter(!is.na(rank)) %>%
+  write_csv(path = here("data", "interim", "unverifiable_taxa_annexes.csv"),
+            na = "")
+```
