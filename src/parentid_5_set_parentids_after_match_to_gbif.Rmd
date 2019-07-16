@@ -158,7 +158,7 @@ missing_gbif_keys <-
   pull()
 ```
 
-How many they are?
+How many are they?
 
 ```{r length_missing_gbif_keys}
 length(missing_gbif_keys)
@@ -202,7 +202,7 @@ gbif_info_missing_taxa %>%
 
 ## Check grandparentship or higher missing relationships
 
-It can be that the missing taxa we are going to add are children of missing parents. We should then check that the complete tree is fully included. So, we repeat this routine until no parent keys are missing;
+It can be that the missing taxa we are going to add are children of missing parents as well. We should then check that the complete tree is fully included. So, we repeat this routine until no parent keys are missing.
 
 First, we select which parent keys of the mising taxa are not included:
 
