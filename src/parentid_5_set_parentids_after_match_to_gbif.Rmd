@@ -79,7 +79,7 @@ taxa_match_gbif %>%
 
 ## Get GBIF parent key
 
-The match to GBIF Backbone doesn't return a field with the parent key. However, we can retrieve it easily by using another rgbif function: `name_usage`. We add this information in column `gbif_parentKey`. We apply it at the moment only to used taxa. **Note: this step can take long**.
+The match to GBIF Backbone doesn't return a field with the parent key. However, we can retrieve it easily by using another rgbif function: `name_usage`. We add this information in column `gbif_parentKey`. **Note: this step can take long**.
 
 ```{r set_gbif_parentKey, cache=TRUE}
 pb <- progress_estimated(nrow(taxa_match_gbif))
@@ -148,18 +148,23 @@ taxa_gbif_parent_key %>%
 
 This means, for example, that just adding [Coprinopsis Beeli (GBIF key 6005961)](https://www.gbif.org/species/6005961) to taxonomic table would provide a parent key to 77 taxa.
 
-Number of unique GBIF parent keys we need to add:
+GBIF parent keys we need to add:
 
 ```{r n_distinct_parentkeys_to_add}
-taxa_gbif_parent_key %>%
+missing_gbif_keys <- 
+  taxa_gbif_parent_key %>%
   filter(!gbif_parentKey %in% taxa_gbif_parent_key$gbif_usageKey) %>%
   distinct(gbif_parentKey) %>%
-  nrow()
+  pull()
 ```
 
-## Add missing taxa
+How many they are?
 
-We add now the missing taxa pointed by parent keys in order to complete the taxonomic tree. 
+```{r length_missing_gbif_keys}
+length(missing_gbif_keys)
+```
+
+## Retrieve missing parents from GBIF Backbone
 
 First, we retrieve such taxa from GBIF Backbone:
 
@@ -175,12 +180,6 @@ get_gbif_taxonomic_info <- function(key) {
   name_usage(key, return = "data")
 }
 
-missing_gbif_keys <- 
-  taxa_gbif_parent_key %>%
-  filter(!gbif_parentKey %in% taxa_gbif_parent_key$gbif_usageKey) %>%
-  distinct(gbif_parentKey) %>%
-  pull()
-
 gbif_info_missing_taxa <- map_dfr(missing_gbif_keys, get_gbif_taxonomic_info)
 gbif_info_missing_taxa <- 
   gbif_info_missing_taxa %>% 
@@ -193,7 +192,188 @@ gbif_info_missing_taxa <-
   select(one_of(gbif_fields))
 ```
 
-To add them to other taxa we need to set `acceptedname` and `scientificnameauthorship` equal to `gbif_canonicalName` and `gbif_authorship` respectively. We can also fill the taxonomic rank in  `taxonranken`:
+Rank of these missing taxa:
+
+```{r}
+gbif_info_missing_taxa %>%
+  group_by(gbif_rank) %>%
+  count()
+```
+
+## Check grandparentship or higher missing relationships
+
+It can be that the missing taxa we are going to add are children of missing parents. We should then check that the complete tree is fully included. So, we repeat this routine until no parent keys are missing;
+
+First, we select which parent keys of the mising taxa are not included:
+
+```{r gbif_grandparents_missing_gbif_keys_2}
+missing_gbif_keys_2 <- 
+  gbif_info_missing_taxa %>%
+  filter(!gbif_parentKey %in% taxa_gbif_parent_key$gbif_usageKey & 
+           !gbif_parentKey %in% gbif_info_missing_taxa$gbif_usageKey) %>%
+  distinct(gbif_parentKey) %>%
+  pull()
+```
+
+Numebr of parent keys not foud:
+
+```{r length(missing_gbif_keys_2)}
+length(missing_gbif_keys_2)
+```
+
+```{r rerun_call_to_name_usage_for_grandparentship}
+gbif_info_missing_taxa_2 <- map_dfr(missing_gbif_keys_2, get_gbif_taxonomic_info)
+gbif_info_missing_taxa_2 <- 
+  gbif_info_missing_taxa_2 %>% 
+  rename(usageKey = key)
+
+names(gbif_info_missing_taxa_2) <- paste0("gbif_", 
+                                          names(gbif_info_missing_taxa_2))
+gbif_info_missing_taxa_2 <- 
+  gbif_info_missing_taxa_2 %>%
+  select(one_of(gbif_fields))
+```
+
+We add these missing taxa to `gbif_info_missing_taxa`:
+
+```{r add_missing_grandparents_to_all_missing_taxa}
+gbif_info_missing_taxa <-
+  gbif_info_missing_taxa %>%
+  bind_rows(gbif_info_missing_taxa_2)
+```
+
+We repeat this routine. Again, we select which of these taxa have no parents:
+
+```{r gbif_grandparents_missing_gbif_keys_3}
+missing_gbif_keys_3 <- 
+  gbif_info_missing_taxa %>%
+  filter(!gbif_parentKey %in% taxa_gbif_parent_key$gbif_usageKey & 
+           !gbif_parentKey %in% gbif_info_missing_taxa$gbif_usageKey) %>%
+  distinct(gbif_parentKey) %>%
+  pull()
+```
+
+Numebr of parent keys not foud:
+
+```{r length(missing_gbif_keys_3)}
+length(missing_gbif_keys_3)
+```
+
+Notice how less and less taxa are missing. We run again a call to `name_usage` to get parents of these missing taxa:
+
+```{r rerun_call_to_name_usage_for_grandparentship}
+gbif_info_missing_taxa_3 <- map_dfr(missing_gbif_keys_3, get_gbif_taxonomic_info)
+gbif_info_missing_taxa_3 <- 
+  gbif_info_missing_taxa_3 %>% 
+  rename(usageKey = key)
+
+names(gbif_info_missing_taxa_3) <- paste0("gbif_", 
+                                          names(gbif_info_missing_taxa_3))
+gbif_info_missing_taxa_3 <- 
+  gbif_info_missing_taxa_3 %>%
+  select(one_of(gbif_fields))
+```
+
+We add these missing taxa to `gbif_info_missing_taxa`:
+
+```{r add_missing_grand-grandparents_to_all_missing_taxa}
+gbif_info_missing_taxa <-
+  gbif_info_missing_taxa %>%
+  bind_rows(gbif_info_missing_taxa_3)
+```
+
+We repeat the routine once again. We select which of these taxa have no parents:
+
+```{r gbif_grandparents_missing_gbif_keys_4}
+missing_gbif_keys_4 <- 
+  gbif_info_missing_taxa %>%
+  filter(!gbif_parentKey %in% taxa_gbif_parent_key$gbif_usageKey & 
+           !gbif_parentKey %in% gbif_info_missing_taxa$gbif_usageKey) %>%
+  distinct(gbif_parentKey) %>%
+  pull()
+```
+
+Number of parent keys not foud:
+
+```{r length(missing_gbif_keys_4)}
+length(missing_gbif_keys_4)
+```
+
+And we add them to `gbif_info_missing_taxa` after retrieving all taxonomic information from GBIF:
+
+```{r call_name_usage_fourth_time_add_to_gbif_info_missing_taxa}
+gbif_info_missing_taxa_4 <- map_dfr(missing_gbif_keys_4, get_gbif_taxonomic_info)
+gbif_info_missing_taxa_4 <- 
+  gbif_info_missing_taxa_4 %>% 
+  rename(usageKey = key)
+
+names(gbif_info_missing_taxa_4) <- paste0("gbif_", 
+                                          names(gbif_info_missing_taxa_4))
+gbif_info_missing_taxa_4 <- 
+  gbif_info_missing_taxa_4 %>%
+  select(one_of(gbif_fields))
+
+gbif_info_missing_taxa <-
+  gbif_info_missing_taxa %>%
+  bind_rows(gbif_info_missing_taxa_4)
+```
+
+Are there missing parents still? Select missing taxa:
+
+```{r gbif_grandparents_missing_gbif_keys_5}
+missing_gbif_keys_5 <- 
+  gbif_info_missing_taxa %>%
+  filter(!gbif_parentKey %in% taxa_gbif_parent_key$gbif_usageKey & 
+           !gbif_parentKey %in% gbif_info_missing_taxa$gbif_usageKey) %>%
+  distinct(gbif_parentKey) %>%
+  pull()
+```
+
+Number of parent keys not found:
+
+```{r length(missing_gbif_keys_5)}
+length(missing_gbif_keys_5)
+```
+
+Retrieve taxonomic information and add them to `gbif_info_missing_taxa`:
+
+```{r call_name_usage_fifth_time_add_to_gbif_info_missing_taxa}
+gbif_info_missing_taxa_5 <- map_dfr(missing_gbif_keys_5, get_gbif_taxonomic_info)
+gbif_info_missing_taxa_5 <- 
+  gbif_info_missing_taxa_5 %>% 
+  rename(usageKey = key)
+
+names(gbif_info_missing_taxa_5) <- paste0("gbif_", 
+                                          names(gbif_info_missing_taxa_5))
+gbif_info_missing_taxa_5 <- 
+  gbif_info_missing_taxa_5 %>%
+  select(one_of(gbif_fields))
+
+gbif_info_missing_taxa <-
+  gbif_info_missing_taxa %>%
+  bind_rows(gbif_info_missing_taxa_5)
+```
+
+Are there missing parents still? Select missing taxa:
+
+```{r gbif_grandparents_missing_gbif_keys_6}
+missing_gbif_keys_6 <- 
+  gbif_info_missing_taxa %>%
+  filter(!gbif_parentKey %in% taxa_gbif_parent_key$gbif_usageKey & 
+           !gbif_parentKey %in% gbif_info_missing_taxa$gbif_usageKey) %>%
+  distinct(gbif_parentKey) %>%
+  pull()
+```
+
+Number of parent keys not found:
+
+```{r length(missing_gbif_keys_6)}
+length(missing_gbif_keys_6)
+```
+
+## Add missing taxa
+
+We add now the missing taxa pointed by parent keys in order to complete the taxonomic tree. To add them to other taxa we need to set `acceptedname` and `scientificnameauthorship` equal to `gbif_canonicalName` and `gbif_authorship` respectively. We can also fill the taxonomic rank in  `taxonranken`:
 
 ```{r set_acceptedname_authorship}
 gbif_info_missing_taxa <-
@@ -214,7 +394,7 @@ gbif_info_missing_taxa <-
   select(id, acceptedname, scientificnameauthorship, taxonranken, everything())
 ```
 
-These taxa are now ready to be added to the other taxa. We flag thm by adding column `added_from_gbif` with value `TRUE`, while the other ones get value `FALSE`:
+These taxa are now ready to be added to the other taxa. We flag them by adding column `added_from_gbif` with value `TRUE`, while the other ones get value `FALSE`:
 
 ```{r add_gbif_info_missing_taxa_to_taxa_gbif_parent_key}
 taxa_gbif_parent_key_complete <-
