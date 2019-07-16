@@ -192,16 +192,18 @@ pb <- progress_estimated(nrow(missing_unverifiable_taxa))
 get_gbif_parent_key <- function(gbif_usageKey) {
   pb$tick()$print()
   parent_key <- NA_real_
-  if (!is.na(gbif_usageKey)) {
-    data <- name_usage(gbif_usageKey, 
-             return = "data")
-    if ("parentKey" %in% names(data)) {
-      parent_key <- 
-        data %>% 
-        select(parentKey) %>%
-        pull()
+  suppressMessages(
+    if (!is.na(gbif_usageKey)) {
+      data <- name_usage(gbif_usageKey, 
+               return = "data")
+      if ("parentKey" %in% names(data)) {
+        parent_key <- 
+          data %>% 
+          select(parentKey) %>%
+          pull()
+      }
     }
-  }
+  )
   return(parent_key)
 }
 
