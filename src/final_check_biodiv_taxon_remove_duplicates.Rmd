@@ -1,0 +1,393 @@
+---
+title: "Final check of taxon table and assign date creation"
+author:
+  - Lien Reyserhove
+  - Damiano Oldoni
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: yeti
+    df_print: paged
+knit: (function(input_file, encoding) { rmarkdown::render(input_file, encoding = encoding, output_file = paste0("../docs/",sub(".Rmd", ".html", basename(input_file))))})
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(odbc)           # To work with database
+library(tidyverse)      # To do data science
+library(tidylog)        # To provide feedback on dplyr functions
+library(here)           # To work with paths
+library(rgbif)          # To work with GBIF data
+```
+
+# Read data
+
+We read taxonomic information by importing the  `biodiv.taxon.txt` table and its extended version, `taxa_parentid_corrected_unverifiable_taxa_added.tsv`.
+
+```{r read_biodiv_taxon}
+biodiv_taxon <- read_delim(here("data", "processed", "biodiv.taxon.txt"),
+                           delim = "|",
+                           na = "",
+                           col_types = cols(
+                             .default = col_character(),
+                             id = col_double(),
+                             parentid = col_double()
+                           ))
+```
+
+```{r biodiv_taxon_extended}
+biodiv_taxon_extended <- read_tsv(
+  here("data", 
+       "processed", 
+       "taxa_parentid_corrected_unverifiable_taxa_added.tsv"),
+  na = "",
+  col_types = cols(
+    .default = col_character(),
+    id = col_double(),
+    parentid = col_double(),
+    media = col_logical(),
+    speciesbeparentid = col_double(),
+    bruenvi_created = col_date(format = "%Y-%m-%d"),
+    bruenvi_modified = col_date(format = "%Y-%m-%d"),
+    gbif_confidence = col_double(),
+    gbif_usageKey = col_double(),
+    gbif_speciesKey = col_double(),
+    gbif_genusKey = col_double(),
+    gbif_parentKey = col_double(),
+    gbif_familyKey = col_double(),
+    gbif_classKey = col_double(),
+    gbif_orderKey = col_double(),
+    gbif_phylumKey = col_double(),
+    gbif_kingdomKey = col_double(),
+    gbif_acceptedUsageKey = col_double(),
+    gbif_synonym = col_logical(),
+    added_from_gbif = col_logical())
+)
+```
+
+# Solve duplicates
+
+## Get duplicates in  `biodiv.taxon` 
+
+Duplicates based on `acceptedname`:
+
+```{r duplicate_names}
+duplicate_names <- 
+  biodiv_taxon %>%
+  group_by(acceptedname, scientificnameauthorship) %>%
+  count() %>%
+  filter(n > 1) %>%
+  ungroup()
+```
+
+Show duplicates:
+
+```{r show_duplicate_names}
+duplicate_names <- 
+  duplicate_names %>% 
+  left_join(biodiv_taxon, 
+             by = c("acceptedname", "scientificnameauthorship")) %>%
+  select(id, acceptedname, scientificnameauthorship, parentid, everything())
+duplicate_names
+```
+
+The presence of duplicates is already known and documented in [#7](https://github.com/inbo/ibge-bim-species/issues/7). 
+
+## Find used taxa
+
+We are going to remove unused duplicates only, so without changing anything in linekd tables.
+
+### Get IDs used in linked tables
+
+Based on [biodiv_diagram](https://github.com/inbo/ibge-bim-species/blob/master/references/biodiv_diagram.pdf) the following tables of `biodiv` are linked to `biodiv.taxon`:
+
+1. `identifiablespecies`
+2. `media`
+3. `speciesannex`
+4. `taxoncommontaxa`
+
+Differently from pipeline `parentid_2_detect_used_taxa.Rmd`, we are less restricted in asssing the usage of a taxon: we don't check which names in `identifiablespecies` are really linked to occurrences. Again, this is done to avoid to remove names in `biodiv.taxon` which are used  `identifiablespecies`.
+
+Retrieve access informations from configuration file:
+
+```{r get_access_infos}
+ibge_bim <- config::get("ibge_bim")
+```
+
+Connect to database:
+
+```{r connect_to_db}
+conn <- dbConnect(odbc(), 
+                  driver = ibge_bim$driver,
+                  server = ibge_bim$server,
+                  database = ibge_bim$database,
+                  port = ibge_bim$port,
+                  uid = ibge_bim$uid,
+                  pwd = ibge_bim$pwd,
+                  encoding = "Windows-1252"
+)
+```
+
+Get all taxonIDs used in `identifiablespecies`:
+
+```{r get_ids_identifiablespecies}
+taxonid_identifiablespecies <- 
+  dbGetQuery(conn, 
+             "SELECT DISTINCT taxonid FROM biodiv.identifiablespecies") %>%
+  as_tibble()
+```
+
+Number of unique taxon IDs:
+
+```{r n_taxa_identifiablespecies}
+nrow(taxonid_identifiablespecies)
+```
+
+Get all taxonIDs used in `media`:
+
+```{r get_ids_identifiablespecies}
+taxonid_media <- 
+  dbGetQuery(conn, 
+             "SELECT DISTINCT taxonid FROM biodiv.media") %>%
+  as_tibble()
+```
+
+Number of unique taxon IDs:
+
+```{r n_taxa_media}
+nrow(taxonid_media)
+```
+
+Get all taxonIDs used in `speciesannex`:
+
+```{r get_ids_speciesannex}
+taxonid_speciesannex <- 
+  dbGetQuery(conn, 
+             "SELECT DISTINCT taxonid FROM biodiv.speciesannex") %>%
+  as_tibble()
+```
+
+Number of unique taxon IDs:
+
+```{r n_taxa_speciesannex}
+nrow(taxonid_speciesannex)
+```
+
+Get all taxonIDs used in `taxoncommontaxa`:
+
+```{r get_ids_taxoncommontaxa}
+taxonid_taxoncommontaxa <- 
+  dbGetQuery(conn, 
+             "SELECT DISTINCT taxonid FROM biodiv.taxoncommontaxa") %>%
+  as_tibble()
+```
+
+Number of unique taxon IDs:
+
+```{r n_taxa_taxoncommontaxa}
+nrow(taxonid_taxoncommontaxa)
+```
+
+Close connection:
+
+```{r close_connection}
+dbDisconnect(conn)
+```
+
+We also get taxon IDs used as parent IDs in `biodiv.taxon`. But for these IDs we use our final `biodiv.taxon.txt`.
+
+```{r get_parentids_taxon}
+taxon_parentid <- 
+  biodiv_taxon %>% 
+  distinct(parentid)
+```
+
+Get all unique taxon IDs from all tables as a vector, `taxonids`: 
+
+```{r all_used_taxonids}
+taxonids <- c(taxonid_identifiablespecies %>% pull(taxonid),
+              taxonid_media %>% pull(taxonid),
+              taxonid_speciesannex %>% pull(taxonid),
+              taxonid_taxoncommontaxa %>% pull(taxonid),
+              taxon_parentid %>% pull(parentid))
+taxonids <- unique(taxonids)
+```
+
+## Unused duplicates
+
+Now we can remove any taxa in `biodiv.taxon` which is not in `taxonids` as they are never used.
+
+We show here below the unused duplicates, labelled  as `used` =  `FALSE` together with the used duplicates, labelled as `used` =  `TRUE`
+
+```{r not_used_duplicates}
+not_used_duplicate_names <-
+  duplicate_names %>%
+  filter(!id %in% taxonids & taxonranken != "kingdom") %>%
+  mutate(used = FALSE)
+not_used_duplicate_names
+used_duplicate_names <-
+  duplicate_names %>%
+  filter(id %in% taxonids & 
+           acceptedname %in% not_used_duplicate_names$acceptedname &
+           scientificnameauthorship  %in% not_used_duplicate_names$scientificnameauthorship) %>%
+  mutate(used = TRUE)
+bind_rows(not_used_duplicate_names,
+          used_duplicate_names) %>%
+  arrange(acceptedname, scientificnameauthorship) %>%
+  select(id, 
+         acceptedname, 
+         scientificnameauthorship, 
+         parentid, 
+         used, 
+         everything())
+```
+
+We discuss the different patterns we can see and we explain the reason why these duplicates arise.
+
+### Duplicates already present in biodiv.taxon
+
+Used and unused taxa already present in original version of  `biodiv.taxon`, i.e. `id` less than 100000. We speak about the following taxa:
+
+1. Botrytella, 
+2. Dasysiphonia, 
+3. Macrosiagon, 
+4. Myriactula, 
+5. Saccharomyces bayanus, 
+6. Saccharomyces cerevisiae, 
+7. Schizophyllum
+
+### Carlia, Chondromyces, Echiuroidea
+
+These duplicates share following properties:
+
+1. unused original taxon
+2. no parent ID in unused original taxon
+2. no match to GBIF Backbone (multiple equal matches)
+3. used taxon added by building txonomic tree
+4. used taxon without authorship
+
+### Characium, Dicranochaete, Euzonus, Grandinia, Thorea
+
+These duplicates have the following properties:
+1. original taxon not used
+2. added taxon used (`id` higher than 100000)
+3. parent ID corrected
+4. genus or higher rank
+
+This happens due to a successful match with GBIF Backbone which reveals afterhand to be not the right one. As a consequence, their parent ID has been corrected to a wrong one and their children are therefore redirected to the new created taxon, thus avoiding to introduce any error in  `biodiv.taxon`. They are not used as parents, while their added counterparts are well used.
+
+```{r errors_in_gbif_authomatic_matching}
+biodiv_taxon_extended %>% 
+  filter(
+    acceptedname %in% c("Characium",
+                        "Dicranochaete",
+                        "Euzonus",
+                        "Grandinia",
+                        "Thorea") & 
+      parentid_corrected %in% c(101415,
+                                101420,
+                                44193,
+                                101473,
+                                101408)) %>%
+  select(id, 
+         acceptedname, 
+         scientificnameauthorship, 
+         parentid, 
+         parentid_corrected,
+         everything())
+```
+
+These errors in GBIF match are very rare and occur because the match tries to refer to a non empty authorship, while the taxon has `scientificName` equal to `canonicalName`. Examples:  
+
+```{r Thorea}
+name_backbone("Thorea", rank = "genus", strict = TRUE, verbose = TRUE)$alternatives
+```
+
+```{r Euzonus}
+name_backbone("Euzonus", rank = "genus", strict = TRUE, verbose = TRUE)$alternatives
+```
+
+```{r Grandinia}
+name_backbone("Grandinia", rank = "genus", strict = TRUE, verbose = TRUE)$alternatives
+```
+
+The only way to solve these issues in the future is adding the full taxonomic tree as additional columns, so that we can better match to GBIF Backbone.
+
+## Remove unused duplicates
+
+We remove the unused duplicates discussed above:
+
+```{r save_biodiv.taxon_without_unused_duplicates}
+biodiv_taxon_without_unused_duplicates <- 
+  biodiv_taxon %>%
+  filter(!id %in% not_used_duplicate_names$id)
+```
+
+# Add `bruenvi_created` 
+
+We add date of creation for new taxa:
+
+```{r add_creation_date}
+biodiv_taxon_without_unused_duplicates <- 
+  biodiv_taxon %>%
+  mutate(bruenvi_created = case_when(
+    is.na(bruenvi_created) |  bruenvi_created == "" ~ as.character(Sys.Date()),
+    TRUE ~ bruenvi_created
+  ))
+```
+
+## Modify `bruenvi_modified`
+
+Modified taxa:
+
+1. taxa in `data/corrected_taxa.tsv`
+2. taxa with modified parent ID
+
+
+Read the corrected taxa:
+
+```{r read_corrected_taxa}
+corrected_taxa <-  read_tsv(
+  here("references", "corrected_taxa.tsv"),
+  na = "")
+```
+
+```{r modified_taxa}
+taxonid_modified <-
+  biodiv_taxon_extended %>%
+  filter(parentid_corrected != parentid) %>%
+  distinct(id) %>%
+  bind_rows(corrected_taxa %>%
+              select(id)) %>%
+  distinct() %>%
+  pull()
+```
+
+```{r modify_bruenvi_modified}
+biodiv_taxon_without_unused_duplicates <- 
+  biodiv_taxon_without_unused_duplicates %>%
+  mutate(bruenvi_modified = case_when(
+    id %in% taxonid_modified ~ as.character(Sys.Date()),
+    TRUE ~ bruenvi_modified
+  ))
+```
+
+Save taxa as UTF-8 (default) using pipe `|` as delimiter:
+
+```{r save_biodiv_taxon_without_unused_duplicates}
+write_delim(biodiv_taxon_without_unused_duplicates, 
+            path = here("data", "processed", "biodiv.taxon.txt"), 
+            na = "",
+            delim = "|")
+```
