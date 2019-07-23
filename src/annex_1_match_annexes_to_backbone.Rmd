@@ -160,6 +160,38 @@ annexes <-
 )
 ```
 
+Keep columns of interest:
+
+```{r select_cols_of_interest}
+annex_df <- 
+  annex_df %>%
+    select(annex_code,
+           scientific_name_corrected, 
+           scientificName, 
+           canonicalName, 
+           gbif_accepted_name,
+           kingdom, 
+           phylum, 
+           order, 
+           family, 
+           genus)
+```
+
+Rename columns:
+- `scientific_name_corrected` to `annex_scientificName`
+- `scientificName` to `gbif_scientificName`
+- `canonical` to `gbif_canonicalName`
+
+```{r rename_cols_scientificnames}
+annex_df <- 
+  annex_df %>%  
+  rename("gbif_scientificName" = "scientificName") %>% 
+  rename("annex_scientificName" = "scientific_name_corrected") %>%
+  rename("gbif_canonicalName" = "canonicalName")
+```
+
+
+
 Export as `annexes_gbif_match.csv`
 
 ```{r write_annexes}
