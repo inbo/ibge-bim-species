@@ -122,7 +122,7 @@ bim_annex_species %>%
 
 ## Get names of accepted taxa from GBIF
 
-In BIM annexes there are some synonyms, based on GBIF Taxonomy Backbone:
+The BIM annex list contains synonyms (based on GBIF Taxonomy Backbone):
 
 ```{r n_synonyms}
 bim_annex_species %>%
@@ -131,7 +131,7 @@ bim_annex_species %>%
   count()
 ```
 
-Find accepted (scientific) names of the taxa this synonyms point to and add them in new column `gbif_accepted_name`. For accepted taxa, we set `gbif_accepted_name` equal to `gbif_scientificname`:
+Find the accepted (scientific) names of the taxa in the BIM annex list and add them in new column `gbif_accepted_name`. For accepted taxa, we set `gbif_accepted_name` equal to `gbif_scientificname`:
 
 ```{r get_accepted_names_bim_annexes}
 bim_annex_species <- 
