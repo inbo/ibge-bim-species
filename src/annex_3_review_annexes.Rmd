@@ -146,7 +146,7 @@ names(annex) <- annexcode
 
 ## Read unmatched taxa
 
-Read unmatched taxa in official annexes:
+Read unmatched taxa in annexes:
 
 ```{r read_unmatched_taxa_annex}
 unmatched_annex_taxa_df <- read_csv(
@@ -240,8 +240,6 @@ get_summarize_unverifiables <- function(unverifiables, name, rank){
 6. Taxa belonging to family `Orchidaceae` (in annex list: _Alle Orchidaceae soorten waarvan het natuurlijk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvatt, met uitsluiting van_ Epipactis helleborine)
 7. Taxa belonging to genus `Rosa` (in annex list: _Alle soorten van het geslacht Rosa waarvan het natuurlijk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvat, met uitzondering van_ Rosa arvensis _en_ Rosa canina L.)
 
-We define them in a data.frame:
-
 ```{r unverifiable_taxa_bxl_2_2}
 unverifiable_taxa_bxl_2.2 <- tibble(
   rank = c("genus", 
@@ -269,8 +267,6 @@ unverifiable_taxa_bxl_2.3 <- tibble(
 ```
 
 ### Unverifiable taxa in BXL 2.5
-
-The following taxa are not included in `annex_bxl_2.5` with their scientific name at species level. So, we are unable to check whether or not their presence in the BIM annex list is correct.
 
 1. Taxa belonging to genus `Coregonus` (in annex list: _Alle europese soorten van Coregonus, behalve Coregonus oxyrhyn_)
 2. Taxa belonging to genus `Sphagnum` (in annex list: _Alle europese Sphagnum-soorten_)
@@ -325,8 +321,6 @@ unverifiable_taxa_bxl_2.5 <- tibble(
 23. Taxa belonging to order `Piciformes` ( _all species of Piciformes_)
 24. Taxa belonging to order `Strigiformes` ( _all species of Strigiformes_)
 25. Taxa belonging to class `Ursidae` (in annex list: _all species of Ursidae_)
-
-We define them in a data.frame:
 
 ```{r unverifiable_taxa_bern_2}
 unverifiable_taxa_bern_2 <- tibble(
@@ -392,7 +386,7 @@ unverifiable_taxa_bern_3 <- tibble(
 
 ### Unverifiable taxa in BONN 2
 
-All taxa belonging to the following families:
+All taxa belonging to the following families and genera:
 
 ```{r unverifiable_taxa_bonn_2}
 unverifiable_taxa_bonn_2 <- tibble(
@@ -523,7 +517,6 @@ unverifiable_taxa <- map(annexcode, function(code){
 })
 names(unverifiable_taxa) <- annexcode
 ```
-
 
 We first apply funtion  `get_unverifiable_records`  to group all the unverifiable records of each BIM annex and related names/ranks:
 
