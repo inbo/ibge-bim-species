@@ -140,8 +140,6 @@ Remove non-matching taxa from dataset:
 annexes %<>% filter(matchType != "NONE") 
 ```
 
-Find GBIF **accepted** scientific names of `scientific_name_corrected` and add them as new column, `gbif_accepted_name`:
-
 Find GBIF **accepted** (scientific) names of `scientific_name_corrected` in `annexes`. Add them in column `gbif_accepted_name`. For accepted taxa, `gbif_accepted_name` will be equal to `gbif_scientificname`:
 
 ```{r get_accepted_names_annexes}
@@ -189,8 +187,6 @@ annexes <-
   rename("annex_scientificName" = "scientific_name_corrected") %>%
   rename("gbif_canonicalName" = "canonicalName")
 ```
-
-
 
 Export as `annexes_gbif_match.csv`
 
