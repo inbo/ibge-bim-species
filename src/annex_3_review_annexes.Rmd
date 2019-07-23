@@ -832,7 +832,10 @@ pmap_dfr(
 We save the taxa from official annexes related to higher ranks and therefore not findable in BIM annexes:
 
 ```{r save_unverifiable_taxa}
-unverifiable_taxa %>%
+map2(unverifiable_taxa, 
+     names(unverifiable_taxa), 
+     function(df, n){
+       df %>% mutate(annexcode = n)}) %>%
   map_dfr(bind_rows) %>%
   distinct() %>%
   filter(!is.na(rank)) %>%
