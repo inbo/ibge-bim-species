@@ -502,7 +502,6 @@ unverifiable_taxa_bxl_2.4 <- unverifiable_taxa_empty
 unverifiable_taxa_bxl_3 <- unverifiable_taxa_empty
 unverifiable_taxa_bxl_4 <- unverifiable_taxa_empty
 unverifiable_taxa_bern_1 <- unverifiable_taxa_empty
-unverifiable_taxa_bern_2 <- unverifiable_taxa_empty
 unverifiable_taxa_bonn_1 <- unverifiable_taxa_empty
 unverifiable_taxa_bird_1 <- unverifiable_taxa_empty
 ```
