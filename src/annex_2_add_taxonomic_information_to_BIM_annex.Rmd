@@ -55,26 +55,6 @@ conn <- dbConnect(odbc(),
 
 # Read data
 
-We define first the annex codes we will use:
-
-```{r annex_codes}
-annexcode <- c("bxl_2.1",
-               "bxl_2.2",
-               "bxl_2.3",
-               "bxl_2.4",
-               "bxl_2.5",
-               "bxl_3",
-               "bxl_4",
-               "bern_1",
-               "bern_2",
-               "bern_3",
-               "bonn_1",
-               "bonn_2",
-               "hab_2",
-               "hab_4",
-               "bird_1")
-```
-
 ## BIM annex data
 
 Extract annex information from the database (`biodiv.speciesannex`):
