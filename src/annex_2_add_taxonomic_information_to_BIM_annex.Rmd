@@ -169,6 +169,23 @@ bim_annex_species <-
 )
 ```
 
+Select required columns:
+
+```{r}
+bim_annex_species <-
+  bim_annex_species %>% select(taxonid, 
+                               annexcode, 
+                               acceptedname, 
+                               gbif_scientificName, 
+                               gbif_accepted_name,
+                               gbif_kingdom,
+                               gbif_phylum,
+                               gbif_order,
+                               gbif_class,
+                               gbif_family,
+                               gbif_genus)
+```
+
 ## Save BIM annex data
 
 We save `bim_annex_species` in  `/data/interim`:
