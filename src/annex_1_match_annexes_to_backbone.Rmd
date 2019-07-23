@@ -163,8 +163,8 @@ annexes <-
 Keep columns of interest:
 
 ```{r select_cols_of_interest}
-annex_df <- 
-  annex_df %>%
+annexes <- 
+  annexes %>%
     select(annex_code,
            scientific_name_corrected, 
            scientificName, 
@@ -183,8 +183,8 @@ Rename columns:
 - `canonical` to `gbif_canonicalName`
 
 ```{r rename_cols_scientificnames}
-annex_df <- 
-  annex_df %>%  
+annexes <- 
+  annexes %>%  
   rename("gbif_scientificName" = "scientificName") %>% 
   rename("annex_scientificName" = "scientific_name_corrected") %>%
   rename("gbif_canonicalName" = "canonicalName")
