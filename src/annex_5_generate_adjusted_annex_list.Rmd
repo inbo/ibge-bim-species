@@ -1,0 +1,57 @@
+# Setup
+
+## Load libraries
+
+```{r load_libs}
+library(tidyverse)      # To do data science
+library(tidylog)        # To provide feedback on dplyr functions
+library(here)           # To work with paths
+```
+
+# Read data
+
+## Read annex data
+
+Import `annexes_gbif_match.csv`:
+
+```{r read_annexes}
+annex_df <- read_delim(
+  file = here("data", "interim", "annexes_gbif_match.csv"), 
+  delim = ",")
+```
+
+## Read BIM annex data
+
+Import the BIM annex data with full taxonomic information:
+
+```{r read_bim_annex_taxa}
+bim_annex_taxa <- read_csv(
+  here("data", "interim", "bim_annex_taxa_full_taxonomic_info.csv"),
+  na = "",
+  col_types = cols(
+    .default = col_character(),
+    taxonid = col_double()
+))
+```
+
+## Read unverifiable taxa
+
+```{r read_bim_annex_taxa}
+bim_unverifiable_taxa <- read_csv(
+  here("data", "interim", "unverifiable_taxa_annexes.csv"),
+  na = "",
+  col_types = cols(
+    .default = col_character()
+))
+```
+
+## Read BIM taxon
+
+```{r}
+bim_taxa <- read_csv(
+  here("data", "processed", "taxa_parentid_corrected_unverifiable_taxa_added.tsv"),
+  na = "",
+  col_types = cols(
+    .default = col_character()))
+```
+
