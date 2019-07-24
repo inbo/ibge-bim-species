@@ -839,6 +839,6 @@ map2(unverifiable_taxa,
   map_dfr(bind_rows) %>%
   distinct() %>%
   filter(!is.na(rank)) %>%
-  write_csv(path = here("data", "interim", "unverifiable_taxa_annexes.csv"),
+  write_csv(path = here("data", "interim", "unverifiable_taxon_groups_annexes.csv"),
             na = "")
 ```
