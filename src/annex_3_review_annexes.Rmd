@@ -324,12 +324,6 @@ unverifiable_taxa_bxl_2.5 <- tibble(
 26. Taxa belonging to class `Ursidae` (in annex list: _all species of Ursidae_)
 
 
-
-
-
-
-
-
 ```{r unverifiable_taxa_bern_2}
 unverifiable_taxa_bern_2 <- tibble(
   rank = c(rep("genus", 7), 
