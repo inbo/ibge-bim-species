@@ -48,7 +48,26 @@ bim_unverifiable_taxa <- read_csv(
 ## Read BIM taxon
 
 ```{r}
-bim_taxa <- read_csv(
+bim_unverifiable_taxa <-
+  bim_unverifiable_taxa %>% mutate(annexcode = recode(annexcode,
+    "bxl_2.1" =  "BXL-ORD-2012_Annex II.1",
+    "bxl_2.2" =  "BXL-ORD-2012_Annex II.2",
+    "bxl_2.3" =  "BXL-ORD-2012_Annex II.3",
+    "bxl_2.4" =  "BXL-ORD-2012_Annex II.4",
+    "bxl_2.5" =  "BXL-ORD-2012_Annex II.5",
+    "bxl_3" =  "BXL-ORD-2012_Annex III",
+    "bxl_4" =  "BXL-ORD-2012_Annex IV",
+    "bern_1" =  "EUR-CON-BER_Annex I",
+    "bern_2" =  "EUR-CON-BER_Annex II",
+    "bern_3" =  "EUR-CON-BER_Annex III",
+    "bonn_1" =  "UN-CON-BON-Annex I",
+    "bonn_2" =  "UN-CON-BON-Annex II",
+    "hab_2" =  "EUR-DIR-HAB_Annex II",
+    "hab_4" =  "EUR-DIR-HAB_Annex IV",
+    "bir_1" =  "EUR-DIR-BIR_Annex I"
+))
+```
+
   here("data", "processed", "taxa_parentid_corrected_unverifiable_taxa_added.tsv"),
   na = "",
   col_types = cols(
