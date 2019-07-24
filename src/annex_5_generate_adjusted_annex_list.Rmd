@@ -74,3 +74,75 @@ bim_unverifiable_taxa <-
     .default = col_character()))
 ```
 
+# Annex BXL II.2
+
+```{r}
+bxl_2.2_bim <- 
+  bim_annex_taxa %>% filter(annexcode == "BXL-ORD-2012_Annex II.2") 
+
+bxl_2.2_annex <-
+  annex_df %>% filter(annex_code == "bxl_2.2")
+```
+
+## Retrieve full match species list
+
+Inner join between bim list and annex list:
+
+```{r n_taxa_full_match}
+bxl_2.2_full_match <-
+  bxl_2.2_bim %>% 
+    inner_join(bxl_2.2_annex, by = "gbif_accepted_name")
+```
+
+Select required columns:
+
+```{r}
+bxl_2.2_full_match <-
+  bxl_2.2_full_match %>% select(acceptedname,
+                                taxonid,
+                                annexcode) 
+```
+
+Add `remarks`, which is empty for the full matches:
+
+```{r}
+bxl_2.2_full_match <-
+  bxl_2.2_full_match %>% mutate(remarks = "")
+```
+
+## Retrieve unverifiable taxa:
+
+```{r}
+bxl_2.2_unverifiable_taxa <- 
+  bim_unverifiable_taxa %>% filter(annexcode == "BXL-ORD-2012_Annex II.2")
+```
+
+Add BIM taxonID:
+
+```{r}
+bxl_2.2_unverifiable_taxa <-
+  bxl_2.2_unverifiable_taxa %>% inner_join(bim_taxa, by = c("name" = "acceptedname"))
+```
+
+Select required columns:
+
+```{r}
+bxl_2.2_unverifiable_taxa <-
+  bxl_2.2_unverifiable_taxa %>% select(id, name, annexcode)
+```
+
+Add remarks for each unverifiable taxon:
+
+```{r}
+bxl_2.2_unverifiable_taxa <-
+  bxl_2.2_unverifiable_taxa %>% mutate(remarks = case_when(
+    name == "Mammalia" ~ "All European species",
+    name == "Aves" ~ "All European species",
+    name == "Amphibia" ~ "All European species",
+    name == "Reptilia" ~ "All European species",
+    name == "Nymphaeaceae" ~ "All species of Nymphaeaceae with their natural area of distribution completely or partially enclosing the national territory",
+    name == "Orchidaceae" ~ "All species of Orchidaceae with their natural area of distribution completely or partially enclosing the national territory, with exception of Epipactis helleborine",
+    name == "Rosa" ~ "All species of the genus Rosa with their natural area of distribution completely or partially enclosing the national territory, with exception of Rosa arvensis and Rosa canina L."
+))
+```
+
