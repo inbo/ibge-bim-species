@@ -827,6 +827,20 @@ pmap_dfr(
 )
 ```
 
+# Save BIM annex without unverifiable taxa:
+
+```{r save_unverifiable_taxa}
+map2(bim_annex_without_unverifiable_taxa, 
+     names(bim_annex_without_unverifiable_taxa), 
+     function(df, n){
+       df %>% mutate(annexcode = n)}) %>%
+  map_dfr(bind_rows) %>%
+  distinct() %>%
+  write_csv(path = here("data", "interim", "bim_without_unverifiable_taxa.csv"),
+            na = "")
+```
+
+
 # Save unverifiable higher ranks from official annexes
 
 We save the taxa from official annexes related to higher ranks and therefore not findable in BIM annexes:
