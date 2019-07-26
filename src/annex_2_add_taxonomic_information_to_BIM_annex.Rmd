@@ -123,16 +123,16 @@ bim_annex_species %>%
 Save non-matching taxa as a separate dataframe for later:
 
 ```{r}
-unmatchted_bim_annex_taxa <- 
+unmatchted_taxa_bim_annexes <- 
   bim_annex_species %>% 
     filter(gbif_matchType == "NONE") %>% 
     select(annexcode, acceptedname)
 ```
 
-Export as `unmatchted_bim_annex_taxa.csv`
+Export as `unmatchted_taxa_bim_annexes.csv`
 
 ```{r}
-write_csv(unmatchted_bim_annex_taxa, here("data", "processed", "unmatchted_bim_annex_taxa.csv"), na = "")
+write_csv(unmatchted_taxa_bim_annex, here("data", "processed", "unmatchted_taxa_bim_annexes.csv"), na = "")
 ```
 
 Remove non-matching taxa from dataset:
