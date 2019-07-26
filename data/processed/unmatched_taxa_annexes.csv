@@ -1,8 +1,5 @@
 annex_code,scientific_name_corrected
-bxl_2.2,Alle europese soorten Mammalia
-bxl_2.2,Alle Europese soorten Aves
-bxl_2.2,Alle Europese soorten Reptilia
-bxl_2.2,Alle Europese soorten Amphibia
+bxl_2.2,Pipistrellus pygmacus
 bxl_2.2,Aphianus fasciatus
 bxl_2.2,Catopta thrips
 bxl_2.2,Lyeaena dispar
@@ -83,15 +80,12 @@ bxl_2.2,Kostelerzkya pentacarpos (L.) Ledeb.
 bxl_2.2,Caulinia tenuissima (A. br. ex Magnus) Tzvel.
 bxl_2.2,Nayas flexilis (Willd.) Rostk. & W.L. Schmid
 bxl_2.2,Nayas tenuissima (A. Braun) Magnus
-bxl_2.2,Alle Nymphaeaceae soorten waarvan het natuurlijk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvat
-bxl_2.2,"Alle Orchidaceae soorten waarvan het natuurlijk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvatt, met uitsluiting van Epipactis helleborine"
 bxl_2.2,Calypso bulbosa L.
 bxl_2.2,Orchis scopulorum Simsmerh.
 bxl_2.2,Corydalis gotlandica LidÃ©n
 bxl_2.2,Plantago algarbiensis Sampaio (Plantago bracteosa (Willk.) G. Sampaio)
 bxl_2.2,Armeria negleta Girard
 bxl_2.2,Armeria soleirotii (Duby) Godron
-bxl_2.2,"Alle soorten van het geslacht Rosa waarvan het natuurlijk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvat, met uitzondering van Rosa arvensis en Rosa canina L."
 bxl_2.2,Potentilla emilii popii Nyarady
 bxl_2.2,Galium globuliferum Hub
 bxl_2.2,Galitum moldavicum (Dobrescu) Franco
@@ -120,8 +114,7 @@ bxl_2.2,Ventenia bupleuroides Font Quer
 bxl_2.2,Tanacetum ptarmiciflorum Webb & Berth
 bxl_2.2,Convolvulus caput medusae Lowe
 bxl_2.2,Convolvulus lope
-bxl_2.2,tAeonium gomeraense Praeger
-bxl_2.2,tAichryson dumosum (Lowe) Praeg.
+bxl_2.2,Aeonium gomeraense Praeger
 bxl_2.2,Sedum brissemoretii Raymon
 bxl_2.2,Parolinia schizogunoides Svent.
 bxl_2.2,Simapidendron rupestre (Ait.) Lowe
@@ -144,9 +137,7 @@ bxl_2.2,Jsoplexis chalcantha Svent. & Oâ€™Shanahan
 bxl_2.2,Jsoplexis isabelliana (Webb & Berthel.) Masferrer
 bxl_2.2,Melanoselinum decipiens (Schrader & Wendl.) Hoftm.
 bxl_2.3,Carabus aronitens var. putsysi
-bxl_2.3,Satyrium w
 bxl_2.3,Erythromma linden
-bxl_2.3,Ophiogomphus Cecilia
 bxl_2.3,Oecanthus pelluscens
 bxl_2.3,OeÂ¢cdipoda caerulescens
 bxl_2.3,Tetrix undulate
@@ -163,37 +154,23 @@ bxl_2.3,Qhnonis repens
 bxl_2.3,Pimpinella saxifrage
 bxl_2.3,Saxifraga granulate
 bxl_2.3,Valeriana repens
-bxl_2.3,Sphagnum spp.
 bxl_2.4,Carabus auronitens var. putseysi
-bxl_2.5,Alle inheemse soorten van vissen niet vermeld in bijlage II.2 of II.3
-bxl_2.5,Alle europese soorten Acipenseridae niet vermeld in bijlage II.2 of II.3
-bxl_2.5,Alle europese soorten van Alosa
-bxl_2.5,Alle europese soorten van Barbus
 bxl_2.5,Leuciscus microlepis
 bxl_2.5,Rutilus graecus
 bxl_2.5,Rutilus racovitzai
 bxl_2.5,Sabanejewia calderoni
 bxl_2.5,Gobius fluviatilis
 bxl_2.5,Scizna umbra
-bxl_2.5,Alle europese soorten van Coregonus
-bxl_2.5,"Alle europese soorten van Coregonus, behalve Coregonus oxyrhyn"
 bxl_2.5,Scyllarides pigmaeus
 bxl_2.5,Scyllarides arctus
 bxl_2.5,Antipathes sp. plur.
-bxl_2.5,Alle inheemse lichenen
 bxl_2.5,Cladonia L. subgenus Cladina (Nyl.) Vain.
-bxl_2.5,Alle europese Sphagnum-soorten
-bxl_2.5,Alle inheemse macrofunghi soorten
-bxl_2.5,Alle europese Lycopodium soorten
 bxl_2.5,Narcissus juncifolius
-bxl_2.5,Alle Salicornia soorten waarvan het natuurliyk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvat
 bxl_2.5,Teucrium salviastrum Schreber subsp. salviastrum Schreber
 bxl_2.5,Rubus genevieri Boreau subsp. herminii (Samp.) P. Cout.
 bxl_2.5,Serophularia grandiflora DC. subsp. grandiflora DC.
 bxl_2.5,Scrophularia berminii Hoffmanns & Link
-bxl_4,QOxyura jamaicensis
 bxl_4,Aster americ.
-bxl_4,Spiraea spp
 bern_1,Leucojum nicaeensis Ard.
 bern_1,Rhazya orientalis (Decaisne) A..
 bern_1,Anchusa crispa Viv. (inclu. A. litoreae)
@@ -228,34 +205,10 @@ bern_1,Phalaris maderensis (Mnzs.) Mnzs.
 bern_1,Micromeria glomerata P. PÃƒÂ©rez
 bern_1,Micromeria leucantha Svent. ex PÃƒÂ©rez
 bern_1,Picconia azorica (Tutin) Knbol.
-bern_2,all species of microchiroptera except Pipistrellus pipistrellus
 bern_2,all species of Ursidae
 bern_2,Lynx lynx balcanicus
-bern_2,all species of Gaviidae
-bern_2,all species of Hydrobatidae
-bern_2,all species of Pelecanidae
-bern_2,all species of Ciconiidae
-bern_2,all species of Threskiornithidae
-bern_2,all species of Falconiformes
-bern_2,all species of Gruidae
-bern_2,all species of Otididae
-bern_2,all species of Recurvirostridae
-bern_2,all species of Phalaropodidae
-bern_2,all species of Laridae
-bern_2,all species of Pteroclididae
-bern_2,all species of Strigiformes
-bern_2,all species of Caprimulgidae
-bern_2,all species of Piciformes
-bern_2,all species of Hirundinidae
-bern_2,all species of Motacillidae
-bern_2,all species of Laniidae
-bern_2,all species of Prunellidae
-bern_2,all species of Sylviidae
-bern_2,all species of Regulinae
+bern_2,Regulinae
 bern_2,all species of Muscicapidae
-bern_2,all species of Paridae
-bern_2,all species of Sittidae
-bern_2,all species of Certhiidae
 bern_2,Tarentola delalandii
 bern_2,Vipera xanthina
 bern_2,Valencia lutourneuxi
@@ -263,16 +216,9 @@ bern_2,Pachyplasma giganteum
 bern_2,Discus defloratus
 bern_2,Discula turricula
 bern_2,Pinna pernula
-bern_3,all species of Soricidae
 bern_3,Mamota mamota
-bern_3,all species of Gliridae
-bern_3,All species of Cetacea not mentioned in Appendix II
+bern_3,Cetacea
 bern_3,all species of Viverridae
-bern_3,all species of Cervidae
-bern_3,"All species of Birds not included in Appendix II with the exception of Columba palumbus, Corvus corone (corone and/et cornix), Corvus frugilegus, Corvus monedula, Garrulus glandarius, Larus argentatus, Larus fuscus, Larus marinus, Passer domesticus, Sturnus vulgaris, Pica pica"
-bern_3,All species of reptiles not included in Appendix II
-bern_3,All species of Amphibians not included in Appendix II
-bern_3,all species of Coregonus
 bern_3,Barbus steindachneri
 bern_3,Leuciscus microlepis
 bern_3,Rutilus graecus
@@ -287,78 +233,8 @@ bern_3,Scyllarides pigmaeus
 bern_3,Scyllarides arctus
 bern_3,Antipathes sp. plur.
 bern_3,Corallium rubrun
-bonn_2,Rhinolophidae spp.
-bonn_2,Vespertilionidae spp.
-bonn_2,Anseranatidae spp.
-bonn_2,Anatidae spp.
-bonn_2,Phoenicopteridae spp.
-bonn_2,Antigone spp.
-bonn_2,Anthropoides spp.
-bonn_2,Grus spp.
 bonn_2,Ciconia microscelis
 bonn_2,Microcarbo pygmaeus
-bonn_2,Haematopodidae spp.
-bonn_2,Ibidorhynchidae spp.
-bonn_2,Recurvirostridae spp.
-bonn_2,Charadriidae spp.
-bonn_2,Scolopacidae spp.
-bonn_2,Pluvianellidae spp.
-bonn_2,Cathartidae spp.
-bonn_2,Accipitridae spp.
-bonn_2,Falconidae spp.
-bonn_2,Maluridae spp.89
-bonn_2,Dasyornithidae spp.
-bonn_2,Meliphagidae spp.
-bonn_2,Acanthizidae spp.
-bonn_2,Orthonychidae spp.
-bonn_2,Pomatostomidae spp.
-bonn_2,Mohouidae spp.
-bonn_2,Eulacestomatidae spp.
-bonn_2,Oriolidae spp.
-bonn_2,Oreoicidae spp.
-bonn_2,Cinclosomatidae spp.
-bonn_2,Falcunculidae spp.
-bonn_2,Pachycephalidae spp.
-bonn_2,Psophodidae spp.
-bonn_2,Vireonidae spp.
-bonn_2,Rhagologidae spp.
-bonn_2,Artamidae spp.
-bonn_2,Machaerirhynchidae spp.
-bonn_2,Vangidae spp.
-bonn_2,Platysteiridae spp.
-bonn_2,Rhipiduridae spp.
-bonn_2,Ifritidae spp.
-bonn_2,Monarchidae spp.
-bonn_2,Melampittidae spp.
-bonn_2,Picathartidae spp.
-bonn_2,Eupetidae spp.
-bonn_2,Chaetopidae spp.
-bonn_2,Petroicidae spp.
-bonn_2,Hyliotidae spp.
-bonn_2,Stenostiridae spp.
-bonn_2,Panuridae spp.
-bonn_2,Macrosphenidae spp.
-bonn_2,Cisticolidae spp.
-bonn_2,Acrocephalidae spp.
-bonn_2,Pnoepygidae spp.
-bonn_2,Locustellidae spp.
-bonn_2,Bernieridae spp.
-bonn_2,Phylloscopidae spp.
-bonn_2,Scotocercidae spp.
-bonn_2,Aegithalidae spp.
-bonn_2,Sylviidae spp.
-bonn_2,Zosteropidae spp.
-bonn_2,Timaliidae spp.
-bonn_2,Pellorneidae spp.
-bonn_2,Leiotrichidae spp.
-bonn_2,Polioptilidae spp.
-bonn_2,Turdidae spp.
-bonn_2,Muscicapidae spp.
-bonn_2,Regulidae spp.
-bonn_2,Hylocitreidae spp.
-bonn_2,Motacillidae spp.
-bonn_2,Cheloniidae spp.
-bonn_2,Dermochelyidae spp.
 hab_2,Lacerta monticola
 hab_2,Salamandra aurorae
 hab_2,Triturus vulgaris ampelensis
