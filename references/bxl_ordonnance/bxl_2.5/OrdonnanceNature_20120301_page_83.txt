@@ -1,0 +1,82 @@
+24070 BELGISCH STAATSBLAD — 17.04.2012 — MONITEUR BELGE
+
+— ?Gobius nigricans — ?Gobius nigricans
+
+— ?Gobius ophiocephalus — ?Gobius ophiocephalus
+
+— ?Gobius syrman — ?Gobius syrman
+
+— *Gobius thressalus — ?Gobius thressalus
+
+— ?Padogobius martensi — ?Padogobius martensi
+
+— ?Padogobius panizzai — ?Padogobius panizzai
+
+— ?Pomatoschistus canestrini — ?Pomatoschistus canestrini
+
+— ?Pomatoschistus microps — ?Pomatoschistus microps
+
+— ?Pomatoschistus minutus — ?Pomatoschistus minutus
+
+— ?Proterorhinus marmoratus — ?Proterorhinus marmoratus
+Percidae Percidae
+
+— ‘!Gymnocephalus schraetzer — 14Gymnocephalus schraetzer
+
+— Stizostedion volgense — ?Stizostedion volgense
+
+— *Zingel streber — ?Zingel streber
+
+— 1Zingel zingel — 'Zingel zingel
+Serranidae Serranidae
+
+— ?Epinephelus marginatus (Med. ) — ?Epinephelus marginatus (Med.)
+Sciaenidae Sciaenidae
+
+— ?Scizna umbra (Med.) — ?Scizna umbra (Med.)
+
+— ?*Umbrina cirrosa (Med.) — ?Umbrina cirrosa (Med.)
+PETROMYZONIFORMES PETROMYZONIFORMES
+Petromyzonidae Petromyzonidae
+
+— ?Eudontomyzon hellenicum — *Eudontomyzon hellenicum
+
+— ?Eudontomyzon mariae — ?Eudontomyzon mariae
+
+— ?Eudontomyzon vladykovi — Eudontomyzon vladykovi
+
+— '‘Lampetra fluviatilis — 'Lampetra fluviatilis
+
+— ?Lampetra planeri — *Lampetra planeri
+
+— ?*Lampetra zanandreai — *Lampetra zanandreai
+
+— ‘Lethenteron zanandrai — 1Lethenteron zanandrai
+
+— ?Petromyzon marinus — ?Petromyzon marinus
+PLEUROTREMATA PLEUROTREMATA
+Lamnidae Lamnidae
+
+— 7Jsurus oxyrinchus (Med.) — Isurus oxyrinchus (Med.)
+
+— ?Lamna nasus (Med.) — ?Lamna nasus (Med.)
+Carcharhinidae Carcharhinidae
+
+— ?Prionace glauca (Med.) — ?Prionace glauca (Med.)
+Squatinidae Squatinidae
+
+— ?Squatina squatina (Med.) — ?Squatina squatina (Med.)
+SALMONIFORMES SALMONIFORMES
+Coregonidae Coregonidae
+
+— Alle europese soorten van Coregonus — Toutes les espéces européennes de Coregonus
+Salmonidae Salmonidae
+
+— '!Thymallus thymallus — '!Thymallus thymallus
+
+— ‘Alle europese soorten van Coregonus, behalve Coregonus oxyrhyn- — 1Toutes les espéces européennes de Coregonus, sauf Coregonus oxy-
+chos rhynchos
+
+— ‘4Hucho hucho — 'Hucho hucho
+
+— 14Salmo salar (uniquement en eaux douces / alleen in zoet water) — 'Salmo salar (uniquement en eaux douces)
