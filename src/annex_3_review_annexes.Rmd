@@ -257,33 +257,37 @@ unverifiable_taxa_bxl_2.2 <- tibble(
  
 ### Unverifiable taxa in BXL 2.3
 
-Taxa belonging to phylum `Bryophyta` (in annex list: _Bryophyta spp._)
+Taxa belonging to genus `Sphagnum` (in annex list: _Sphagnum spp._)
 
 ```{r unverifiable_taxa_bxl_2.3}
 unverifiable_taxa_bxl_2.3 <- tibble(
-  rank = "phylum",
-  name = "Bryophyta"
+  rank = "genus",
+  name = "Sphagnum"
 )
 ```
 
 ### Unverifiable taxa in BXL 2.5
 
-1. Taxa belonging to genus `Coregonus` (in annex list: _Alle europese soorten van Coregonus, behalve Coregonus oxyrhyn_)
-2. Taxa belonging to genus `Sphagnum` (in annex list: _Alle europese Sphagnum-soorten_)
-3. Taxa belonging to genus `Lycopodium` (in annex list: _Alle europese Lycopodium soorten_)
-4. Taxa belonging to genus `Salicornia` ( _Alle Salicornia soorten waarvan het natuurliyk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvat_)
-5. Taxa belonging to family `Acipenseridae` (in annex list: _Alle europese soorten Acipenseridae niet vermeld in bijlage II.2 of II.3_)
-6. Taxa belonging to family `macrofunghi` (in annex list: _Alle inheemse macrofunghi soorten_ Epipactis helleborine)
-7. Taxa belonging to class `Actinopterygii` (in annex list: _Alle inheemse soorten van vissen niet vermeld in bijlage II.2 of II.3_)
-8. _alle inheemse lichenen_ (included in Fungi)
+1. Taxa belonging to genus `Alosa` (in annex list: _Alle europese soorten van Alosa_)
+2. Taxa belonging to genus `Barbus` (in annex list: _Alle europese soorten van Alosa_)
+3. Taxa belonging to genus `Coregonus` (in annex list: _Alle europese soorten van Coregonus, behalve Coregonus oxyrhyn_)
+4. Taxa belonging to genus `Sphagnum` (in annex list: _Alle europese Sphagnum-soorten_)
+5. Taxa belonging to genus `Lycopodium` (in annex list: _Alle europese Lycopodium soorten_)
+6. Taxa belonging to genus `Salicornia` ( _Alle Salicornia soorten waarvan het natuurliyk verspreidingsgebied geheel of gedeeltelijk het nationaal grondgebied omvat_)
+7. Taxa belonging to family `Acipenseridae` (in annex list: _Alle europese soorten Acipenseridae niet vermeld in bijlage II.2 of II.3_)
+8. Taxa belonging to family `macrofunghi` (in annex list: _Alle inheemse macrofunghi soorten_ Epipactis helleborine)
+9. Taxa belonging to class `Actinopterygii` (in annex list: _Alle inheemse soorten van vissen niet vermeld in bijlage II.2 of II.3_)
+10. _alle inheemse lichenen_ (included in Fungi)
 
 ```{r unverifiable_records_bxl_2.5}
 unverifiable_taxa_bxl_2.5 <- tibble(
-  rank = c(rep("genus", 4),
+  rank = c(rep("genus", 6),
            "family",
            rep("class", 2),
            "kingdom"),
-  name = c("Coregonus",
+  name = c("Alosa",
+           "Barbus",
+           "Coregonus",
            "Sphagnum",
            "Lycopodium",
            "Salicornia",
@@ -291,6 +295,17 @@ unverifiable_taxa_bxl_2.5 <- tibble(
            "Elasmobranchii",
            "Actinopterygii",
            "Fungi")
+)
+```
+
+### Unverifiable taxa in BXL 4
+
+1. Taxa belonging to genus `Spiraea` (in annex list: _Spiraea spp_)
+
+```{r unverifiable_taxa_bxl_2.3}
+unverifiable_taxa_bxl_4 <- tibble(
+  rank = "genus",
+  name = "Spirea"
 )
 ```
 
@@ -302,7 +317,6 @@ unverifiable_taxa_bxl_2.5 <- tibble(
 5. Taxa belonging to genus `Phalaropodidae` ( _all species of Phalaropodidae_)
 6. Taxa belonging to genus `Laridae` ( _all species of Laridae_)
 7. Taxa belonging to genus `Pteroclididae` ( _all species of Pteroclididae_)
-
 8. Taxa belonging to family `Threskiornithidae` (in annex list: _all species of Threskiornithidae_)
 9. Taxa belonging to family `Gaviidae` (in annex list: _all species of Gaviidae_)
 10. Taxa belonging to family `Caprimulgidae` ( _all species of Caprimulgidae_)
@@ -318,17 +332,18 @@ unverifiable_taxa_bxl_2.5 <- tibble(
 20. Taxa belonging to family `Certhiidae` ( _all species of Certhiidae_)
 21. Taxa belonging to family `Pelicanidae` ( _all species of Pelicanidae_)
 22. Taxa belonging to family `Gruidae` ( _all species of Gruidae_)
-23. Taxa belonging to order `Falconiformes` ( _all species of Falconiformes_)
-24. Taxa belonging to order `Piciformes` ( _all species of Piciformes_)
-25. Taxa belonging to order `Strigiformes` ( _all species of Strigiformes_)
-26. Taxa belonging to class `Ursidae` (in annex list: _all species of Ursidae_)
+23. Taxa belonging to order `Chiroptera` ( _all species of microchiroptera except Pipistrellus pipistrellus_)
+24. Taxa belonging to order `Falconiformes` ( _all species of Falconiformes_)
+25. Taxa belonging to order `Piciformes` ( _all species of Piciformes_)
+26. Taxa belonging to order `Strigiformes` ( _all species of Strigiformes_)
+27. Taxa belonging to class `Ursidae` (in annex list: _all species of Ursidae_)
 
 
 ```{r unverifiable_taxa_bern_2}
 unverifiable_taxa_bern_2 <- tibble(
   rank = c(rep("genus", 7), 
     rep("family", 15), 
-    rep("order", 3),
+    rep("order", 4),
     "class"),
   name = c("Hydrobatidae",
     "Ciconiidae",
@@ -352,6 +367,7 @@ unverifiable_taxa_bern_2 <- tibble(
     "Certhiidae",
     "Pelicanidae",
     "Gruidae",
+    "Chiroptera",
     "Falconiformes",
     "Piciformes",
     "Strigiformes",
@@ -394,7 +410,7 @@ All taxa belonging to the following families and genera:
 ```{r unverifiable_taxa_bonn_2}
 unverifiable_taxa_bonn_2 <- tibble(
   rank = c(rep("genus", 3),
-           rep("family", 65)),
+           rep("family", 67)),
   name = c("Anthropoides",
            "Antigone",
            "Grus",
@@ -407,6 +423,8 @@ unverifiable_taxa_bonn_2 <- tibble(
            "Artamidae",
            "Bernieridae",
            "Cathartidae",
+           "Charadriidae",
+           "Chaetopidae",
            "Cheloniidae",
            "Cinclosomatidae",
            "Cisticolidae",
@@ -437,7 +455,7 @@ unverifiable_taxa_bonn_2 <- tibble(
            "Orthonychidae",
            "Pachycephalidae",
            "Panuridae",
-           "Pellorneidae",
+           "Pellomeidae",
            "Petroicidae",
            "Phoenicopteridae",
            "Phylloscopidae",
@@ -503,7 +521,6 @@ unverifiable_taxa_empty <- tibble(rank = NA_character_,
 unverifiable_taxa_bxl_2.1 <- unverifiable_taxa_empty
 unverifiable_taxa_bxl_2.4 <- unverifiable_taxa_empty
 unverifiable_taxa_bxl_3 <- unverifiable_taxa_empty
-unverifiable_taxa_bxl_4 <- unverifiable_taxa_empty
 unverifiable_taxa_bern_1 <- unverifiable_taxa_empty
 unverifiable_taxa_bonn_1 <- unverifiable_taxa_empty
 unverifiable_taxa_bird_1 <- unverifiable_taxa_empty
