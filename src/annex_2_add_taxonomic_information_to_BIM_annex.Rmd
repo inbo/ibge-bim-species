@@ -120,6 +120,27 @@ bim_annex_species %>%
   count()
 ```
 
+Save non-matching taxa as a separate dataframe for later:
+
+```{r}
+unmatchted_bim_annex_taxa <- 
+  bim_annex_species %>% 
+    filter(gbif_matchType == "NONE") %>% 
+    select(annexcode, acceptedname)
+```
+
+Export as `unmatchted_bim_annex_taxa.csv`
+
+```{r}
+write_csv(unmatchted_bim_annex_taxa, here("data", "processed", "unmatchted_bim_annex_taxa.csv"), na = "")
+```
+
+Remove non-matching taxa from dataset:
+
+```{r}
+bim_annex_species %<>% filter(gbif_matchType != "NONE") 
+```
+
 ## Get names of accepted taxa from GBIF
 
 The BIM annex list contains synonyms (based on GBIF Taxonomy Backbone):

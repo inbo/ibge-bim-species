@@ -7,7 +7,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 11,BXL-ORD-2012_Annex II.5,Clavulinopsis laeticolor form. laeticolor,Clavulinopsis laeticolor f. laeticolor,Clavulinopsis laeticolor (Berk. & M.A.Curtis) R.H.Petersen,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Clavariaceae,Clavulinopsis
 15,BXL-ORD-2012_Annex II.5,Conocybe intrusa form. intrusa,Conocybe intrusa f. intrusa,Conocybe intrusa (Peck) Singer,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Bolbitiaceae,Conocybe
 16,BXL-ORD-2012_Annex II.5,Conocybe intrusa form. hebelomatoides,"Conocybe intrusa f. hebelomatoides (Middelh. & Reijnders) Watling, 1977",Conocybe hebelomatoides Middelh.,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Bolbitiaceae,Conocybe
-17,BXL-ORD-2012_Annex II.5,Conocybe lactea form. lactea,,,,,,,,
 18,BXL-ORD-2012_Annex II.5,Coniophora puteana form. puteana,Coniophora puteana f. puteana,Coniophora puteana (Schumach.) P.Karst.,Fungi,Basidiomycota,Boletales,Agaricomycetes,Coniophoraceae,Coniophora
 19,BXL-ORD-2012_Annex II.5,Cortinarius uliginosus form. uliginosus,Cortinarius uliginosus f. uliginosus,Cortinarius uliginosus Berk.,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Cortinariaceae,Cortinarius
 20,BXL-ORD-2012_Annex II.5,Cortinarius uliginosus form. luteus,"Cortinarius uliginosus f. luteus (Gabriel & Lamoure) Høil., 1984",Cortinarius uliginosus Berk.,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Cortinariaceae,Cortinarius
@@ -106,8 +105,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 137,BXL-ORD-2012_Annex II.5,Scutellinia trechisperma form. macropilifera,"Scutellinia trechisperma f. macropilifera Donadini, 1983",Scutellinia trechisperma Donadini,Fungi,Ascomycota,Pezizales,Pezizomycetes,Pyronemataceae,Scutellinia
 138,BXL-ORD-2012_Annex II.5,Simocybe centunculus form. bispora,Simocybe centunculus f. bispora,Simocybe centunculus f. bispora,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Inocybaceae,Simocybe
 139,BXL-ORD-2012_Annex II.5,Simocybe centunculus form. tetraspora,Simocybe centunculus f. tetraspora,Simocybe centunculus f. tetraspora,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Inocybaceae,Simocybe
-140,BXL-ORD-2012_Annex II.5,Simocybe rubi form. tetraspora,,,,,,,,
-141,BXL-ORD-2012_Annex II.5,Simocybe rubi form. bispora,,,,,,,,
 142,BXL-ORD-2012_Annex II.5,Simocybe sumptuosa form. bispora,Simocybe sumptuosa f. bispora,Simocybe sumptuosa f. bispora,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Inocybaceae,Simocybe
 143,BXL-ORD-2012_Annex II.5,Simocybe sumptuosa form. tetraspora,Simocybe sumptuosa f. tetraspora,Simocybe sumptuosa f. tetraspora,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Inocybaceae,Simocybe
 145,BXL-ORD-2012_Annex II.5,Thelephora terrestris form. tomentella,Thelephora terrestris f. tomentella Bourdot & Galzin,Thelephora terrestris f. tomentella Bourdot & Galzin,Fungi,Basidiomycota,Thelephorales,Agaricomycetes,Thelephoraceae,Thelephora
@@ -157,7 +154,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 270,BXL-ORD-2012_Annex II.5,Boletus erythropus var. erythropus,Boletus erythropus var. erythropus,"Neoboletus erythropus (Pers.) C.Hahn, 2015",Fungi,Basidiomycota,Boletales,Agaricomycetes,Boletaceae,Neoboletus
 271,BXL-ORD-2012_Annex II.5,Boletus luridus var. luridus,Boletus luridus f. luridus,Boletus luridus f. luridus,Fungi,Basidiomycota,Boletales,Agaricomycetes,Boletaceae,Suillellus
 272,BXL-ORD-2012_Annex II.5,Boletus luridus var. rubriceps,"Boletus luridus var. rubriceps (Maire) Dermek, 1987","Suillellus luridus (Schaeff.) Murrill, 1909",Fungi,Basidiomycota,Boletales,Agaricomycetes,Boletaceae,Suillellus
-273,BXL-ORD-2012_Annex II.5,Boletus radicans var. eupachypus,,,,,,,,
 274,BXL-ORD-2012_Annex II.5,Boletus radicans var. radicans,Boletus radicans var. radicans,"Caloboletus radicans (Pers.) Vizzini, 2014",Fungi,Basidiomycota,Boletales,Agaricomycetes,Boletaceae,Caloboletus
 286,BXL-ORD-2012_Annex II.5,Cantharellus cibarius var. bicolor,Cantharellus cibarius var. bicolor Maire,Cantharellus cibarius Fr.,Fungi,Basidiomycota,Cantharellales,Agaricomycetes,Cantharellaceae,Cantharellus
 287,BXL-ORD-2012_Annex II.5,Cantharellus cibarius var. cibarius,Cantharellus cibarius var. cibarius,Cantharellus cibarius Fr.,Fungi,Basidiomycota,Cantharellales,Agaricomycetes,Cantharellaceae,Cantharellus
@@ -402,7 +398,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 617,BXL-ORD-2012_Annex II.5,Mycena galopus var. galopus,Mycena galopus var. galopus,"Mycena galopus (Pers.) P.Kumm., 1871",Fungi,Basidiomycota,Agaricales,Agaricomycetes,Mycenaceae,Mycena
 618,BXL-ORD-2012_Annex II.5,Mycena galopus var. nigra,"Mycena galopus var. nigra Rea, 1922","Mycena galopus (Pers.) P.Kumm., 1871",Fungi,Basidiomycota,Agaricales,Agaricomycetes,Mycenaceae,Mycena
 619,BXL-ORD-2012_Annex II.5,Mycena pelliculosa var. fuscopurpurea,"Mycena pelliculosa var. fuscopurpurea Arnolds, 1982",Mycena epipterygia (Scop.) Gray,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Mycenaceae,Mycena
-620,BXL-ORD-2012_Annex II.5,Mycena pelliculosa var. pelliculosa,,,,,,,,
 621,BXL-ORD-2012_Annex II.5,Mycenella bryophila var. bryophila,Mycenella bryophila var. bryophila,Mycenella bryophila (Voglino) Singer,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Tricholomataceae,Mycenella
 622,BXL-ORD-2012_Annex II.5,Mycenella bryophila var. caesia,"Mycenella bryophila var. caesia (Oort) Boekhout, 1985","Mycena meulenhoffiana Oort, 1928",Fungi,Basidiomycota,Agaricales,Agaricomycetes,Mycenaceae,Mycena
 625,BXL-ORD-2012_Annex II.5,Nectria mammoidea var. mammoidea,Nectria mammoidea var. mammoidea,"Thelonectria mammoidea (W.Phillips & Plowr.) Salgado & R.M.Sanchez, 2014",Fungi,Ascomycota,Hypocreales,Sordariomycetes,Nectriaceae,Thelonectria
@@ -436,8 +431,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 700,BXL-ORD-2012_Annex II.5,Pichia membranifaciens var. membranifaciens,Pichia membranifaciens var. membranifaciens,Pichia membranifaciens (E.C.Hansen) E.C.Hansen,Fungi,Ascomycota,Saccharomycetales,Saccharomycetes,Pichiaceae,Pichia
 701,BXL-ORD-2012_Annex II.5,Pleospora herbarum var. herbarum,Pleospora herbarum var. herbarum,Stemphylium vesicarium (Wallr.) E.G.Simmons,Fungi,Ascomycota,Pleosporales,Dothideomycetes,Pleosporaceae,Stemphylium
 702,BXL-ORD-2012_Annex II.5,Pleospora herbarum var. sarciniformis,Pleospora herbarum var. sarciniformis (Cavara) P.C.Bolle,Stemphylium sarciniforme (Cavara) Wiltshire,Fungi,Ascomycota,Pleosporales,Dothideomycetes,Pleosporaceae,Stemphylium
-703,BXL-ORD-2012_Annex II.5,Pleospora vulgaris var. disticha,,,,,,,,
-704,BXL-ORD-2012_Annex II.5,Pleospora vulgaris var. monosticha,,,,,,,,
 705,BXL-ORD-2012_Annex II.5,Pleurotus dryinus var. dryinus,Pleurotus dryinus var. dryinus,Pleurotus dryinus (Pers.) P.Kumm.,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Pleurotaceae,Pleurotus
 706,BXL-ORD-2012_Annex II.5,Pluteus cervinus var. albus,Pluteus cervinus var. albus Vellinga,Pluteus cervinus var. albus Vellinga,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Pluteaceae,Pluteus
 707,BXL-ORD-2012_Annex II.5,Pluteus cervinus var. cervinus,Pluteus cervinus var. cervinus,Pluteus cervinus (Schaeff.) P.Kumm.,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Pluteaceae,Pluteus
@@ -546,7 +539,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 1314,BXL-ORD-2012_Annex II.5,Pezicula frangulae frangulae,Pezicula frangulae subsp. frangulae,Pezicula frangulae (Fr.) Fuckel,Fungi,Ascomycota,Helotiales,Leotiomycetes,Dermateaceae,Pezicula
 1317,BXL-ORD-2012_Annex II.5,Podosphaera oxyacanthae tridactyla,Podosphaera oxyacanthae subsp. tridactyla (Wallr.) E.S.Salmon,Podosphaera tridactyla (Wallr.) de Bary,Fungi,Ascomycota,Erysiphales,Leotiomycetes,Erysiphaceae,Podosphaera
 1320,BXL-ORD-2012_Annex II.5,Typhula phacorrhiza complanata,Typhula phacorrhiza subsp. complanata (de Bary),Typhula phacorrhiza (Reichardt) Fr.,Fungi,Basidiomycota,Agaricales,Agaricomycetes,Typhulaceae,Typhula
-1321,BXL-ORD-2012_Annex II.5,Valsa sorbicola decorticans,,,,,,,,
 1322,BXL-ORD-2012_Annex II.2,Alytes obstetricans,"Alytes obstetricans (Laurenti, 1768)","Alytes obstetricans (Laurenti, 1768)",Animalia,Chordata,Anura,Amphibia,Alytidae,Alytes
 1322,EUR-CON-BER_Annex II,Alytes obstetricans,"Alytes obstetricans (Laurenti, 1768)","Alytes obstetricans (Laurenti, 1768)",Animalia,Chordata,Anura,Amphibia,Alytidae,Alytes
 1322,EUR-DIR-HAB_Annex IV,Alytes obstetricans,"Alytes obstetricans (Laurenti, 1768)","Alytes obstetricans (Laurenti, 1768)",Animalia,Chordata,Anura,Amphibia,Alytidae,Alytes
@@ -566,8 +558,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 1328,BXL-ORD-2012_Annex II.2,Rana arvalis,"Rana arvalis Nilsson, 1842","Rana arvalis Nilsson, 1842",Animalia,Chordata,Anura,Amphibia,Ranidae,Rana
 1328,EUR-CON-BER_Annex II,Rana arvalis,"Rana arvalis Nilsson, 1842","Rana arvalis Nilsson, 1842",Animalia,Chordata,Anura,Amphibia,Ranidae,Rana
 1328,EUR-DIR-HAB_Annex IV,Rana arvalis,"Rana arvalis Nilsson, 1842","Rana arvalis Nilsson, 1842",Animalia,Chordata,Anura,Amphibia,Ranidae,Rana
-1329,BXL-ORD-2012_Annex II.2,Rana esculenta,,,,,,,,
-1329,EUR-CON-BER_Annex II,Rana esculenta,,,,,,,,
 1330,BXL-ORD-2012_Annex II.2,Rana lessonae,"Rana lessonae Camerano, 1882","Pelophylax lessonae (Camerano, 1882)",Animalia,Chordata,Anura,Amphibia,Ranidae,Pelophylax
 1330,EUR-CON-BER_Annex II,Rana lessonae,"Rana lessonae Camerano, 1882","Pelophylax lessonae (Camerano, 1882)",Animalia,Chordata,Anura,Amphibia,Ranidae,Pelophylax
 1331,BXL-ORD-2012_Annex II.2,Rana ridibunda,"Rana ridibunda Pallas, 1771","Pelophylax ridibundus (Pallas, 1771)",Animalia,Chordata,Anura,Amphibia,Ranidae,Pelophylax
@@ -4783,8 +4773,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 27853,BXL-ORD-2012_Annex II.5,Coprinus xanthothrix,Coprinus xanthothrix Romagn.,"Coprinellus xanthothrix (Romagn.) Vilgalys, Hopple & Jacq.Johnson",Fungi,Basidiomycota,Agaricales,Agaricomycetes,Psathyrellaceae,Coprinellus
 27854,BXL-ORD-2012_Annex II.5,Coprinus xenobius,Coprinus xenobius P.D.Orton,"Coprinopsis xenobia (P.D.Orton) Redhead, Vilgalys & Moncalvo",Fungi,Basidiomycota,Agaricales,Agaricomycetes,Psathyrellaceae,Coprinopsis
 27855,BXL-ORD-2012_Annex II.5,Corticium albo-ochraceum,Corticium albo-ochraceum Bres.,Ramaricium albo-ochraceum (Bres.) Jülich,Fungi,Basidiomycota,Gomphales,Agaricomycetes,Gomphaceae,Ramaricium
-27856,BXL-ORD-2012_Annex II.5,Corticium calceum,,,,,,,,
-27857,BXL-ORD-2012_Annex II.5,Corticium centrifugum,,,,,,,,
 27858,BXL-ORD-2012_Annex II.5,Corticium helianthi,Corticium helianthi Bourdot & Galzin,Corticium helianthi Bourdot & Galzin,Fungi,Basidiomycota,Corticiales,Agaricomycetes,Corticiaceae,Corticium
 27859,BXL-ORD-2012_Annex II.5,Corticium lacteum,Corticium lacteum Rabenh.,Corticium lacteum Rabenh.,Fungi,Basidiomycota,Corticiales,Agaricomycetes,Corticiaceae,Corticium
 27860,BXL-ORD-2012_Annex II.5,Corticium quercicola,"Corticium quercicola Jülich, 1982","Marchandiomyces quercinus (J.Erikss. & Ryvarden) D.Hawksw. & A.Henrici, 2015",Fungi,Basidiomycota,Corticiales,Agaricomycetes,Corticiaceae,Marchandiomyces
@@ -4869,7 +4857,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 27941,BXL-ORD-2012_Annex II.5,Cotylidia carpatica,Cotylidia carpatica (Pilát) Huijsman,Cotylidia carpatica (Pilát) Huijsman,Fungi,Basidiomycota,Hymenochaetales,Agaricomycetes,Rickenellaceae,Cotylidia
 27942,BXL-ORD-2012_Annex II.5,Cotylidia pallida,Cotylidia pallida (Pers.) Boidin,Cotylidia pannosa (Sowerby) D.A.Reid,Fungi,Basidiomycota,Hymenochaetales,Agaricomycetes,Rickenellaceae,Cotylidia
 27943,BXL-ORD-2012_Annex II.5,Cotylidia undulata,Cotylidia undulata (Fr.) P.Karst.,Cotylidia undulata (Fr.) P.Karst.,Fungi,Basidiomycota,Hymenochaetales,Agaricomycetes,Rickenellaceae,Cotylidia
-27944,BXL-ORD-2012_Annex II.5,Coriolopsis cervina,,,,,,,,
 27945,BXL-ORD-2012_Annex II.5,Coprobia granulata,Coprobia granulata (Bull.) Boud.,Cheilymenia granulata (Bull.) J.Moravec,Fungi,Ascomycota,Pezizales,Pezizomycetes,Pyronemataceae,Cheilymenia
 27946,BXL-ORD-2012_Annex II.5,Coccomyces coronatus,Coccomyces coronatus (Schumach.) De Not.,Coccomyces coronatus (Schumach.) De Not.,Fungi,Ascomycota,Rhytismatales,Leotiomycetes,Rhytismataceae,Coccomyces
 27947,BXL-ORD-2012_Annex II.5,Coccomyces dentatus,Coccomyces dentatus (J.C.Schmidt & Kunze) Sacc.,Coccomyces dentatus (J.C.Schmidt & Kunze) Sacc.,Fungi,Ascomycota,Rhytismatales,Leotiomycetes,Rhytismataceae,Coccomyces
@@ -5010,12 +4997,10 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 28304,BXL-ORD-2012_Annex II.5,Debaryomyces hansenii,Debaryomyces hansenii (Zopf) Lodder & Kreger-van Rij,Debaryomyces hansenii (Zopf) Lodder & Kreger-van Rij,Fungi,Ascomycota,Saccharomycetales,Saccharomycetes,Saccharomycetaceae,Debaryomyces
 28305,BXL-ORD-2012_Annex II.5,Debaryomyces kloeckeri,Debaryomyces kloeckeri Guillierm. & Péju,Debaryomyces kloeckeri Guillierm. & Péju,Fungi,Ascomycota,Saccharomycetales,Saccharomycetes,Saccharomycetaceae,Debaryomyces
 28306,BXL-ORD-2012_Annex II.5,Debaryomyces matruchotii,Debaryomyces matruchotii Grigoraki & Péju,Debaryomyces hansenii (Zopf) Lodder & Kreger-van Rij,Fungi,Ascomycota,Saccharomycetales,Saccharomycetes,Saccharomycetaceae,Debaryomyces
-28307,BXL-ORD-2012_Annex II.5,Debaryomyces membranifaciens,,,,,,,,
 28308,BXL-ORD-2012_Annex II.5,Debaryomyces neoformans,Debaryomyces neoformans (San Felice) Redaelli & al,Cryptococcus neoformans (San Felice) Vuill.,Fungi,Basidiomycota,Tremellales,Tremellomycetes,Tremellaceae,Cryptococcus
 28310,BXL-ORD-2012_Annex II.5,Debaryomyces nicotianae,"Debaryomyces nicotianae Giov., 1948",Debaryomyces hansenii (Zopf) Lodder & Kreger-van Rij,Fungi,Ascomycota,Saccharomycetales,Saccharomycetes,Saccharomycetaceae,Debaryomyces
 28311,BXL-ORD-2012_Annex II.5,Debaryomyces polymorphus,"Debaryomyces polymorphus (Klöcker) C.W.Price & Phaff, 1979","Schwanniomyces polymorphus (Klöcker) M.Suzuki & Kurtzman, 2009",Fungi,Ascomycota,Saccharomycetales,Saccharomycetes,Saccharomycetaceae,Schwanniomyces
 28312,BXL-ORD-2012_Annex II.5,Debaryomyces tyrocolus,"Debaryomyces tyrocolus Konok., 1913",Debaryomyces hansenii (Zopf) Lodder & Kreger-van Rij,Fungi,Ascomycota,Saccharomycetales,Saccharomycetes,Saccharomycetaceae,Debaryomyces
-28313,BXL-ORD-2012_Annex II.5,Schwanniomyces yamadae,,,,,,,,
 28314,BXL-ORD-2012_Annex II.5,Dekkera anomala,Dekkera anomala M.T.Sm. & Grinsven,Dekkera anomala M.T.Sm. & Grinsven,Fungi,Ascomycota,Saccharomycetales,Saccharomycetes,Pichiaceae,Dekkera
 28315,BXL-ORD-2012_Annex II.5,Dekkera bruxellensis,Dekkera bruxellensis,Dekkera bruxellensis,Fungi,Ascomycota,Saccharomycetales,Saccharomycetes,Pichiaceae,Dekkera
 28316,BXL-ORD-2012_Annex II.5,Dekkera custersiana,Dekkera custersiana F.L.Lee & S.C.Jong,Dekkera custersiana F.L.Lee & S.C.Jong,Fungi,Ascomycota,Saccharomycetales,Saccharomycetes,Pichiaceae,Dekkera
@@ -5198,7 +5183,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 28754,BXL-ORD-2012_Annex II.5,Elsinoe veneta,Elsinoe veneta (Burkh.) Jenkins,Elsinoe veneta (Burkh.) Jenkins,Fungi,Ascomycota,Myriangiales,Dothideomycetes,Elsinoaceae,Elsinoe
 28759,BXL-ORD-2012_Annex II.5,Emmonsiella capsulata,"Emmonsiella capsulata Kwon-Chung, 1972",Ajellomyces capsulatus (Kwon-Chung) McGinnis & Katz,Fungi,Ascomycota,Onygenales,Eurotiomycetes,Ajellomycetaceae,Ajellomyces
 28760,BXL-ORD-2012_Annex II.5,Emericella nidulans,"Emericella nidulans (Eidam) Vuill., 1927","Aspergillus nidulans (Eidam) G.Winter, 1884",Fungi,Ascomycota,Eurotiales,Eurotiomycetes,Trichocomaceae,Aspergillus
-28764,BXL-ORD-2012_Annex II.5,Entelexis magnoliae,,,,,,,,
 28767,BXL-ORD-2012_Annex II.5,Endoxyla cirrhosa,Endoxyla cirrhosa (Pers.) E.Müll. & Arx,Lentomitella cirrhosa (Pers.) Réblová,Fungi,Ascomycota,Boliniales,Sordariomycetes,Boliniaceae,Lentomitella
 28768,BXL-ORD-2012_Annex II.5,Endoxyla rostrata,Endoxyla rostrata (Tode) Munk,Ceratostomella rostrata (Fr.) Sacc.,Fungi,Ascomycota,Annulatascales,Sordariomycetes,Annulatascaceae,Ceratostomella
 28769,BXL-ORD-2012_Annex II.5,Entosordaria rehmii,Entosordaria rehmii (Thüm.) Höhn.,Anthostomella formosa Kirschst.,Fungi,Ascomycota,Xylariales,Sordariomycetes,Xylariaceae,Anthostomella
@@ -5960,7 +5944,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 29977,BXL-ORD-2012_Annex II.5,Leveillula verbasci,Leveillula verbasci (Jacz.) Golovin,Leveillula verbasci (Jacz.) Golovin,Fungi,Ascomycota,Erysiphales,Leotiomycetes,Erysiphaceae,Leveillula
 29978,BXL-ORD-2012_Annex II.5,Leucothecium emdenii,Leucothecium emdenii Arx & Samson,Leucothecium emdenii Arx & Samson,Fungi,Ascomycota,Onygenales,Eurotiomycetes,Onygenaceae,Leucothecium
 29979,BXL-ORD-2012_Annex II.5,Leptoporus adustus,Leptoporus adustus (Willd.) Quél.,Bjerkandera adusta (Willd.) P.Karst.,Fungi,Basidiomycota,Polyporales,Agaricomycetes,Meruliaceae,Bjerkandera
-29980,BXL-ORD-2012_Annex II.5,Leptoporus destructor,,,,,,,,
 29981,BXL-ORD-2012_Annex II.5,Leptoporus mollis,Leptoporus mollis (Pers.) Quél.,Leptoporus mollis (Pers.) Quél.,Fungi,Basidiomycota,Polyporales,Agaricomycetes,Polyporaceae,Leptoporus
 29982,BXL-ORD-2012_Annex II.5,Leptoporus trabeus,Leptoporus trabeus (Pers.) Bourdot & Galzin,Gloeophyllum trabeum (Pers.) Murrill,Fungi,Basidiomycota,Gloeophyllales,Agaricomycetes,Gloeophyllaceae,Gloeophyllum
 29984,BXL-ORD-2012_Annex II.5,Leptosphaeria acuta,Leptosphaeria acuta (Moug. & Nestl.) P.Karst.,Leptosphaeria acuta (Moug. & Nestl.) P.Karst.,Fungi,Ascomycota,Pleosporales,Dothideomycetes,Leptosphaeriaceae,Leptosphaeria
@@ -6036,7 +6019,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 30055,BXL-ORD-2012_Annex II.5,Leptosphaerulina australis,Leptosphaerulina australis McAlpine,Leptosphaerulina australis McAlpine,Fungi,Ascomycota,Pleosporales,Dothideomycetes,Didymellaceae,Leptosphaerulina
 30056,BXL-ORD-2012_Annex II.5,Leptosphaerulina trifolii,Leptosphaerulina trifolii (Rostr.) Petr.,Leptosphaerulina trifolii (Rostr.) Petr.,Fungi,Ascomycota,Pleosporales,Dothideomycetes,Didymellaceae,Leptosphaerulina
 30057,BXL-ORD-2012_Annex II.5,Lewia infectoria,"Lewia infectoria (Fuckel) M.E.Barr & E.G.Simmons, 1986","Alternaria infectoria E.G.Simmons, 1986",Fungi,Ascomycota,Pleosporales,Dothideomycetes,Pleosporaceae,Alternaria
-30058,BXL-ORD-2012_Annex II.5,Lentinus dentatus,,,,,,,,
 30059,BXL-ORD-2012_Annex II.5,Lentinus tigrinus,Lentinus tigrinus (Bull.) Fr.,Lentinus tigrinus (Bull.) Fr.,Fungi,Basidiomycota,Polyporales,Agaricomycetes,Polyporaceae,Lentinus
 30060,BXL-ORD-2012_Annex II.5,Lentinus torulosus,Lentinus torulosus (Pers.) Lloyd,Panus conchatus (Bull.) Fr.,Fungi,Basidiomycota,Polyporales,Agaricomycetes,Polyporaceae,Panus
 30061,BXL-ORD-2012_Annex II.5,Lentinus vulpinus,Lentinus vulpinus (Sowerby) Fr.,Lentinellus vulpinus (Sowerby) Kühner & Maire,Fungi,Basidiomycota,Russulales,Agaricomycetes,Auriscalpiaceae,Lentinellus
@@ -7440,7 +7422,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 33333,BXL-ORD-2012_Annex II.5,Trichosporium fuscescens,Trichosporium fuscescens Cooke & Harkn.,Trichosporium fuscescens Cooke & Harkn.,Fungi,Ascomycota,Capnodiales,Dothideomycetes,Piedraiaceae,Trichosporium
 33336,BXL-ORD-2012_Annex II.5,Trametes gibbosa,Trametes gibbosa (Pers.) Fr.,Trametes gibbosa (Pers.) Fr.,Fungi,Basidiomycota,Polyporales,Agaricomycetes,Polyporaceae,Trametes
 33337,BXL-ORD-2012_Annex II.5,Trametes hirsuta,Trametes hirsuta (Wulfen) Pilát,Trametes hirsuta (Wulfen) Lloyd,Fungi,Basidiomycota,Polyporales,Agaricomycetes,Polyporaceae,Trametes
-33338,BXL-ORD-2012_Annex II.5,Trametes lutescens,,,,,,,,
 33339,BXL-ORD-2012_Annex II.5,Trametes ochracea,Trametes ochracea (Pers.) Gilb. & Ryvarden,Trametes ochracea (Pers.) Gilb. & Ryvarden,Fungi,Basidiomycota,Polyporales,Agaricomycetes,Polyporaceae,Trametes
 33340,BXL-ORD-2012_Annex II.5,Trametes pubescens,Trametes pubescens (Schumach.) Pilát,Trametes pubescens (Schumach.) Pilát,Fungi,Basidiomycota,Polyporales,Agaricomycetes,Polyporaceae,Trametes
 33341,BXL-ORD-2012_Annex II.5,Trametes versicolor,Trametes versicolor (L.) Pilát,Trametes versicolor (L.) Pilát,Fungi,Basidiomycota,Polyporales,Agaricomycetes,Polyporaceae,Trametes
@@ -8100,7 +8081,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 34238,BXL-ORD-2012_Annex II.5,Vezdaea retigera,Vezdaea retigera Poelt & Döbbeler,Vezdaea retigera Poelt & Döbbeler,Fungi,Ascomycota,,Leotiomycetes,Vezdaeaceae,Vezdaea
 34239,BXL-ORD-2012_Annex II.5,Didymellopsis collemata,Didymellopsis collemata (J.Steiner) Grube & Hafellner,Didymellopsis collemata (J.Steiner) Grube & Hafellner,Fungi,Ascomycota,Collemopsidiales,Eurotiomycetes,Xanthopyreniaceae,Didymellopsis
 34240,BXL-ORD-2012_Annex II.5,Pyrenocollema arenisedum,Pyrenocollema arenisedum (A.L.Sm.) Coppins,Pyrenocollema arenisedum (A.L.Sm.) Coppins,Fungi,Ascomycota,Collemopsidiales,Eurotiomycetes,Xanthopyreniaceae,Pyrenocollema
-34241,BXL-ORD-2012_Annex II.5,Pyrenocollema chlorococcum,,,,,,,,
 34242,BXL-ORD-2012_Annex II.5,Pyrenocollema halodytes,Pyrenocollema halodytes (Nyl.) R.C.Harris,Pyrenocollema halodytes (Nyl.) R.C.Harris,Fungi,Ascomycota,Collemopsidiales,Eurotiomycetes,Xanthopyreniaceae,Pyrenocollema
 34243,BXL-ORD-2012_Annex II.5,Pyrenocollema subarenisedum,Pyrenocollema subarenisedum (G.Salisb.) Coppins,Pyrenocollema subarenisedum (G.Salisb.) Coppins,Fungi,Ascomycota,Collemopsidiales,Eurotiomycetes,Xanthopyreniaceae,Pyrenocollema
 34244,BXL-ORD-2012_Annex II.5,Pyrenocollema tichothecioides,Pyrenocollema tichothecioides Reinke,Pyrenocollema tichothecioides Reinke,Fungi,Ascomycota,Collemopsidiales,Eurotiomycetes,Xanthopyreniaceae,Pyrenocollema
@@ -8569,7 +8549,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 50427,BXL-ORD-2012_Annex II.3,Erythromma lindenii,"Erythromma lindenii Selys, 1840","Erythromma lindenii Selys, 1840",Animalia,Arthropoda,Odonata,Insecta,Coenagrionidae,Erythromma
 50486,BXL-ORD-2012_Annex II.3,Hieracium maculatum,Hieracium maculatum Schrank,Hieracium maculatum Schrank,Plantae,Tracheophyta,Asterales,Magnoliopsida,Asteraceae,Hieracium
 50491,BXL-ORD-2012_Annex II.3,Hyacinthoides non-scripta,Hyacinthoides non-scripta (L.) Chouard ex W.Rothmaler,Hyacinthoides non-scripta (L.) Chouard ex W.Rothmaler,Plantae,Tracheophyta,Asparagales,Liliopsida,Asparagaceae,Hyacinthoides
-50539,BXL-ORD-2012_Annex II.3,Lachenalii lachenalii subsp. cruentifolium,,,,,,,,
 50640,BXL-ORD-2012_Annex IV,Myiopsitta monachus,"Myiopsitta monachus (Boddaert, 1783)","Myiopsitta monachus (Boddaert, 1783)",Animalia,Chordata,Psittaciformes,Aves,Psittacidae,Myiopsitta
 50643,BXL-ORD-2012_Annex II.3,Myosoton aquaticum,Myosoton aquaticum Moench,Myosoton aquaticum Moench,Plantae,Tracheophyta,Caryophyllales,Magnoliopsida,Caryophyllaceae,Myosoton
 50644,BXL-ORD-2012_Annex IV,Myriophyllum aquaticum,Myriophyllum aquaticum Verdc.,Myriophyllum aquaticum Verdc.,Plantae,Tracheophyta,Saxifragales,Magnoliopsida,Haloragaceae,Myriophyllum
