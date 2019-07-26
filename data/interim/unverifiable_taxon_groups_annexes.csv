@@ -6,7 +6,9 @@ class,Mammalia,bxl_2.2
 class,Aves,bxl_2.2
 class,Amphibia,bxl_2.2
 class,Reptilia,bxl_2.2
-phylum,Bryophyta,bxl_2.3
+genus,Sphagnum,bxl_2.3
+genus,Alosa,bxl_2.5
+genus,Barbus,bxl_2.5
 genus,Coregonus,bxl_2.5
 genus,Sphagnum,bxl_2.5
 genus,Lycopodium,bxl_2.5
@@ -15,6 +17,7 @@ family,Acipenseridae,bxl_2.5
 class,Elasmobranchii,bxl_2.5
 class,Actinopterygii,bxl_2.5
 kingdom,Fungi,bxl_2.5
+genus,Spirea,bxl_4
 genus,Hydrobatidae,bern_2
 genus,Ciconiidae,bern_2
 genus,Otididae,bern_2
@@ -37,6 +40,7 @@ family,Sittidae,bern_2
 family,Certhiidae,bern_2
 family,Pelicanidae,bern_2
 family,Gruidae,bern_2
+order,Chiroptera,bern_2
 order,Falconiformes,bern_2
 order,Piciformes,bern_2
 order,Strigiformes,bern_2
@@ -61,6 +65,8 @@ family,Anseranatidae,bonn_2
 family,Artamidae,bonn_2
 family,Bernieridae,bonn_2
 family,Cathartidae,bonn_2
+family,Charadriidae,bonn_2
+family,Chaetopidae,bonn_2
 family,Cheloniidae,bonn_2
 family,Cinclosomatidae,bonn_2
 family,Cisticolidae,bonn_2
@@ -91,7 +97,7 @@ family,Oriolidae,bonn_2
 family,Orthonychidae,bonn_2
 family,Pachycephalidae,bonn_2
 family,Panuridae,bonn_2
-family,Pellorneidae,bonn_2
+family,Pellomeidae,bonn_2
 family,Petroicidae,bonn_2
 family,Phoenicopteridae,bonn_2
 family,Phylloscopidae,bonn_2

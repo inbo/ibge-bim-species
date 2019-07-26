@@ -16,7 +16,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 21557,BXL-ORD-2012_Annex II.1,Rhodeus amarus,"Rhodeus amarus (Bloch, 1782)","Rhodeus amarus (Bloch, 1782)",Animalia,Chordata,Cypriniformes,Actinopterygii,Cyprinidae,Rhodeus
 23749,BXL-ORD-2012_Annex II.1,Mergellus albellus,"Mergellus albellus (Linnaeus, 1758)","Mergellus albellus (Linnaeus, 1758)",Animalia,Chordata,Anseriformes,Aves,Anatidae,Mergellus
 25111,BXL-ORD-2012_Annex II.1,Myotis bechsteinii,"Myotis bechsteinii (Kuhl, 1817)","Myotis bechsteinii (Kuhl, 1817)",Animalia,Chordata,Chiroptera,Mammalia,Vespertilionidae,Myotis
-1329,BXL-ORD-2012_Annex II.2,Rana esculenta,,,,,,,,
 1377,BXL-ORD-2012_Annex II.2,Hippocampus ramulosus,"Hippocampus ramulosus Leach, 1814","Hippocampus guttulatus Cuvier, 1829",Animalia,Chordata,Syngnathiformes,Actinopterygii,Syngnathidae,Hippocampus
 1418,BXL-ORD-2012_Annex II.2,Anthericum liliago,Anthericum liliago L.,Anthericum liliago L.,Plantae,Tracheophyta,Asparagales,Liliopsida,Asparagaceae,Anthericum
 1425,BXL-ORD-2012_Annex II.2,Apium repens,Apium repens (Jacq.) Lag.,Helosciadium repens W.D.J.Koch,Plantae,Tracheophyta,Apiales,Magnoliopsida,Apiaceae,Helosciadium
@@ -214,6 +213,7 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 3406,BXL-ORD-2012_Annex II.3,Nymphalis antiopa,"Nymphalis antiopa (Linnaeus, 1758)","Nymphalis antiopa (Linnaeus, 1758)",Animalia,Arthropoda,Lepidoptera,Insecta,Nymphalidae,Nymphalis
 3407,BXL-ORD-2012_Annex II.3,Thecla betulae,"Thecla betulae (Linnaeus, 1758)","Thecla betulae (Linnaeus, 1758)",Animalia,Arthropoda,Lepidoptera,Insecta,Lycaenidae,Thecla
 3417,BXL-ORD-2012_Annex II.3,Thymelicus lineola,"Thymelicus lineola (Ochsenheimer, 1808)","Thymelicus lineola (Ochsenheimer, 1808)",Animalia,Arthropoda,Lepidoptera,Insecta,Hesperiidae,Thymelicus
+3916,BXL-ORD-2012_Annex II.3,Leucobryum glaucum,"Leucobryum glaucum Ångström, 1845","Leucobryum glaucum Ångström, 1845",Plantae,Bryophyta,Dicranales,Bryopsida,Dicranaceae,Leucobryum
 5618,BXL-ORD-2012_Annex II.3,Atypus affinis,"Atypus affinis Eichwald, 1830","Atypus affinis Eichwald, 1830",Animalia,Arthropoda,Araneae,Arachnida,Atypidae,Atypus
 18909,BXL-ORD-2012_Annex II.3,Melolontha melolontha,"Melolontha melolontha (Linnaeus, 1758)","Melolontha melolontha (Linnaeus, 1758)",Animalia,Arthropoda,Coleoptera,Insecta,Melolonthidae,Melolontha
 20207,BXL-ORD-2012_Annex II.3,Aeshna affinis,"Aeshna affinis Vander Linden, 1820","Aeshna affinis Vander Linden, 1820",Animalia,Arthropoda,Odonata,Insecta,Aeshnidae,Aeshna
@@ -294,7 +294,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 50427,BXL-ORD-2012_Annex II.3,Erythromma lindenii,"Erythromma lindenii Selys, 1840","Erythromma lindenii Selys, 1840",Animalia,Arthropoda,Odonata,Insecta,Coenagrionidae,Erythromma
 50486,BXL-ORD-2012_Annex II.3,Hieracium maculatum,Hieracium maculatum Schrank,Hieracium maculatum Schrank,Plantae,Tracheophyta,Asterales,Magnoliopsida,Asteraceae,Hieracium
 50491,BXL-ORD-2012_Annex II.3,Hyacinthoides non-scripta,Hyacinthoides non-scripta (L.) Chouard ex W.Rothmaler,Hyacinthoides non-scripta (L.) Chouard ex W.Rothmaler,Plantae,Tracheophyta,Asparagales,Liliopsida,Asparagaceae,Hyacinthoides
-50539,BXL-ORD-2012_Annex II.3,Lachenalii lachenalii subsp. cruentifolium,,,,,,,,
 50643,BXL-ORD-2012_Annex II.3,Myosoton aquaticum,Myosoton aquaticum Moench,Myosoton aquaticum Moench,Plantae,Tracheophyta,Caryophyllales,Magnoliopsida,Caryophyllaceae,Myosoton
 50741,BXL-ORD-2012_Annex II.3,Phyteuma nigrum,Phyteuma nigrum F.W.Schmidt,Phyteuma nigrum F.W.Schmidt,Plantae,Tracheophyta,Asterales,Magnoliopsida,Campanulaceae,Phyteuma
 50941,BXL-ORD-2012_Annex II.3,Valeriana procurrens,Valeriana procurrens Wallr.,Valeriana excelsa subsp. excelsa,Plantae,Tracheophyta,Dipsacales,Magnoliopsida,Caprifoliaceae,Valeriana
@@ -314,14 +313,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 23755,BXL-ORD-2012_Annex II.4,Delichon urbicum,"Delichon urbicum (Linnaeus, 1758)","Delichon urbicum (Linnaeus, 1758)",Animalia,Chordata,Passeriformes,Aves,Hirundinidae,Delichon
 25099,BXL-ORD-2012_Annex II.4,Eliomys quercinus,"Eliomys quercinus (Linnaeus, 1766)","Eliomys quercinus (Linnaeus, 1766)",Animalia,Chordata,Rodentia,Mammalia,Gliridae,Eliomys
 25100,BXL-ORD-2012_Annex II.4,Muscardinus avellanarius,"Muscardinus avellanarius (Linnaeus, 1758)","Muscardinus avellanarius (Linnaeus, 1758)",Animalia,Chordata,Rodentia,Mammalia,Gliridae,Muscardinus
-17,BXL-ORD-2012_Annex II.5,Conocybe lactea form. lactea,,,,,,,,
-140,BXL-ORD-2012_Annex II.5,Simocybe rubi form. tetraspora,,,,,,,,
-141,BXL-ORD-2012_Annex II.5,Simocybe rubi form. bispora,,,,,,,,
-273,BXL-ORD-2012_Annex II.5,Boletus radicans var. eupachypus,,,,,,,,
-620,BXL-ORD-2012_Annex II.5,Mycena pelliculosa var. pelliculosa,,,,,,,,
-703,BXL-ORD-2012_Annex II.5,Pleospora vulgaris var. disticha,,,,,,,,
-704,BXL-ORD-2012_Annex II.5,Pleospora vulgaris var. monosticha,,,,,,,,
-1321,BXL-ORD-2012_Annex II.5,Valsa sorbicola decorticans,,,,,,,,
 1354,BXL-ORD-2012_Annex II.5,Lampetra planeri,"Lampetra planeri (Bloch, 1784)","Lampetra planeri (Bloch, 1784)",Animalia,Chordata,Petromyzontiformes,Cephalaspidomorphi,Petromyzontidae,Lampetra
 1387,BXL-ORD-2012_Annex II.5,Myxine glutinosa,"Myxine glutinosa Linnaeus, 1758","Myxine glutinosa Linnaeus, 1758",Animalia,Chordata,Myxiniformes,Myxini,Myxinidae,Myxine
 1431,BXL-ORD-2012_Annex II.5,Arnica montana,Arnica montana L.,Arnica montana L.,Plantae,Tracheophyta,Asterales,Magnoliopsida,Asteraceae,Arnica
@@ -337,16 +328,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 21066,BXL-ORD-2012_Annex II.5,Centaurium littorale,Centaurium littorale (Turner) Gilmour,Centaurium littorale (Turner) Gilmour,Plantae,Tracheophyta,Gentianales,Magnoliopsida,Gentianaceae,Centaurium
 21067,BXL-ORD-2012_Annex II.5,Centaurium pulchellum,Centaurium pulchellum (Sw.) Druce,Centaurium pulchellum (Sw.) Druce,Plantae,Tracheophyta,Gentianales,Magnoliopsida,Gentianaceae,Centaurium
 24767,BXL-ORD-2012_Annex II.5,Patella vulgata,"Patella vulgata Linnaeus, 1758","Patella vulgata Linnaeus, 1758",Animalia,Mollusca,,Gastropoda,Patellidae,Patella
-27856,BXL-ORD-2012_Annex II.5,Corticium calceum,,,,,,,,
-27857,BXL-ORD-2012_Annex II.5,Corticium centrifugum,,,,,,,,
-27944,BXL-ORD-2012_Annex II.5,Coriolopsis cervina,,,,,,,,
-28307,BXL-ORD-2012_Annex II.5,Debaryomyces membranifaciens,,,,,,,,
-28313,BXL-ORD-2012_Annex II.5,Schwanniomyces yamadae,,,,,,,,
-28764,BXL-ORD-2012_Annex II.5,Entelexis magnoliae,,,,,,,,
-29980,BXL-ORD-2012_Annex II.5,Leptoporus destructor,,,,,,,,
-30058,BXL-ORD-2012_Annex II.5,Lentinus dentatus,,,,,,,,
-33338,BXL-ORD-2012_Annex II.5,Trametes lutescens,,,,,,,,
-34241,BXL-ORD-2012_Annex II.5,Pyrenocollema chlorococcum,,,,,,,,
 47269,BXL-ORD-2012_Annex II.5,Calycella syringa,"Calycella syringa (Linnaeus, 1767)","Calycella syringa (Linnaeus, 1767)",Animalia,Cnidaria,Leptothecata,Hydrozoa,Campanulinidae,Calycella
 47851,BXL-ORD-2012_Annex II.5,Cepola macrophthalma,"Cepola macrophthalma (Linnaeus, 1758)","Cepola macrophthalma (Linnaeus, 1758)",Animalia,Mollusca,Stylommatophora,Gastropoda,Cepolidae,Cepola
 48165,BXL-ORD-2012_Annex II.5,Lampetra fluviatilis,"Lampetra fluviatilis (Linnaeus, 1758)","Lampetra fluviatilis (Linnaeus, 1758)",Animalia,Chordata,Petromyzontiformes,Cephalaspidomorphi,Petromyzontidae,Lampetra
@@ -455,7 +436,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 1326,EUR-CON-BER_Annex II,Hyla arborea,"Hyla arborea (Linnaeus, 1758)","Hyla arborea (Linnaeus, 1758)",Animalia,Chordata,Anura,Amphibia,Hylidae,Hyla
 1327,EUR-CON-BER_Annex II,Pelobates fuscus,"Pelobates fuscus (Laurenti, 1768)","Pelobates fuscus (Laurenti, 1768)",Animalia,Chordata,Anura,Amphibia,Pelobatidae,Pelobates
 1328,EUR-CON-BER_Annex II,Rana arvalis,"Rana arvalis Nilsson, 1842","Rana arvalis Nilsson, 1842",Animalia,Chordata,Anura,Amphibia,Ranidae,Rana
-1329,EUR-CON-BER_Annex II,Rana esculenta,,,,,,,,
 1330,EUR-CON-BER_Annex II,Rana lessonae,"Rana lessonae Camerano, 1882","Pelophylax lessonae (Camerano, 1882)",Animalia,Chordata,Anura,Amphibia,Ranidae,Pelophylax
 1331,EUR-CON-BER_Annex II,Rana ridibunda,"Rana ridibunda Pallas, 1771","Pelophylax ridibundus (Pallas, 1771)",Animalia,Chordata,Anura,Amphibia,Ranidae,Pelophylax
 1332,EUR-CON-BER_Annex II,Rana temporaria,"Rana temporaria Linnaeus, 1758","Rana temporaria Linnaeus, 1758",Animalia,Chordata,Anura,Amphibia,Ranidae,Rana
@@ -1058,7 +1038,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 49529,UN-CON-BON-Annex I,Balaenoptera borealis,"Balaenoptera borealis Lesson, 1828","Balaenoptera borealis Lesson, 1828",Animalia,Chordata,Cetacea,Mammalia,Balaenopteridae,Balaenoptera
 49533,UN-CON-BON-Annex I,Balaenoptera physalus,"Balaenoptera physalus (Linnaeus, 1758)","Balaenoptera physalus (Linnaeus, 1758)",Animalia,Chordata,Cetacea,Mammalia,Balaenopteridae,Balaenoptera
 49584,UN-CON-BON-Annex I,Puffinus mauretanicus,"Puffinus mauretanicus Lowe, 1921","Puffinus mauretanicus Lowe, 1921",Animalia,Chordata,Procellariiformes,Aves,Procellariidae,Puffinus
-2038,UN-CON-BON-Annex II,Charadrius leschenaultii,"Charadrius leschenaultii Lesson, 1826","Charadrius leschenaultii Lesson, 1826",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Charadrius
 2039,UN-CON-BON-Annex II,Chlidonias leucopterus,"Chlidonias leucopterus (Temminck, 1815)","Chlidonias leucopterus (Temminck, 1815)",Animalia,Chordata,Charadriiformes,Aves,Laridae,Chlidonias
 2040,UN-CON-BON-Annex II,Ciconia ciconia,"Ciconia ciconia (Linnaeus, 1758)","Ciconia ciconia (Linnaeus, 1758)",Animalia,Chordata,Ciconiiformes,Aves,Ciconiidae,Ciconia
 2055,UN-CON-BON-Annex II,Ciconia nigra,"Ciconia nigra (Linnaeus, 1758)","Ciconia nigra (Linnaeus, 1758)",Animalia,Chordata,Ciconiiformes,Aves,Ciconiidae,Ciconia
@@ -1066,19 +1045,14 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 2061,UN-CON-BON-Annex II,Glareola pratincola,"Glareola pratincola (Linnaeus, 1766)","Glareola pratincola (Linnaeus, 1766)",Animalia,Chordata,Charadriiformes,Aves,Glareolidae,Glareola
 2081,UN-CON-BON-Annex II,Ixobrychus minutus,"Ixobrychus minutus (Linnaeus, 1766)","Ixobrychus minutus (Linnaeus, 1766)",Animalia,Chordata,Pelecaniformes,Aves,Ardeidae,Ixobrychus
 2082,UN-CON-BON-Annex II,Gavia adamsii,"Gavia adamsii (G.R.Gray, 1859)","Gavia adamsii (G.R.Gray, 1859)",Animalia,Chordata,Gaviiformes,Aves,Gaviidae,Gavia
-2100,UN-CON-BON-Annex II,Charadrius dubius,"Charadrius dubius Scopoli, 1786","Charadrius dubius Scopoli, 1786",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Charadrius
 2112,UN-CON-BON-Annex II,Burhinus oedicnemus,"Burhinus oedicnemus (Linnaeus, 1758)","Burhinus oedicnemus (Linnaeus, 1758)",Animalia,Chordata,Charadriiformes,Aves,Burhinidae,Burhinus
 2132,UN-CON-BON-Annex II,Threskiornis aethiopicus,"Threskiornis aethiopicus (Latham, 1790)","Threskiornis aethiopicus (Latham, 1790)",Animalia,Chordata,Pelecaniformes,Aves,Threskiornithidae,Threskiornis
 2152,UN-CON-BON-Annex II,Pelecanus crispus,"Pelecanus crispus Bruch, 1832","Pelecanus crispus Bruch, 1832",Animalia,Chordata,Pelecaniformes,Aves,Pelecanidae,Pelecanus
 2871,UN-CON-BON-Annex II,Sterna caspia,"Sterna caspia Pallas, 1770","Hydroprogne caspia (Pallas, 1770)",Animalia,Chordata,Charadriiformes,Aves,Laridae,Hydroprogne
 2881,UN-CON-BON-Annex II,Platalea leucorodia,"Platalea leucorodia Linnaeus, 1758","Platalea leucorodia Linnaeus, 1758",Animalia,Chordata,Pelecaniformes,Aves,Threskiornithidae,Platalea
 2883,UN-CON-BON-Annex II,Plegadis falcinellus,"Plegadis falcinellus (Linnaeus, 1766)","Plegadis falcinellus (Linnaeus, 1766)",Animalia,Chordata,Pelecaniformes,Aves,Threskiornithidae,Plegadis
-2884,UN-CON-BON-Annex II,Pluvialis apricaria,"Pluvialis apricaria (Linnaeus, 1758)","Pluvialis apricaria (Linnaeus, 1758)",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Pluvialis
-2886,UN-CON-BON-Annex II,Pluvialis fulva,"Pluvialis fulva (Gmelin, 1789)","Pluvialis fulva (Gmelin, 1789)",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Pluvialis
 2895,UN-CON-BON-Annex II,Porzana parva,"Porzana parva (Scopoli, 1769)","Porzana parva (Scopoli, 1769)",Animalia,Chordata,Gruiformes,Aves,Rallidae,Porzana
 2896,UN-CON-BON-Annex II,Porzana porzana,"Porzana porzana Linnaeus, 1758","Porzana porzana Linnaeus, 1758",Animalia,Chordata,Gruiformes,Aves,Rallidae,Porzana
-2900,UN-CON-BON-Annex II,Pluvialis dominica,"Pluvialis dominica Mueller, 1776","Pluvialis dominica Mueller, 1776",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Pluvialis
-2921,UN-CON-BON-Annex II,Vanellus vanellus,"Vanellus vanellus (Linnaeus, 1758)","Vanellus vanellus (Linnaeus, 1758)",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Vanellus
 2932,UN-CON-BON-Annex II,Streptopelia turtur,"Streptopelia turtur (Linnaeus, 1758)","Streptopelia turtur (Linnaeus, 1758)",Animalia,Chordata,Columbiformes,Aves,Columbidae,Streptopelia
 3245,UN-CON-BON-Annex II,Cetorhinus maximus,"Cetorhinus maximus (Gunnerus, 1765)","Cetorhinus maximus (Gunnerus, 1765)",Animalia,Chordata,Lamniformes,Elasmobranchii,Cetorhinidae,Cetorhinus
 3427,UN-CON-BON-Annex II,Coturnix coturnix,"Coturnix coturnix (Linnaeus, 1758)","Coturnix coturnix (Linnaeus, 1758)",Animalia,Chordata,Galliformes,Aves,Phasianidae,Coturnix
@@ -1091,21 +1065,16 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 3595,UN-CON-BON-Annex II,Muscicapa striata,"Muscicapa striata (Pallas, 1764)","Setophaga striata (J.R.Forster, 1772)",Animalia,Chordata,Passeriformes,Aves,Parulidae,Setophaga
 3609,UN-CON-BON-Annex II,Otis tarda,"Otis tarda Linnaeus, 1758","Otis tarda Linnaeus, 1758",Animalia,Chordata,Otidiformes,Aves,Otididae,Otis
 3614,UN-CON-BON-Annex II,Pandion haliaetus,"Pandion haliaetus (Linnaeus, 1758)","Pandion haliaetus (Linnaeus, 1758)",Animalia,Chordata,Accipitriformes,Aves,Pandionidae,Pandion
-3627,UN-CON-BON-Annex II,Vanellus gregarius,"Vanellus gregarius (Pallas, 1771)","Vanellus gregarius (Pallas, 1771)",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Vanellus
-3628,UN-CON-BON-Annex II,Vanellus leucurus,"Vanellus leucurus (Lichtenstein, 1823)","Vanellus leucurus (Lichtenstein, 1823)",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Vanellus
 3630,UN-CON-BON-Annex II,Coracias garrulus,"Coracias garrulus Linnaeus, 1758","Coracias garrulus Linnaeus, 1758",Animalia,Chordata,Coraciiformes,Aves,Coraciidae,Coracias
 5629,UN-CON-BON-Annex II,Monodon monoceros,"Monodon monoceros Linnaeus, 1758","Monodon monoceros Linnaeus, 1758",Animalia,Chordata,Cetacea,Mammalia,Monodontidae,Monodon
 15960,UN-CON-BON-Annex II,Physeter macrocephalus,"Physeter macrocephalus Linnaeus, 1758","Physeter macrocephalus Linnaeus, 1758",Animalia,Chordata,Cetacea,Mammalia,Physeteridae,Physeter
-23751,UN-CON-BON-Annex II,Charadrius morinellus,"Charadrius morinellus Linnaeus, 1758","Charadrius morinellus Linnaeus, 1758",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Charadrius
 26496,UN-CON-BON-Annex II,Danaus plexippus,"Danaus plexippus (Linnaeus, 1758)","Danaus plexippus (Linnaeus, 1758)",Animalia,Arthropoda,Lepidoptera,Insecta,Nymphalidae,Danaus
 46917,UN-CON-BON-Annex II,Chlidonias niger,"Chlidonias niger (Linnaeus, 1758)","Chlidonias niger (Linnaeus, 1758)",Animalia,Chordata,Charadriiformes,Aves,Laridae,Chlidonias
 46918,UN-CON-BON-Annex II,Gavia arctica,"Gavia arctica (Linnaeus, 1758)","Gavia arctica (Linnaeus, 1758)",Animalia,Chordata,Gaviiformes,Aves,Gaviidae,Gavia
 46919,UN-CON-BON-Annex II,Gavia immer,"Gavia immer (Brunnich, 1764)","Gavia immer (Brunnich, 1764)",Animalia,Chordata,Gaviiformes,Aves,Gaviidae,Gavia
-46925,UN-CON-BON-Annex II,Charadrius hiaticula,"Charadrius hiaticula Linnaeus, 1758","Charadrius hiaticula Linnaeus, 1758",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Charadrius
 49380,UN-CON-BON-Annex II,Gavia stellata,"Gavia stellata (Pontoppidan, 1763)","Gavia stellata (Pontoppidan, 1763)",Animalia,Chordata,Gaviiformes,Aves,Gaviidae,Gavia
 49450,UN-CON-BON-Annex II,Acipenser sturio,"Acipenser sturio Linnaeus, 1758","Acipenser sturio Linnaeus, 1758",Animalia,Chordata,Acipenseriformes,Actinopterygii,Acipenseridae,Acipenser
 49464,UN-CON-BON-Annex II,Sterna albifrons,"Sterna albifrons Pallas, 1764","Sternula albifrons (Pallas, 1764)",Animalia,Chordata,Charadriiformes,Aves,Laridae,Sternula
-49465,UN-CON-BON-Annex II,Pluvialis squatarola,"Pluvialis squatarola Linnaeus, 1758","Pluvialis squatarola Linnaeus, 1758",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Pluvialis
 49467,UN-CON-BON-Annex II,Sterna hirundo,"Sterna hirundo Linnaeus, 1758","Sterna hirundo Linnaeus, 1758",Animalia,Chordata,Charadriiformes,Aves,Laridae,Sterna
 49468,UN-CON-BON-Annex II,Podiceps auritus,"Podiceps auritus (Linnaeus, 1758)","Podiceps auritus (Linnaeus, 1758)",Animalia,Chordata,Podicipediformes,Aves,Podicipedidae,Podiceps
 49470,UN-CON-BON-Annex II,Podiceps grisegena,"Podiceps grisegena (Boddaert, 1783)","Podiceps grisegena (Boddaert, 1783)",Animalia,Chordata,Podicipediformes,Aves,Podicipedidae,Podiceps
@@ -1116,7 +1085,6 @@ taxonid,annexcode,acceptedname,gbif_scientificName,gbif_accepted_name,gbif_kingd
 49482,UN-CON-BON-Annex II,Grampus griseus,"Grampus griseus (G.Cuvier, 1812)","Grampus griseus (G.Cuvier, 1812)",Animalia,Chordata,Cetacea,Mammalia,Delphinidae,Grampus
 49483,UN-CON-BON-Annex II,Halichoerus grypus,"Halichoerus grypus (Fabricius, 1791)","Halichoerus grypus (Fabricius, 1791)",Animalia,Chordata,Carnivora,Mammalia,Phocidae,Halichoerus
 49484,UN-CON-BON-Annex II,Hyperoodon ampullatus,"Hyperoodon ampullatus (Forster, 1770)","Hyperoodon ampullatus (Forster, 1770)",Animalia,Chordata,Cetacea,Mammalia,Hyperoodontidae,Hyperoodon
-49487,UN-CON-BON-Annex II,Charadrius alexandrinus,"Charadrius alexandrinus Linnaeus, 1758","Charadrius alexandrinus Linnaeus, 1758",Animalia,Chordata,Charadriiformes,Aves,Charadriidae,Charadrius
 49502,UN-CON-BON-Annex II,Larus melanocephalus,"Larus melanocephalus Temminck, 1820","Ichthyaetus melanocephalus (Temminck, 1820)",Animalia,Chordata,Charadriiformes,Aves,Laridae,Ichthyaetus
 49519,UN-CON-BON-Annex II,Lagenorhynchus acutus,"Lagenorhynchus acutus (Gray, 1828)","Lagenorhynchus acutus (Gray, 1828)",Animalia,Chordata,Cetacea,Mammalia,Delphinidae,Lagenorhynchus
 49520,UN-CON-BON-Annex II,Lagenorhynchus albirostris,"Lagenorhynchus albirostris (Gray, 1846)","Lagenorhynchus albirostris (Gray, 1846)",Animalia,Chordata,Cetacea,Mammalia,Delphinidae,Lagenorhynchus
