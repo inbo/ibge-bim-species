@@ -110,7 +110,7 @@ annexes <-
       gbif_terms = gbif_terms,
       strict = TRUE)
 ```
-=
+
 Evaluate match with the GBIF Backbone again:
 
 ```{r}
