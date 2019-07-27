@@ -594,7 +594,7 @@ We define summaries of the match between each pair (BIM-annex, official annex) c
 6. Unverifiable records in `annex_*`
 7. Records present in `annex_*` but not in `bim_*`
 
-## Number of taxa in annexes
+## Number of matched taxa in annexes
 
 Calculate number of taxa in each official annex:
 
@@ -604,14 +604,14 @@ n_taxa_annex <- map(annex,
                         suppressMessages(
                           df %>% 
                             summarize(number_of_taxa = n()) %>% 
-                            mutate(data = "Records annex list") %>% 
+                            mutate(data = "GBIF matched records annex list") %>% 
                             select(data, number_of_taxa)
                         )
                       })
 names(n_taxa_annex) <- annexcode
 ```
 
-## Number of unmatched taxa
+## Number of GBIF unmatched taxa in annex list
 
 Calculate number of unmatched taxa in each annex:
 
@@ -621,14 +621,14 @@ n_taxa_unmatched_annex <- map(unmatched_annex_taxa,
                                   suppressMessages(
                                     df %>% 
                                     summarize(number_of_taxa = n()) %>% 
-                                    mutate(data = "GBIF NON matches annex") %>% 
+                                    mutate(data = "GBIF unmatched records annex list") %>% 
                                     select(data, number_of_taxa)
                                   )
                               })
 names(n_taxa_unmatched_annex) <- annexcode
 ```
 
-## Number of taxa in BIM-annexes
+## Number of GBIF matched taxa in BIM-annexes
 
 Calculate number of taxa in each BIM-annex:
 
@@ -638,11 +638,30 @@ n_taxa_bim_annex <- map(bim_annex,
                         suppressMessages(
                           df %>% 
                           summarize(number_of_taxa = n()) %>% 
-                          mutate(data = "Records BIM database") %>% 
+                          mutate(data = "GBIF matched records BIM database") %>% 
                           select(data, number_of_taxa)
                         )
                       })
 ```
+
+
+## Number of GBIF unmatched taxa in BIM-
+
+unmatchted_taxa_bim_annexes
+
+```{r}
+n_taxa_unmatched_bim_annex <- map(unmatched_annex_taxa,
+                              function(df){
+                                  suppressMessages(
+                                    df %>% 
+                                    summarize(number_of_taxa = n()) %>% 
+                                    mutate(data = "GBIF unmatched records annex list") %>% 
+                                    select(data, number_of_taxa)
+                                  )
+                              })
+names(n_taxa_unmatched_annex) <- annexcode
+```
+
 
 ## Full match
 
@@ -732,7 +751,7 @@ summaries$bxl_2.2
 
 Summary:
 
-```{r show_summary_2.1}
+```{r show_summary_2.3}
 summaries$bxl_2.3
 ```
 
@@ -742,6 +761,14 @@ Summary:
 
 ```{r show_summary_2.4}
 summaries$bxl_2.4
+```
+
+## Annex II.5
+
+Summary:
+
+```{r show_summary_2.5}
+summaries$bxl_2.5
 ```
 
 ## Annex III: Wildsoorten
@@ -803,6 +830,25 @@ Summary:
 ```{r show_summary_bonn_2}
 summaries$bonn_2
 ```
+
+# Habitat Directive
+  
+## Annex II 
+
+Summary:
+
+```{r show_summary_hab_2}
+summaries$hab_2
+```
+
+## Annex IV 
+
+Summary:
+
+```{r show_summary_hab_4}
+summaries$hab_4
+```
+
 
 # Bird Habitat annex
 
