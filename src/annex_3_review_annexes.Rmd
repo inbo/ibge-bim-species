@@ -176,6 +176,7 @@ unmatched_annex_taxa <- map(
 names(unmatched_annex_taxa) <- annexcode
 ```
 
+
 # Review BIM annex data
 
 In this section we compare BIM annex data with the information contained in the official annexes.
@@ -643,25 +644,6 @@ n_taxa_bim_annex <- map(bim_annex,
                         )
                       })
 ```
-
-
-## Number of GBIF unmatched taxa in BIM-
-
-unmatchted_taxa_bim_annexes
-
-```{r}
-n_taxa_unmatched_bim_annex <- map(unmatched_annex_taxa,
-                              function(df){
-                                  suppressMessages(
-                                    df %>% 
-                                    summarize(number_of_taxa = n()) %>% 
-                                    mutate(data = "GBIF unmatched records annex list") %>% 
-                                    select(data, number_of_taxa)
-                                  )
-                              })
-names(n_taxa_unmatched_annex) <- annexcode
-```
-
 
 ## Full match
 
