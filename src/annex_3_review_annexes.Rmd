@@ -875,10 +875,45 @@ pmap_dfr(
 )
 ```
 
-# Save BIM annex without unverifiable taxa:
+# Retrieve full match taxa annex list
 
-```{r save_unverifiable_taxa}
-bim_annex_without_unverifiable_taxa %>%
+Retrieve full match taxa:
+
+```{r n_taxa_full_match}
+full_match_taxa <- map2(
+  annex, bim_annex, function(df1, df2){
+    suppressMessages(
+      df1 %>% 
+      inner_join(df2, by = "gbif_accepted_name")
+    )
+})
+
+full_match_taxa <- 
+  full_match_taxa %>% 
+  bind_rows() %>% 
+  mutate(relation_to_annexspecies = "match with annexspecies")
+```
+
+Select required columns:
+
+```{r}
+full_match_taxa <-
+  full_match_taxa %>% 
+  select(annex_code,
+         scientific_name_original,
+         gbif_scientificName.x,
+         relation_to_annexspecies) %>% 
+  rename("gbif_scientificName" = "gbif_scientificName.x")
+```
+
+# Save as full match taxa:
+
+```{r}
+full_match_taxa %>%
+  write_csv(path = here("data", "interim", "full_match_annexes.csv"),
+            na = "")
+``` 
+
   bind_rows() %>% 
   write_csv(path = here("data", "interim", "bim_without_unverifiable_taxa.csv"),
             na = "")
