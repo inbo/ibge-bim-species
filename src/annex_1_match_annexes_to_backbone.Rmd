@@ -104,7 +104,7 @@ Scan `scientific_name_original` for obvious errors and correct. Rematch `scienti
 ```{r}
 annexes <-
   annexes %>% 
-    select(scientific_name_corrected, annex_code) %>% 
+    select(scientific_name_original, scientific_name_corrected, annex_code) %>% 
     gbif_species_name_match(
       name = "scientific_name_corrected",
       gbif_terms = gbif_terms,
@@ -125,7 +125,7 @@ Save non-matching taxa as a separate dataframe for later:
 unmatchted_annex_taxa <- 
   annexes %>% 
     filter(matchType == "NONE") %>% 
-    select(annex_code, scientific_name_corrected)
+    select(annex_code, scientific_name_original, scientific_name_corrected)
 ```
 
 Export as `unmatched_taxa_annexes.csv`
@@ -164,6 +164,7 @@ Keep columns of interest:
 annexes <- 
   annexes %>%
     select(annex_code,
+           scientific_name_original,
            scientific_name_corrected, 
            scientificName, 
            canonicalName, 
