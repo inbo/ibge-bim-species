@@ -12,137 +12,133 @@ library(here)           # To work with paths
 
 ## Read annex data
 
-Import `annexes_gbif_match.csv`:
+### GBIF matched annex data in BIM list
+
+Import `full_match_annexes.csv`:
 
 ```{r read_annexes}
-annex_df <- read_delim(
-  file = here("data", "interim", "annexes_gbif_match.csv"), 
+annex_in_bim <- read_delim(
+  file = here("data", "interim", "full_match_annexes.csv"), 
   delim = ",")
 ```
 
-## Read BIM annex data
+### GBIF matched annex data not in BIM list
 
-Import the BIM annex data with full taxonomic information:
+Import `taxa_annex_not_in_bim` 
 
-```{r read_bim_annex_taxa}
-bim_annex_taxa <- read_csv(
-  here("data", "interim", "bim_annex_taxa_full_taxonomic_info.csv"),
-  na = "",
-  col_types = cols(
-    .default = col_character(),
-    taxonid = col_double()
-))
+```{r read_annexes}
+annex_not_in_bim <- read_delim(
+  file = here("data", "interim", "taxa_annex_not_in_bim.csv"), 
+  delim = ",")
 ```
 
-## Read unverifiable taxa
+### GBIF unmatched annex data
 
-```{r read_bim_annex_taxa}
-bim_unverifiable_taxa <- read_csv(
-  here("data", "interim", "unverifiable_taxa_annexes.csv"),
+```{r}
+annex_unmatched_taxa <- read_csv(
+  here("data", "processed", "unmatched_taxa_annexes.csv"),
   na = "",
   col_types = cols(
     .default = col_character()
 ))
 ```
 
-## Read BIM taxon
+### Import BIM annex table:
 
-```{r}
-bim_unverifiable_taxa <-
-  bim_unverifiable_taxa %>% mutate(annexcode = recode(annexcode,
-    "bxl_2.1" =  "BXL-ORD-2012_Annex II.1",
-    "bxl_2.2" =  "BXL-ORD-2012_Annex II.2",
-    "bxl_2.3" =  "BXL-ORD-2012_Annex II.3",
-    "bxl_2.4" =  "BXL-ORD-2012_Annex II.4",
-    "bxl_2.5" =  "BXL-ORD-2012_Annex II.5",
-    "bxl_3" =  "BXL-ORD-2012_Annex III",
-    "bxl_4" =  "BXL-ORD-2012_Annex IV",
-    "bern_1" =  "EUR-CON-BER_Annex I",
-    "bern_2" =  "EUR-CON-BER_Annex II",
-    "bern_3" =  "EUR-CON-BER_Annex III",
-    "bonn_1" =  "UN-CON-BON-Annex I",
-    "bonn_2" =  "UN-CON-BON-Annex II",
-    "hab_2" =  "EUR-DIR-HAB_Annex II",
-    "hab_4" =  "EUR-DIR-HAB_Annex IV",
-    "bir_1" =  "EUR-DIR-BIR_Annex I"
-))
-```
-
-  here("data", "processed", "taxa_parentid_corrected_unverifiable_taxa_added.tsv"),
-  na = "",
+```{r read_taxa_parentid_corrected}
+taxa_parentid_corrected <- read_delim(
+  file = here("data", "processed", "taxa_parentid_corrected.tsv"), 
+  delim = "\t",
   col_types = cols(
-    .default = col_character()))
+    .default = col_character(),
+    id = col_double(),
+    parentid = col_double(),
+    media = col_logical(),
+    speciesbeparentid = col_double(),
+    bruenvi_created = col_date(format = "%Y-%m-%d"),
+    bruenvi_modified = col_date(format = "%Y-%m-%d"))
+)
 ```
 
-# Annex BXL II.2
+# Generate revised speciesannex table
+
+Process `unmatched_bim_annex_taxa` for future join with `annex_in_bim` and `annex_not_in_bim`:
+
+1. Add column `gbif_scientificName` which is empty for unmatched taxa
 
 ```{r}
-bxl_2.2_bim <- 
-  bim_annex_taxa %>% filter(annexcode == "BXL-ORD-2012_Annex II.2") 
-
-bxl_2.2_annex <-
-  annex_df %>% filter(annex_code == "bxl_2.2")
+annex_unmatched_taxa <-
+  annex_unmatched_taxa %>% 
+    select(-scientific_name_corrected) %>% 
+    mutate(gbif_scientificName = "")
 ```
 
-## Retrieve full match species list
-
-Inner join between bim list and annex list:
-
-```{r n_taxa_full_match}
-bxl_2.2_full_match <-
-  bxl_2.2_bim %>% 
-    inner_join(bxl_2.2_annex, by = "gbif_accepted_name")
-```
-
-Select required columns:
+2. Add column  `relation_to_annexspecies`:
 
 ```{r}
-bxl_2.2_full_match <-
-  bxl_2.2_full_match %>% select(acceptedname,
-                                taxonid,
-                                annexcode) 
+annex_unmatched_taxa <-
+  annex_unmatched_taxa %>% 
+    mutate(relation_to_annexspecies = "not in GBIF backbone")
 ```
 
-Add `remarks`, which is empty for the full matches:
+Bind rows to generate annexspecies_new:
 
 ```{r}
-bxl_2.2_full_match <-
-  bxl_2.2_full_match %>% mutate(remarks = "")
+annexspecies_new <-
+  bind_rows(annex_in_bim, 
+            annex_not_in_bim,
+            annex_unmatched_taxa)
 ```
 
-## Retrieve unverifiable taxa:
+Add `taxonid` from revised BIM taxon table:
 
 ```{r}
-bxl_2.2_unverifiable_taxa <- 
-  bim_unverifiable_taxa %>% filter(annexcode == "BXL-ORD-2012_Annex II.2")
+annexspecies_new <- 
+  annexspecies_new %>% 
+    left_join(
+      select(taxa_parentid_corrected, id, gbif_scientificName),
+      by = c("gbif_scientificName"))
 ```
 
-Add BIM taxonID:
+Restructure `annexspecies_new`:
 
 ```{r}
-bxl_2.2_unverifiable_taxa <-
-  bxl_2.2_unverifiable_taxa %>% inner_join(bim_taxa, by = c("name" = "acceptedname"))
+annexspecies_new <- 
+  annexspecies_new %>% 
+    select(id,
+           annex_code,
+           scientific_name_original,
+           gbif_scientificName,
+           relation_to_annexspecies)
 ```
 
-Select required columns:
+Recode `annex_code` to codes used in BIM annex list:
 
 ```{r}
-bxl_2.2_unverifiable_taxa <-
-  bxl_2.2_unverifiable_taxa %>% select(id, name, annexcode)
+annexspecies_new <- 
+  annexspecies_new %>% mutate(annex_code = recode(annex_code,
+      "bxl_2.1" = "BXL-ORD-2012_Annex II.1",
+      "bxl_2.2" = "BXL-ORD-2012_Annex II.2",
+      "bxl_2.3" = "BXL-ORD-2012_Annex II.3",
+      "bxl_2.4" = "BXL-ORD-2012_Annex II.4",
+      "bxl_2.5" = "BXL-ORD-2012_Annex II.5",
+      "bxl_3" = "BXL-ORD-2012_Annex III",
+      "bxl_4" = "BXL-ORD-2012_Annex IV",
+      "bern_1" = "EUR-CON-BER_Annex I",
+      "bern_2" = "EUR-CON-BER_Annex II",
+      "bern_3" = "EUR-CON-BER_Annex III",
+      "bonn_1" = "UN-CON-BON-Annex I",
+      "bonn_2" = "UN-CON-BON-Annex II",
+      "hab_2" = "EUR-DIR-HAB_Annex II",
+      "hab_4" = "EUR-DIR-HAB_Annex IV",
+      "bird_1" = "EUR-DIR-BIR_Annex I"))
 ```
 
-Add remarks for each unverifiable taxon:
+# Export speciesannex_new
 
 ```{r}
-bxl_2.2_unverifiable_taxa <-
-  bxl_2.2_unverifiable_taxa %>% mutate(remarks = case_when(
-    name == "Mammalia" ~ "All European species",
-    name == "Aves" ~ "All European species",
-    name == "Amphibia" ~ "All European species",
-    name == "Reptilia" ~ "All European species",
-    name == "Nymphaeaceae" ~ "All species of Nymphaeaceae with their natural area of distribution completely or partially enclosing the national territory",
-    name == "Orchidaceae" ~ "All species of Orchidaceae with their natural area of distribution completely or partially enclosing the national territory, with exception of Epipactis helleborine",
-    name == "Rosa" ~ "All species of the genus Rosa with their natural area of distribution completely or partially enclosing the national territory, with exception of Rosa arvensis and Rosa canina L."
-))
+annexspecies_new %>% 
+  write_csv(path = here("data", "processed", "speciesannex_new.csv"),
+            na = "")
 ```
 
