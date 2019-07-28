@@ -953,8 +953,9 @@ taxa_not_in_bim %>%
 # Save unverifiable taxa in bim list
 
 ```{r}
+unverifiable_dfs %>% 
   bind_rows() %>% 
-  write_csv(path = here("data", "interim", "bim_without_unverifiable_taxa.csv"),
+  write_csv(path = here("data", "interim", "unverifiable_taxa_bim.csv"),
             na = "")
 ```
 
