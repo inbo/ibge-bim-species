@@ -906,6 +906,34 @@ full_match_taxa <-
   rename("gbif_scientificName" = "gbif_scientificName.x")
 ```
 
+Retrieve taxa not occurring in BIM list:
+
+```{r}
+taxa_not_in_bim <- map2(
+  annex, bim_annex, function(df1, df2){
+    suppressMessages(
+      df1 %>% 
+      anti_join(df2, by = "gbif_accepted_name")
+    )
+})
+
+taxa_not_in_bim <-
+  taxa_not_in_bim %>% 
+  bind_rows() %>% 
+  mutate(relation_to_annexspecies = "not in annexspecies") 
+```
+
+Select required columns:
+
+```{r}
+taxa_not_in_bim <-
+  taxa_not_in_bim %>% 
+  select(annex_code,
+         scientific_name_original,
+         gbif_scientificName,
+         relation_to_annexspecies) 
+```
+
 # Save as full match taxa:
 
 ```{r}
@@ -914,6 +942,17 @@ full_match_taxa %>%
             na = "")
 ``` 
 
+# Save annex taxa not in BIM list:
+
+```{r}
+taxa_not_in_bim %>%
+  write_csv(path = here("data", "interim", "taxa_annex_not_in_bim.csv"),
+            na = "")
+```
+
+# Save unverifiable taxa in bim list
+
+```{r}
   bind_rows() %>% 
   write_csv(path = here("data", "interim", "bim_without_unverifiable_taxa.csv"),
             na = "")
