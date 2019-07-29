@@ -1,0 +1,841 @@
+annex_code,scientific_name_original,gbif_scientificName,relation_to_annexspecies
+bxl_2.1,Barbastella barbastellus,"Barbastella barbastellus (Schreber, 1774)",match with annexspecies
+bxl_2.1,Myotis bechsteini,"Myotis bechsteinii (Kuhl, 1817)",match with annexspecies
+bxl_2.1,Myotis dasycneme,"Myotis dasycneme (Boie, 1825)",match with annexspecies
+bxl_2.1,Myotis emarginatus,"Myotis emarginatus (E.Geoffroy, 1806)",match with annexspecies
+bxl_2.1,Myotis Myotis,"Myotis myotis (Borkhausen, 1797)",match with annexspecies
+bxl_2.1,Rhinolophus ferrumequinum,"Rhinolophus ferrumequinum (Schreber, 1774)",match with annexspecies
+bxl_2.1,Rhodeus sericeus amarus,"Rhodeus sericeus amarus (Bloch, 1782)",match with annexspecies
+bxl_2.1,Lucanus cervus,"Lucanus cervus (Linnaeus, 1758)",match with annexspecies
+bxl_2.1,Vertigo angustior,"Vertigo angustior Jeffreys, 1830",match with annexspecies
+bxl_2.1,Vertigo moulinsiana,"Vertigo moulinsiana (Dupuy, 1849)",match with annexspecies
+bxl_2.1,Mergus albellus,"Mergus albellus Linnaeus, 1758",match with annexspecies
+bxl_2.1,Pernis apivorus,"Pernis apivorus (Linnaeus, 1758)",match with annexspecies
+bxl_2.1,Falco peregrinus,"Falco peregrinus, 1771",match with annexspecies
+bxl_2.1,Caprimulgus europacus,"Caprimulgus europaeus Linnaeus, 1758",match with annexspecies
+bxl_2.1,Alcedo atthis,"Alcedo atthis (Linnaeus, 1758)",match with annexspecies
+bxl_2.1,Dendrocopos martius,"Dryocopus martius (Linnaeus, 1758)",match with annexspecies
+bxl_2.1,Dendrocopos medius,"Dendrocopos medius (Linnaeus, 1758)",match with annexspecies
+bxl_2.2,Barbastella barbastellus,"Barbastella barbastellus (Schreber, 1774)",match with annexspecies
+bxl_2.2,Eptesicus serotinus,"Eptesicus serotinus (Schreber, 1774)",match with annexspecies
+bxl_2.2,Myotis bechsteinii,"Myotis bechsteinii (Kuhl, 1817)",match with annexspecies
+bxl_2.2,Myotis brandtii,"Myotis brandtii (Eversmann, 1845)",match with annexspecies
+bxl_2.2,Myotis dasycneme,"Myotis dasycneme (Boie, 1825)",match with annexspecies
+bxl_2.2,Myotis daubentoni,"Myotis daubentonii (Kuhl, 1817)",match with annexspecies
+bxl_2.2,Myotis emarginatus,"Myotis emarginatus (E.Geoffroy, 1806)",match with annexspecies
+bxl_2.2,Myotis myotis,"Myotis myotis (Borkhausen, 1797)",match with annexspecies
+bxl_2.2,Myotis mystacinus,"Myotis mystacinus (Kuhl, 1817)",match with annexspecies
+bxl_2.2,Myotis nattereri,"Myotis nattereri (Kuhl, 1817)",match with annexspecies
+bxl_2.2,Nyctalus leisleri,"Nyctalus leisleri (Kuhl, 1817)",match with annexspecies
+bxl_2.2,Nyctalus noctula,"Nyctalus noctula (Schreber, 1774)",match with annexspecies
+bxl_2.2,Pipistrellus nathusii,"Pipistrellus nathusii (Keyserling & Blasius, 1839)",match with annexspecies
+bxl_2.2,Pipistrellus pipistrellus,"Pipistrellus pipistrellus (Schreber, 1774)",match with annexspecies
+bxl_2.2,Plecotus auritus,"Plecotus auritus (Linnaeus, 1758)",match with annexspecies
+bxl_2.2,Plecotus austriacus,"Plecotus austriacus (J.Fischer, 1829)",match with annexspecies
+bxl_2.2,Acipenser sturio,"Acipenser sturio Linnaeus, 1758",match with annexspecies
+bxl_2.2,Rhodeus sericeus amarus,"Rhodeus sericeus amarus (Bloch, 1782)",match with annexspecies
+bxl_2.2,Hippocampus hippocampus,"Hippocampus hippocampus (Linnaeus, 1758)",match with annexspecies
+bxl_2.2,Hippocampus ramulosus,"Hippocampus ramulosus Leach, 1814",match with annexspecies
+bxl_2.2,Cetorhinus maximus,"Cetorhinus maximus (Gunnerus, 1765)",match with annexspecies
+bxl_2.2,Coregonus oxyrhynchus (anadrome populaties in bepaalde sectoren van de Noordzee),"Coregonus oxyrinchus (Linnaeus, 1758)",match with annexspecies
+bxl_2.2,Cerambyx cerdo,"Cerambyx cerdo Linnaeus, 1758",match with annexspecies
+bxl_2.2,Dytiscus latissimus,"Dytiscus latissimus Linnaeus, 1758",match with annexspecies
+bxl_2.2,Graphoderus bilineatus,"Graphoderus bilineatus (De Geer, 1774)",match with annexspecies
+bxl_2.2,Lucanus cervus,"Lucanus cervus (Linnaeus, 1758)",match with annexspecies
+bxl_2.2,Osmoderma eremita,"Osmoderma eremita (Scopoli, 1763)",match with annexspecies
+bxl_2.2,Palingenia longicauda,"Palingenia longicauda (Olivier, 1791)",match with annexspecies
+bxl_2.2,Coenonympha hero,"Coenonympha hero (Linnaeus, 1761)",match with annexspecies
+bxl_2.2,Eriogaster catax,"Eriogaster catax (Linnaeus, 1758)",match with annexspecies
+bxl_2.2,Euphydryas (Eurodryas) aurinia,"Euphydryas aurinia (Rottemburg, 1775)",match with annexspecies
+bxl_2.2,Lopinga achine,"Lopinga achine (Scopoli, 1763)",match with annexspecies
+bxl_2.2,Maculinea arion,"Maculinea arion (Linnaeus, 1758)",match with annexspecies
+bxl_2.2,Maculinea nausithous,"Maculinea nausithous (Bergsträsser, 1779)",match with annexspecies
+bxl_2.2,Maculinea teleius,"Maculinea teleius (Bergsträsser, 1779)",match with annexspecies
+bxl_2.2,Parnassius apollo,"Parnassius apollo (Linnaeus, 1758)",match with annexspecies
+bxl_2.2,Proserpinus proserpina,"Proserpinus proserpina (Pallas, 1772)",match with annexspecies
+bxl_2.2,Aeshna viridis,"Aeshna viridis Eversmann, 1836",match with annexspecies
+bxl_2.2,Coenagrion mercuriale,"Coenagrion mercuriale Charpentier, 1840",match with annexspecies
+bxl_2.2,Leucorrhinia albifrons,"Leucorrhinia albifrons Burmeister, 1839",match with annexspecies
+bxl_2.2,Leucorrhinia caudalis,"Leucorrhinia caudalis Charpentier, 1840",match with annexspecies
+bxl_2.2,Leucorrhinia pectoralis,"Leucorrhinia pectoralis Charpentier, 1825",match with annexspecies
+bxl_2.2,Ophiogomphus cecilia,"Ophiogomphus cecilia Fourcroy, 1785",match with annexspecies
+bxl_2.2,Oxygastra curtisii,"Oxygastra curtisii Dale, 1834",match with annexspecies
+bxl_2.2,Sympecma braueri,"Sympecma braueri Yakobson & Bianki, 1904",match with annexspecies
+bxl_2.2,Anisus vorticulus,"Anisus vorticulus (Troschel, 1834)",match with annexspecies
+bxl_2.2,Unio crassus,"Unio crassus Philipsson, 1788",match with annexspecies
+bxl_2.2,Botrychium matricarifolium A. Braun ex Koch,Botrychium matricariifolium (Döll) A.Br. ex Koch,match with annexspecies
+bxl_2.2,Osmunda regalis L.,Osmunda regalis L.,match with annexspecies
+bxl_2.2,Polystichum aculeatum,Polystichum aculeatum (L.) Roth,match with annexspecies
+bxl_2.2,Salvinia natans (L.) All.,Salvinia natans (L.) All.,match with annexspecies
+bxl_2.2,Luronium natans (L.) Raf.,Luronium natans Raf.,match with annexspecies
+bxl_2.2,Leucojum aestivum L.,Leucojum aestivum L.,match with annexspecies
+bxl_2.2,Leucojum vernum L.,Leucojum vernum L.,match with annexspecies
+bxl_2.2,Eryngium maritimum L.,Eryngium maritimum L.,match with annexspecies
+bxl_2.2,Calla palustris L.,Calla palustris L.,match with annexspecies
+bxl_2.2,Stratiotes aloides L.,Stratiotes aloides L.,match with annexspecies
+bxl_2.2,Aristolochia clematitis,Aristolochia clematitis L.,match with annexspecies
+bxl_2.2,Artemisia campestris L.,Artemisia campestris L.,match with annexspecies
+bxl_2.2,Lobelia dortmanna (L.),Lobelia dortmanna L.,match with annexspecies
+bxl_2.2,Artemisia campestris L. subsp. bottnica A.N. LundstrÃ©m ex Kindb,Artemisia campestris L.,match with annexspecies
+bxl_2.2,Crepis tectorum L. subsp. Nigrescens,Crepis tectorum L.,match with annexspecies
+bxl_2.2,Sisymbrium supinum L.,Sisymbrium supinum L.,match with annexspecies
+bxl_2.2,Juniperus communis L.,Juniperus communis L.,match with annexspecies
+bxl_2.2,Tamus communis L.,Tamus communis L.,match with annexspecies
+bxl_2.2,Drosera intermedia Hayne,Drosera intermedia Hayne,match with annexspecies
+bxl_2.2,Drosera rotundifolia L.,Drosera rotundifolia L.,match with annexspecies
+bxl_2.2,Erica cinerea L.,Erica cinerea L.,match with annexspecies
+bxl_2.2,Erica tetralix L.,Erica tetralix L.,match with annexspecies
+bxl_2.2,Gentiana cruciata L.,Gentiana cruciata L.,match with annexspecies
+bxl_2.2,Gentiana pneumonanthe L.,Gentiana pneumonanthe L.,match with annexspecies
+bxl_2.2,Anthericum liliago L.,Anthericum liliago L.,match with annexspecies
+bxl_2.2,Scilla bifolia L.,Scilla bifolia L.,match with annexspecies
+bxl_2.2,Althaea officinalis L.,Althaea officinalis L.,match with annexspecies
+bxl_2.2,Liparis loeseli (L.) Rich.,Liparis loeselii (L.) Rich.,match with annexspecies
+bxl_2.2,Ophrys oestrifera Bieb.,Ophrys oestrifera M.Bieb.,match with annexspecies
+bxl_2.2,Spiranthes aestivalis (Poiret) L. C. M. Richard,Spiranthes aestivalis Rich.,match with annexspecies
+bxl_2.2,Limonium vulgare Mill.,Limonium vulgare Mill.,match with annexspecies
+bxl_2.2,Primula vulgaris Huds,Primula vulgaris Hudson,match with annexspecies
+bxl_2.2,Trientalis europaea L.,Trientalis europaea L.,match with annexspecies
+bxl_2.2,Aconitum napellus L.,Aconitum napellus L.,match with annexspecies
+bxl_2.2,Actaea spicata L.,Actaea spicata L.,match with annexspecies
+bxl_2.2,Anemone pulsatilla L.,Anemone pulsatilla L.,match with annexspecies
+bxl_2.2,Parnassia palustris L.,Parnassia palustris L.,match with annexspecies
+bxl_2.2,Saxifraga hirculus L.,Saxifraga hirculus L.,match with annexspecies
+bxl_2.2,Sparganium angustifolium Michaux,Sparganium angustifolium Michx.,match with annexspecies
+bxl_2.2,Daphne mezereum L.,Daphne mezereum L.,match with annexspecies
+bxl_2.2,Apium repens (Jacq.) Lag.,Apium repens (Jacq.) Lag.,match with annexspecies
+bxl_2.2,Zostera marina L.,Zostera marina L.,match with annexspecies
+bxl_2.3,Melolontha Melolontha,"Melolontha melolontha (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Formica polyctena,"Formica polyctena Foerster, 1850",match with annexspecies
+bxl_2.3,Aglais urticae,"Aglais urticae (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Anthocharis cardamines,"Anthocharis cardamines (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Aphantopus hyperantus,"Aphantopus hyperantus (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Apatura iris,"Apatura iris (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Araschnia levana,"Araschnia levana (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Celastrina argiolus,"Celastrina argiolus (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Coenonympha pamphilus,"Coenonympha pamphilus (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Colias croceus,"Colias croceus (Fourcroy, 1785)",match with annexspecies
+bxl_2.3,Colias hyale,"Colias hyale (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Gonepteryx rhamni,"Gonepteryx rhamni (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Inachis io,"Inachis io (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Lasiommata megera,"Lasiommata megera (Linnaeus, 1767)",match with annexspecies
+bxl_2.3,Lycaena phlaeas,"Lycaena phlaeas (Linnaeus, 1761)",match with annexspecies
+bxl_2.3,Maniola jurtina,"Maniola jurtina (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Neozephyrus quercus,"Neozephyrus quercus (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Nymphalis antiopa,"Nymphalis antiopa (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Nymphalis polychloros,"Nymphalis polychloros (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Papilio machaon,"Papilio machaon Linnaeus, 1758",match with annexspecies
+bxl_2.3,Pararge aegeria,"Pararge aegeria (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Pieris brassicae,"Pieris brassicae (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Pieris napi,"Pieris napi (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Pieris rapae,"Pieris rapae (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Polyommatus icarus,"Polyommatus icarus (Rottemburg, 1775)",match with annexspecies
+bxl_2.3,Pyronia tithonus,"Pyronia tithonus (Linnaeus, 1767)",match with annexspecies
+bxl_2.3,Satyrium w-album,"Satyrium w-album (Knoch, 1782)",match with annexspecies
+bxl_2.3,Thecla betulae,"Thecla betulae (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Thymelicus lineola,"Thymelicus lineola (Ochsenheimer, 1808)",match with annexspecies
+bxl_2.3,Thymelicus sylvestris,"Thymelicus sylvestris (Poda, 1761)",match with annexspecies
+bxl_2.3,Vanessa atalanta,"Vanessa atalanta (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Vanessa cardui,"Vanessa cardui (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Aeshna affinis,"Aeshna affinis Vander Linden, 1820",match with annexspecies
+bxl_2.3,Aeshna cyanea,"Aeshna cyanea Müller, 1764",match with annexspecies
+bxl_2.3,Aeshna grandis,"Aeshna grandis Linnaeus, 1758",match with annexspecies
+bxl_2.3,Aeshna mixta,"Aeshna mixta Latreille, 1805",match with annexspecies
+bxl_2.3,Aeshna subarctica,"Aeshna subarctica Walker, 1908",match with annexspecies
+bxl_2.3,Anax imperator,"Anax imperator Leach, 1815",match with annexspecies
+bxl_2.3,Calopteryx splendens,"Calopteryx splendens Harris, 1780",match with annexspecies
+bxl_2.3,Ceriagrion tenellum,"Ceriagrion tenellum De Villers, 1789",match with annexspecies
+bxl_2.3,Coenagrion lunulatum,"Coenagrion lunulatum Charpentier, 1840",match with annexspecies
+bxl_2.3,Coenagrion mercuriale,"Coenagrion mercuriale Charpentier, 1840",match with annexspecies
+bxl_2.3,Coenagrion puella,"Coenagrion puella Linnaeus, 1758",match with annexspecies
+bxl_2.3,Cordulegaster bidentata,"Cordulegaster bidentata Selys, 1843",match with annexspecies
+bxl_2.3,Cordulegaster boltoni,"Cordulegaster boltonii Donovan, 1807",match with annexspecies
+bxl_2.3,Cordulia aenea,"Cordulia aenea Linnaeus, 1758",match with annexspecies
+bxl_2.3,Enallagma cyathigerum,"Enallagma cyathigerum Charpentier, 1840",match with annexspecies
+bxl_2.3,Epitheca bimaculata,"Epitheca bimaculata Charpentier, 1825",match with annexspecies
+bxl_2.3,Erythromma najas,"Erythromma najas Hansemann, 1823",match with annexspecies
+bxl_2.3,Erythromma viridulum,"Erythromma viridulum Charpentier, 1840",match with annexspecies
+bxl_2.3,Gomphus pulchellus,"Gomphus pulchellus Selys, 1840",match with annexspecies
+bxl_2.3,Ischnura elegans,"Ischnura elegans Vander Linden, 1820",match with annexspecies
+bxl_2.3,Ischnura pumilio,"Ischnura pumilio Charpentier, 1825",match with annexspecies
+bxl_2.3,Lestes sponsa,"Lestes sponsa Hansemann, 1823",match with annexspecies
+bxl_2.3,Lestes viridis,"Lestes viridis Vander Linden, 1825",match with annexspecies
+bxl_2.3,Leucorrhinia caudalis,"Leucorrhinia caudalis Charpentier, 1840",match with annexspecies
+bxl_2.3,Libellula depressa,"Libellula depressa Linnaeus, 1758",match with annexspecies
+bxl_2.3,Libellula quadrimaculata,"Libellula quadrimaculata Linnaeus, 1758",match with annexspecies
+bxl_2.3,Nehalennia speciosa,"Nehalennia speciosa Charpentier, 1840",match with annexspecies
+bxl_2.3,Onychogomphus forcipatus,"Onychogomphus forcipatus Linnaeus, 1758",match with annexspecies
+bxl_2.3,Onychogomphus uncatus,"Onychogomphus uncatus Charpentier, 1840",match with annexspecies
+bxl_2.3,Orthetrum cancellatum,"Orthetrum cancellatum Linnaeus, 1758",match with annexspecies
+bxl_2.3,Oxygastra curtisii,"Oxygastra curtisii Dale, 1834",match with annexspecies
+bxl_2.3,Platycnemis pennipes,"Platycnemis pennipes Pallas, 1771",match with annexspecies
+bxl_2.3,Pyrrhosoma nymphula,"Pyrrhosoma nymphula Sulzer, 1776",match with annexspecies
+bxl_2.3,Somatochlora arctica,"Somatochlora arctica Zetterstedt, 1840",match with annexspecies
+bxl_2.3,Sympetrum danae,"Sympetrum danae Sulzer, 1776",match with annexspecies
+bxl_2.3,Sympetrum pedemontanum,"Sympetrum pedemontanum O.F.Müller, 1766",match with annexspecies
+bxl_2.3,Sympetrum sanguineum,"Sympetrum sanguineum Müller, 1764",match with annexspecies
+bxl_2.3,Sympetrum striolatum,"Sympetrum striolatum Charpentier, 1840",match with annexspecies
+bxl_2.3,Sympetrum vulgatum,"Sympetrum vulgatum Linnaeus, 1758",match with annexspecies
+bxl_2.3,Barbitistes serricauda,"Barbitistes serricauda (Fabricius, 1794)",match with annexspecies
+bxl_2.3,Chorthippus brunneus,"Chorthippus brunneus (Thunberg, 1815)",match with annexspecies
+bxl_2.3,Chorthippus parallelus,"Chorthippus parallelus (Zetterstedt, 1821)",match with annexspecies
+bxl_2.3,Chorthippus albomarginatus,"Chorthippus albomarginatus (De Geer, 1773)",match with annexspecies
+bxl_2.3,Conocephalus discolor,"Conocephalus discolor Thunberg, 1815",match with annexspecies
+bxl_2.3,Conocephalus dorsalis,"Conocephalus dorsalis (Latreille, 1804)",match with annexspecies
+bxl_2.3,Gryllotalpa gryllotalpa,"Gryllotalpa gryllotalpa (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Leptophyes punctatissima,"Leptophyes punctatissima (Bosc, 1792)",match with annexspecies
+bxl_2.3,Meconema thalassinum,"Meconema thalassinum (De Geer, 1773)",match with annexspecies
+bxl_2.3,Meconema meridionale,"Meconema meridionale Costa & A., 1860",match with annexspecies
+bxl_2.3,Pholidoptera griseoaptera,"Pholidoptera griseoaptera (De Geer, 1773)",match with annexspecies
+bxl_2.3,Stethophyma grossum,"Stethophyma grossum (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Tetrix subulata,"Tetrix subulata (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Tetrix tenuicornis,"Tetrix tenuicornis (Sahlberg, 1891)",match with annexspecies
+bxl_2.3,Tettigonia viridissima,"Tettigonia viridissima (Linnaeus, 1758)",match with annexspecies
+bxl_2.3,Atypus affinis,"Atypus affinis Eichwald, 1830",match with annexspecies
+bxl_2.3,Aira caryophyllea,Aira caryophyllea L.,match with annexspecies
+bxl_2.3,Aira praecox,Aira praecox L.,match with annexspecies
+bxl_2.3,Alchemilla glabra,Alchemilla glabra Neygenf.,match with annexspecies
+bxl_2.3,Alchemilla xanthochlora,Alchemilla xanthochlora Rothm.,match with annexspecies
+bxl_2.3,Anemone ranunculoides,Anemone ranunculoides L.,match with annexspecies
+bxl_2.3,Anthemis arvensis,Anthemis arvensis L.,match with annexspecies
+bxl_2.3,Anthyllis vulneraria,Anthyllis vulneraria L.,match with annexspecies
+bxl_2.3,Arctium nemorosum,Arctium nemorosum Lejeune,match with annexspecies
+bxl_2.3,Carex caryophyllea,Carex caryophyllea Latour.,match with annexspecies
+bxl_2.3,Carex digitata,Carex digitata L.,match with annexspecies
+bxl_2.3,Carex divulsa,Carex divulsa Stokes,match with annexspecies
+bxl_2.3,Carex strigosa,Carex strigosa Huds.,match with annexspecies
+bxl_2.3,Catabrosa aquatica,Catabrosa aquatica P.Beauv.,match with annexspecies
+bxl_2.3,Catapodium rigidum,Catapodium rigidum (L.) C.E.Hubb.,match with annexspecies
+bxl_2.3,Centranthus ruber,Centranthus ruber (All.) Lam. & DC.,match with annexspecies
+bxl_2.3,Corydalis solida,Corydalis solida (L.) Clairv.,match with annexspecies
+bxl_2.3,Corynephorus canescens,Corynephorus canescens P.Beauv.,match with annexspecies
+bxl_2.3,Cyperus fuscus,Cyperus fuscus L.,match with annexspecies
+bxl_2.3,Dianthus armeria,Dianthus armeria L.,match with annexspecies
+bxl_2.3,Epilobium lanceolatum,Epilobium lanceolatum Sebast. & Mauri,match with annexspecies
+bxl_2.3,Equisetum sylvaticum,Equisetum sylvaticum L.,match with annexspecies
+bxl_2.3,Epipactis helleborine,Epipactis helleborine (L.) Crantz,match with annexspecies
+bxl_2.3,Erigeron acer,Erigeron acer L.,match with annexspecies
+bxl_2.3,Euphorbia exigua,Euphorbia exigua L.,match with annexspecies
+bxl_2.3,Gagea spathacea,Gagea spathacea Salisb.,match with annexspecies
+bxl_2.3,Gymnocarpium dryopteris,Gymnocarpium dryopteris Newm.,match with annexspecies
+bxl_2.3,Helleborus viridis,Helleborus viridis L.,match with annexspecies
+bxl_2.3,Hieracium lactucella,Hieracium lactucella Wallr.,match with annexspecies
+bxl_2.3,Hieracium maculatum,Hieracium maculatum Schrank,match with annexspecies
+bxl_2.3,Holosteum umbellatum,Holosteum umbellatum L.,match with annexspecies
+bxl_2.3,Hypericum hirsutum,Hypericum hirsutum L.,match with annexspecies
+bxl_2.3,Hypericum montanum,Hypericum montanum L.,match with annexspecies
+bxl_2.3,Juncus acutiflorus,Juncus acutiflorus Ehrh. ex Hoffm.,match with annexspecies
+bxl_2.3,Juncus subnodulosus,Juncus subnodulosus Schrank,match with annexspecies
+bxl_2.3,Knautia arvensis,Knautia arvensis Coult.,match with annexspecies
+bxl_2.3,Lathyrus aphaca,Lathyrus aphaca L.,match with annexspecies
+bxl_2.3,Leersia oryzoides,Leersia oryzoides (L.) Sw.,match with annexspecies
+bxl_2.3,Leontodon hispidus,Leontodon hispidus L.,match with annexspecies
+bxl_2.3,Leonurus cardiaca,Leonurus cardiaca L.,match with annexspecies
+bxl_2.3,Lithospermum officinale,Lithospermum officinale L.,match with annexspecies
+bxl_2.3,Malva alcea,Malva alcea L.,match with annexspecies
+bxl_2.3,Melampyrum pratense,Melampyrum pratense L.,match with annexspecies
+bxl_2.3,Myosotis stricta,Myosotis stricta Link ex Roem. & Schult.,match with annexspecies
+bxl_2.3,Myriophyllum verticillatum,Myriophyllum verticillatum L.,match with annexspecies
+bxl_2.3,Nardus stricta,Nardus stricta L.,match with annexspecies
+bxl_2.3,Odontites vernus,Odontites vernus Dumort.,match with annexspecies
+bxl_2.3,Oreopteris limbosperma,Oreopteris limbosperma (All.) Holub,match with annexspecies
+bxl_2.3,Parietaria officinalis,Parietaria officinalis L.,match with annexspecies
+bxl_2.3,Petrorhagia prolifera,Petrorhagia prolifera (L.) P.W.Ball & Heywood,match with annexspecies
+bxl_2.3,Phyteuma spicatum,Phyteuma spicatum L.,match with annexspecies
+bxl_2.3,Polygala serpyllifolia,Polygala serpyllifolia Hosé,match with annexspecies
+bxl_2.3,Polygala vulgaris,Polygala vulgaris L.,match with annexspecies
+bxl_2.3,Pyrola minor,Pyrola minor L.,match with annexspecies
+bxl_2.3,Rhinanthus minor,Rhinanthus minor L.,match with annexspecies
+bxl_2.3,Solidago virgaurea,Solidago virgaurea L.,match with annexspecies
+bxl_2.3,Stachys arvensis,Stachys arvensis L.,match with annexspecies
+bxl_2.3,Tamus communis,Tamus communis L.,match with annexspecies
+bxl_2.3,Thymus pulegioides,Thymus pulegioides L.,match with annexspecies
+bxl_2.3,Torilis arvensis,Torilis arvensis Link,match with annexspecies
+bxl_2.3,Trifolium medium,Trifolium medium L.,match with annexspecies
+bxl_2.3,Trifolium striatum,Trifolium striatum L.,match with annexspecies
+bxl_2.3,Viola hirta,Viola hirta L.,match with annexspecies
+bxl_2.3,Leucobryum glaucum,"Leucobryum glaucum Ångström, 1845",match with annexspecies
+bxl_2.3,Allium ursinum,Allium ursinum L.,match with annexspecies
+bxl_2.3,Berula erecta,Berula erecta (Huds.) Coville,match with annexspecies
+bxl_2.3,Calluna vulgaris,Calluna vulgaris (L.) Hull,match with annexspecies
+bxl_2.3,Caltha palustris,Caltha palustris L.,match with annexspecies
+bxl_2.3,Campanula rotundifolia,Campanula rotundifolia L.,match with annexspecies
+bxl_2.3,Campanula trachelium,Campanula trachelium L.,match with annexspecies
+bxl_2.3,Cardamine amara,Cardamine amara L.,match with annexspecies
+bxl_2.3,Centaurium erythraea,Centaurium erythraea Rafn,match with annexspecies
+bxl_2.3,Chrysosplenium alternifolium,Chrysosplenium alternifolium L.,match with annexspecies
+bxl_2.3,Chrysosplenium oppositifolium,Chrysosplenium oppositifolium L.,match with annexspecies
+bxl_2.3,Crepis paludosa,Crepis paludosa Moench,match with annexspecies
+bxl_2.3,Cruciata laevipes,Cruciata laevipes Opiz,match with annexspecies
+bxl_2.3,iris pseudacorus,Iris pseudacorus L.,match with annexspecies
+bxl_2.3,Lathyrus tuberosus,Lathyrus tuberosus L.,match with annexspecies
+bxl_2.3,Maianthemum bifolium,Maianthemum bifolium (L.) F.W.Schmidt,match with annexspecies
+bxl_2.3,Myosoton aquaticum,Myosoton aquaticum Moench,match with annexspecies
+bxl_2.3,Narcissus pseudonarcissus,Narcissus pseudonarcissus L.,match with annexspecies
+bxl_2.3,Paris quadrifolia,Paris quadrifolia L.,match with annexspecies
+bxl_2.3,Phyteuma nigrum,Phyteuma nigrum F.W.Schmidt,match with annexspecies
+bxl_2.3,Pimpinella major,Pimpinella major Huds.,match with annexspecies
+bxl_2.3,Polygonatum multiflorum,Polygonatum multiflorum All.,match with annexspecies
+bxl_2.3,Ranunculus auricomus,Ranunculus auricomus L.,match with annexspecies
+bxl_2.3,Ranunculus bulbosus,Ranunculus bulbosus L.,match with annexspecies
+bxl_2.3,Sanicula europaea,Sanicula europaea L.,match with annexspecies
+bxl_2.3,Senecio ovatus,"Senecio ovatus (G.Gaertn., B.Mey. & Scherb.) Willd.",match with annexspecies
+bxl_2.3,Stellaria holostea,Stellaria holostea L.,match with annexspecies
+bxl_2.3,Torilis japonica,Torilis japonica DC.,match with annexspecies
+bxl_2.3,Vaccinium myrtillus,Vaccinium myrtillus L.,match with annexspecies
+bxl_2.3,Vinca minor,Vinca minor L.,match with annexspecies
+bxl_2.4,Martes foina,"Martes foina Erxleben, 1777",match with annexspecies
+bxl_2.4,Martes Martes,"Martes martes (Linnaeus, 1758)",match with annexspecies
+bxl_2.4,Eliomys quercinus,"Eliomys quercinus (Linnaeus, 1766)",match with annexspecies
+bxl_2.4,Muscardinus avellanarius,"Muscardinus avellanarius (Linnaeus, 1758)",match with annexspecies
+bxl_2.4,Delichon urbica,"Delichon urbicum (Linnaeus, 1758)",match with annexspecies
+bxl_2.4,Riparia Riparia,"Riparia riparia (Linnaeus, 1758)",match with annexspecies
+bxl_2.4,Hirundo rustica,"Hirundo rustica Linnaeus, 1758",match with annexspecies
+bxl_2.4,Anguis fragilis,"Anguis fragilis Linnaeus, 1758",match with annexspecies
+bxl_2.4,Lacerta vivipara,"Lacerta vivipara Von Jacquin, 1787",match with annexspecies
+bxl_2.4,Salamandra Salamandra,"Salamandra salamandra (Linnaeus, 1758)",match with annexspecies
+bxl_2.4,lLucanus cervus,"Lucanus cervus (Linnaeus, 1758)",match with annexspecies
+bxl_2.4,Melolontha Melolontha,"Melolontha melolontha (Linnaeus, 1758)",match with annexspecies
+bxl_2.4,Formica polyctena,"Formica polyctena Foerster, 1850",match with annexspecies
+bxl_2.4,Apatura iris,"Apatura iris (Linnaeus, 1758)",match with annexspecies
+bxl_2.4,Satyrium w-album,"Satyrium w-album (Knoch, 1782)",match with annexspecies
+bxl_2.4,Thecla betulae,"Thecla betulae (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Abramis vimba,"Abramis vimba (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Alburnoides bipunctatus,"Alburnoides bipunctatus (Bloch, 1782)",match with annexspecies
+bxl_2.5,Aspius aspius,"Aspius aspius (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Chondrostoma nasus,"Chondrostoma nasus (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Leucaspius delineatus,"Leucaspius delineatus (Heckel, 1843)",match with annexspecies
+bxl_2.5,Cobitis taenia,"Cobitis taenia Linnaeus, 1758",match with annexspecies
+bxl_2.5,Misgurnis fossilis,"Misgurnus fossilis (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Pomatoschistus microps,"Pomatoschistus microps (Krøyer, 1838)",match with annexspecies
+bxl_2.5,Pomatoschistus minutus,"Pomatoschistus minutus (Pallas, 1770)",match with annexspecies
+bxl_2.5,Lampetra fluviatilis,"Lampetra fluviatilis (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Lampetra planeri,"Lampetra planeri (Bloch, 1784)",match with annexspecies
+bxl_2.5,Petromyzon marinus,"Petromyzon marinus Linnaeus, 1758",match with annexspecies
+bxl_2.5,Lamna nasus (Med.),"Lamna nasus (Bonnaterre, 1788)",match with annexspecies
+bxl_2.5,Prionace glauca (Med.),"Prionace glauca (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Squatina squatina (Med.),"Squatina squatina (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Thymallus thymallus,"Thymallus thymallus (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Salmo salar (alleen in zoet water),"Salmo salar Linnaeus, 1758",match with annexspecies
+bxl_2.5,Thymallus thymallus,"Thymallus thymallus (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Siluris glanis,"Siluris glanis Linnaeus, 1758",match with annexspecies
+bxl_2.5,Hirudo medicinalis,"Hirudo medicinalis Linnaeus, 1758",match with annexspecies
+bxl_2.5,Astacus astacus,"Astacus astacus (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Homarus gammarus (Med.),"Homarus gammarus (Linnaeus, 1758)",match with annexspecies
+bxl_2.5,Helix pomatia,"Helix pomatia Linnaeus, 1758",match with annexspecies
+bxl_2.5,Leucobryum glaucum (Hedw.) Angstr.,"Leucobryum glaucum Ångström, 1845",match with annexspecies
+bxl_2.5,Galanthus nivalis L.,Galanthus nivalis L.,match with annexspecies
+bxl_2.5,Arnica montana L.,Arnica montana L.,match with annexspecies
+bxl_2.5,Tamus communis L.,Tamus communis L.,match with annexspecies
+bxl_2.5,Centaurium littorale (D. Turn) Gilm.,Centaurium littorale (Turner) Gilmour,match with annexspecies
+bxl_2.5,Centaurium pulchellum (Sw.) Druce,Centaurium pulchellum (Sw.) Druce,match with annexspecies
+bxl_2.5,Menyanthes trifoliata L.,Menyanthes trifoliata L.,match with annexspecies
+bxl_3,Cervus elaphus,"Cervus elaphus Linnaeus, 1758",match with annexspecies
+bxl_3,Capreolus Capreolus,"Capreolus capreolus (Linnaeus, 1758)",match with annexspecies
+bxl_3,Dama Dama,"Dama dama (Linnaeus, 1758)",match with annexspecies
+bxl_3,Lepus europaeus,"Lepus europaeus Pallas, 1778",match with annexspecies
+bxl_3,Phasianus colchicus,"Phasianus colchicus Linnaeus, 1758",match with annexspecies
+bxl_3,Anas platyrhynchos,"Anas platyrhynchos Linnaeus, 1758",match with annexspecies
+bxl_3,Oryctolagus cuniculus,"Oryctolagus cuniculus (Linnaeus, 1758)",match with annexspecies
+bxl_4,Aix galericulata,"Aix galericulata (Linnaeus, 1758)",match with annexspecies
+bxl_4,Alopochen aegyptiacus,"Alopochen aegyptiaca (Linnaeus, 1766)",match with annexspecies
+bxl_4,Ameiurus nebulosus,"Ameiurus nebulosus (Lesueur, 1819)",match with annexspecies
+bxl_4,Anser indicus,"Anser indicus (Latham, 1790)",match with annexspecies
+bxl_4,Branta canadensis,"Branta canadensis (Linnaeus, 1758)",match with annexspecies
+bxl_4,Carassius gibelio,"Carassius gibelio (Bloch, 1782)",match with annexspecies
+bxl_4,Chloephaga picta,"Chloephaga picta (Gmelin, 1789)",match with annexspecies
+bxl_4,Cygnus atratus,"Cygnus atratus (Latham, 1790)",match with annexspecies
+bxl_4,Dama dama,"Dama dama (Linnaeus, 1758)",match with annexspecies
+bxl_4,Harmonia axyridis,"Harmonia axyridis (Pallas, 1773)",match with annexspecies
+bxl_4,Lepomis gibbosus,"Lepomis gibbosus (Linnaeus, 1758)",match with annexspecies
+bxl_4,Mustela vison,"Mustela vison Schreber, 1777",match with annexspecies
+bxl_4,Myiopsitta monachus,"Myiopsitta monachus (Boddaert, 1783)",match with annexspecies
+bxl_4,Myocastor coypus,"Myocastor coypus (Molina, 1782)",match with annexspecies
+bxl_4,Ondatra zibethicus,"Ondatra zibethicus (Linnaeus, 1766)",match with annexspecies
+bxl_4,QOxyura jamaicensis,"Oxyura jamaicensis (Gmelin, 1789)",match with annexspecies
+bxl_4,Pimephales promelas,"Pimephales promelas Rafinesque, 1820",match with annexspecies
+bxl_4,Procyon lotor,"Procyon lotor (Linnaeus, 1758)",match with annexspecies
+bxl_4,Pseudorasbora parva,"Pseudorasbora parva (Temminck & Schlegel, 1846)",match with annexspecies
+bxl_4,Psittacula eupatria,"Psittacula eupatria (Linnaeus, 1766)",match with annexspecies
+bxl_4,Psittacula krameri,"Psittacula krameri (Scopoli, 1769)",match with annexspecies
+bxl_4,Rana (Pelophylax) ridibunda,"Rana ridibunda Pallas, 1771",match with annexspecies
+bxl_4,Rana (Pelophylax) ridibunda,"Rana ridibunda Pallas, 1771",match with annexspecies
+bxl_4,Rana catesbeiana,"Rana catesbeiana Shaw, 1802",match with annexspecies
+bxl_4,Sander lucioperca,"Sander lucioperca (Linnaeus, 1758)",match with annexspecies
+bxl_4,Tamias sibiricus,"Tamias sibiricus (Laxmann, 1769)",match with annexspecies
+bxl_4,Threskiornis aethiopica,"Threskiornis aethiopicus (Latham, 1790)",match with annexspecies
+bxl_4,Umbra pygmaea,"Umbra pygmaea (DeKay, 1842)",match with annexspecies
+bxl_4,Acer negundo,Acer negundo L.,match with annexspecies
+bxl_4,Ailanthus altissima,Ailanthus altissima Swingle,match with annexspecies
+bxl_4,Ambrosia artemisiifolia,Ambrosia artemisiifolia L.,match with annexspecies
+bxl_4,Amelanchier lamarckii,Amelanchier lamarckii F.G.Schroed.,match with annexspecies
+bxl_4,Azolla filiculoides,Azolla filiculoides Lam.,match with annexspecies
+bxl_4,Bidens frondosa,Bidens frondosa L.,match with annexspecies
+bxl_4,Buddleja davidii,Buddleja davidii Franch.,match with annexspecies
+bxl_4,Cornus sericea,Cornus sericea L.,match with annexspecies
+bxl_4,Cotoneaster horizontalis,Cotoneaster horizontalis Decne.,match with annexspecies
+bxl_4,Crassula helmsii,Crassula helmsii A.Berger,match with annexspecies
+bxl_4,Duchesnea indica,Duchesnea indica (Andr.) Focke,match with annexspecies
+bxl_4,Echinocystis lobata,Echinocystis lobata Torr. & A.Gray,match with annexspecies
+bxl_4,Egeria densa,Egeria densa Planch.,match with annexspecies
+bxl_4,Elodea canadensis,Elodea canadensis Michx.,match with annexspecies
+bxl_4,Elodea nuttallii,Elodea nuttallii St.John,match with annexspecies
+bxl_4,Epilobium ciliatum,Epilobium ciliatum Raf.,match with annexspecies
+bxl_4,Fallopia japonica,Fallopia japonica (Houtt.) Ronse Decraene,match with annexspecies
+bxl_4,Helianthus tuberosus,Helianthus tuberosus L.,match with annexspecies
+bxl_4,Heracleum mantegazzianum,Heracleum mantegazzianum Sommier & Levier,match with annexspecies
+bxl_4,Hydrocotyle ranunculoides,Hydrocotyle ranunculoides L.f.,match with annexspecies
+bxl_4,Impatiens glandulifera,Impatiens glandulifera Royle,match with annexspecies
+bxl_4,Impatiens parviflora,Impatiens parviflora DC.,match with annexspecies
+bxl_4,Lagarosiphon major,Lagarosiphon major (Ridl.) Moss,match with annexspecies
+bxl_4,Lemna minuta,Lemna minuta Kunth,match with annexspecies
+bxl_4,Ludwigia grandiflora,Ludwigia grandiflora (Michx.) Greuter & Burdet,match with annexspecies
+bxl_4,Ludwigia peploides,Ludwigia peploides (Kunth) P.H.Raven,match with annexspecies
+bxl_4,Lupinus polyphyllus,Lupinus polyphyllus Lindl.,match with annexspecies
+bxl_4,Mahonia aquifolium,Mahonia aquifolium (Pursh) Nutt.,match with annexspecies
+bxl_4,Myriophyllum aquaticum,Myriophyllum aquaticum Verdc.,match with annexspecies
+bxl_4,Persicaria wallichii,Persicaria wallichii W.Greuter & Burdet,match with annexspecies
+bxl_4,Phytolacca americana,Phytolacca americana L.,match with annexspecies
+bxl_4,Prunus laurocerasus,Prunus laurocerasus L.,match with annexspecies
+bxl_4,Prunus serotina,Prunus serotina Ehrh.,match with annexspecies
+bxl_4,Quercus rubra,Quercus rubra L.,match with annexspecies
+bxl_4,Rhododendron ponticum,Rhododendron ponticum L.,match with annexspecies
+bxl_4,Rhus typhina,Rhus typhina L.,match with annexspecies
+bxl_4,Robinia pseudoacacia,Robinia pseudoacacia L.,match with annexspecies
+bxl_4,Rosa rugosa,Rosa rugosa Thunb.,match with annexspecies
+bxl_4,Senecio inaequidens,Senecio inaequidens DC.,match with annexspecies
+bxl_4,Solidago canadensis,Solidago canadensis L.,match with annexspecies
+bxl_4,Solidago gigantea,Solidago gigantea Aiton,match with annexspecies
+bern_1,Botrychium matricariifolium A. Braun ex Koch,Botrychium matricariifolium (Döll) A.Br. ex Koch,match with annexspecies
+bern_1,Salvinia natans (L.) All.,Salvinia natans (L.) All.,match with annexspecies
+bern_1,Luronium natans (L.) Raf.,Luronium natans Raf.,match with annexspecies
+bern_1,Sisymbrium supinum L.,Sisymbrium supinum L.,match with annexspecies
+bern_1,Liparis loeselii (L.) Rich.,Liparis loeselii (L.) Rich.,match with annexspecies
+bern_1,Spiranthes aestivalis (Poiret) L.C.M. Richard,Spiranthes aestivalis Rich.,match with annexspecies
+bern_1,Saxifraga hirculus L.,Saxifraga hirculus L.,match with annexspecies
+bern_1,Apium repens (Jacq.) Lag.,Apium repens (Jacq.) Lag.,match with annexspecies
+bern_1,Zostera marina L. (Med.),Zostera marina L.,match with annexspecies
+bern_1,Orthotrichum rogeri Brid.,"Orthotrichum rogeri Bridel, 1812",match with annexspecies
+bern_2,Cricetus cricetus,"Cricetus cricetus (Linnaeus, 1758)",match with annexspecies
+bern_2,Sicista betulina,"Sicista betulina (Pallas, 1779)",match with annexspecies
+bern_2,Alopex lagopus,"Alopex lagopus (Linnaeus, 1758)",match with annexspecies
+bern_2,Canis lupus,"Canis lupus Linnaeus, 1758",match with annexspecies
+bern_2,Lutra lutra,"Lutra lutra (Linnaeus, 1758)",match with annexspecies
+bern_2,Felis silvestris,"Felis silvestris Schreber, 1777",match with annexspecies
+bern_2,Panthera pardus,"Panthera pardus (Linnaeus, 1758)",match with annexspecies
+bern_2,Odobenus rosmarus,"Odobenus rosmarus (Linnaeus, 1758)",match with annexspecies
+bern_2,Ovibos moschatus,"Ovibos moschatus (Zimmermann, 1780)",match with annexspecies
+bern_2,Monodon monoceros,"Monodon monoceros Linnaeus, 1758",match with annexspecies
+bern_2,Delphinus delphis,"Delphinus delphis Linnaeus, 1758",match with annexspecies
+bern_2,Globicephala melas,"Globicephala melas (Traill, 1809)",match with annexspecies
+bern_2,Grampus griseus,"Grampus griseus (G.Cuvier, 1812)",match with annexspecies
+bern_2,Lagenorhynchus acutus,"Lagenorhynchus acutus (Gray, 1828)",match with annexspecies
+bern_2,Lagenorhynchus albirostris,"Lagenorhynchus albirostris (Gray, 1846)",match with annexspecies
+bern_2,Orcinus orca,"Orcinus orca (Linnaeus, 1758)",match with annexspecies
+bern_2,Pseudorca crassidens,"Pseudorca crassidens (Owen, 1846)",match with annexspecies
+bern_2,Steno bredanensis,"Steno bredanensis (G.Cuvier, 1828)",match with annexspecies
+bern_2,Stenella coeruleoalba,"Stenella coeruleoalba (Meyen, 1833)",match with annexspecies
+bern_2,Tursiops truncatus (tursio),"Tursiops truncatus (Montagu, 1821)",match with annexspecies
+bern_2,Phocoena phocoena,"Phocoena phocoena (Linnaeus, 1758)",match with annexspecies
+bern_2,Kogia breviceps,"Kogia breviceps (Blainville, 1838)",match with annexspecies
+bern_2,Physeter macrocephalus,"Physeter macrocephalus Linnaeus, 1758",match with annexspecies
+bern_2,Physeter macrocephalus,"Physeter macrocephalus Linnaeus, 1758",match with annexspecies
+bern_2,Hyperoodon rostratus,"Hyperoodon rostratus (Müller, 1776)",match with annexspecies
+bern_2,Mesoplodon bidens,"Mesoplodon bidens (Sowerby, 1804)",match with annexspecies
+bern_2,Mesoplodon densirostris,"Mesoplodon densirostris (Blainville, 1817)",match with annexspecies
+bern_2,Ziphius cavirostris,"Ziphius cavirostris G.Cuvier, 1823",match with annexspecies
+bern_2,BalÃ¦noptera acutorostrata,"Balaenoptera acutorostrata Lacépède, 1804",match with annexspecies
+bern_2,BalÃ¦noptera borealis,"Balaenoptera borealis Lesson, 1828",match with annexspecies
+bern_2,Balaenoptera physalus,"Balaenoptera physalus (Linnaeus, 1758)",match with annexspecies
+bern_2,"Megaptera novaeangliae (longimana, nodosa)","Megaptera novaeangliae (Borowski, 1781)",match with annexspecies
+bern_2,Sibbaldus (Balaenoptera) musculus,"Sibbaldus musculus (Linnaeus, 1758)",match with annexspecies
+bern_2,Eubalaena glacialis,"Eubalaena glacialis (Müller, 1776)",match with annexspecies
+bern_2,Podiceps auritus,"Podiceps auritus (Linnaeus, 1758)",match with annexspecies
+bern_2,Podiceps grisegena,"Podiceps grisegena (Boddaert, 1783)",match with annexspecies
+bern_2,Podiceps nigricollis (caspicus),"Podiceps nigricollis C.L.Brehm, 1831",match with annexspecies
+bern_2,Podiceps ruficollis,"Podiceps ruficollis (Pallas, 1764)",match with annexspecies
+bern_2,Bulweria bulwerii,"Bulweria bulwerii Jardine & Selby, 1828",match with annexspecies
+bern_2,Pterodroma feae,"Pterodroma feae (Salvadori, 1900)",match with annexspecies
+bern_2,Puffinus puffinus,"Puffinus puffinus (Brunnich, 1764)",match with annexspecies
+bern_2,Phalacrocorax aristotelis,"Phalacrocorax aristotelis (Linnaeus, 1761)",match with annexspecies
+bern_2,Ardea purpurea,"Ardea purpurea Linnaeus, 1766",match with annexspecies
+bern_2,Ardeola ralloides,"Ardeola ralloides (Scopoli, 1769)",match with annexspecies
+bern_2,Botaurus stellaris,"Botaurus stellaris (Linnaeus, 1758)",match with annexspecies
+bern_2,Bulbucus (Ardeola) ibis,"Ardeola ibis (Linnaeus, 1758)",match with annexspecies
+bern_2,Casmerodius albus (Egretta alba),"Casmerodius albus (Linnaeus, 1758)",match with annexspecies
+bern_2,Egretta garzetta,"Egretta garzetta (Linnaeus, 1766)",match with annexspecies
+bern_2,Ixobrychus minutus,"Ixobrychus minutus (Linnaeus, 1766)",match with annexspecies
+bern_2,Nycticorax nycticorax,"Nycticorax nycticorax (Linnaeus, 1758)",match with annexspecies
+bern_2,Anser erythropus,"Anser erythropus (Linnaeus, 1758)",match with annexspecies
+bern_2,Branta leucopsis,"Branta leucopsis (Bechstein, 1803)",match with annexspecies
+bern_2,Branta ruficollis,"Branta ruficollis Pallas, 1769",match with annexspecies
+bern_2,Cygnus cygnus,"Cygnus cygnus (Linnaeus, 1758)",match with annexspecies
+bern_2,Cygnus bewickii (columbianus),"Cygnus bewickii Yarrell, 1830",match with annexspecies
+bern_2,Histrionicus histrionicus,"Histrionicus histrionicus (Linnaeus, 1758)",match with annexspecies
+bern_2,Mergus albellus,"Mergus albellus Linnaeus, 1758",match with annexspecies
+bern_2,Oxyura leucocephala,"Oxyura leucocephala (Scopoli, 1769)",match with annexspecies
+bern_2,Polysticta stelleri,"Polysticta stelleri (Pallas, 1769)",match with annexspecies
+bern_2,Somateria spectabilis,"Somateria spectabilis (Linnaeus, 1758)",match with annexspecies
+bern_2,Tadorna tadorna,"Tadorna tadorna (Linnaeus, 1758)",match with annexspecies
+bern_2,Tadorna ferruginea,"Tadorna ferruginea (Pallas, 1764)",match with annexspecies
+bern_2,Crex crex,"Crex crex (Linnaeus, 1758)",match with annexspecies
+bern_2,Porzana porzana,"Porzana porzana Linnaeus, 1758",match with annexspecies
+bern_2,Porzana pusilla,"Porzana pusilla (Pallas, 1776)",match with annexspecies
+bern_2,Porzana parva,"Porzana parva (Scopoli, 1769)",match with annexspecies
+bern_2,Arenaria interpres,"Arenaria interpres (Linnaeus, 1758)",match with annexspecies
+bern_2,Charadrius alexandrinus,"Charadrius alexandrinus Linnaeus, 1758",match with annexspecies
+bern_2,Charadrius dubius,"Charadrius dubius Scopoli, 1786",match with annexspecies
+bern_2,Charadrius hiaticula,"Charadrius hiaticula Linnaeus, 1758",match with annexspecies
+bern_2,Charadrius leschenaulti,"Charadrius leschenaultii Lesson, 1826",match with annexspecies
+bern_2,Eudromias morinellus,"Eudromias morinellus (Linnaeus, 1758)",match with annexspecies
+bern_2,Calidris alba,"Calidris alba (Pallas, 1764)",match with annexspecies
+bern_2,Calidris alpina,"Calidris alpina (Linnaeus, 1758)",match with annexspecies
+bern_2,Calidris ferruginea,"Calidris ferruginea (Pontoppidan, 1763)",match with annexspecies
+bern_2,Calidris maritima,"Calidris maritima (Brunnich, 1764)",match with annexspecies
+bern_2,Calidris minuta,"Calidris minuta (Leisler, 1812)",match with annexspecies
+bern_2,Calidris temminckii,"Calidris temminckii (Leisler, 1812)",match with annexspecies
+bern_2,Gallinago media,"Gallinago media (Latham, 1787)",match with annexspecies
+bern_2,Limicola falcinellus,"Limicola falcinellus (Pontoppidan, 1763)",match with annexspecies
+bern_2,Numenius tenuirostris,"Numenius tenuirostris Vieillot, 1817",match with annexspecies
+bern_2,Tringa cinerea,"Tringa cinerea (Guldenstadt, 1775)",match with annexspecies
+bern_2,Tringa glareola,"Tringa glareola Linnaeus, 1758",match with annexspecies
+bern_2,Tringa hypoleucos,"Tringa hypoleucos Linnaeus, 1758",match with annexspecies
+bern_2,Tringa ochropus,"Tringa ochropus Linnaeus, 1758",match with annexspecies
+bern_2,Tringa stagnatilis,"Tringa stagnatilis (Bechstein, 1803)",match with annexspecies
+bern_2,Burhinus oedicnemus,"Burhinus oedicnemus (Linnaeus, 1758)",match with annexspecies
+bern_2,Chlidonias hybrida,"Chlidonias hybrida (Pallas, 1811)",match with annexspecies
+bern_2,Chlidonias leucopterus,"Chlidonias leucopterus (Temminck, 1815)",match with annexspecies
+bern_2,Chlidonias niger,"Chlidonias niger (Linnaeus, 1758)",match with annexspecies
+bern_2,Gelochelidon nilotica,"Gelochelidon nilotica (Gmelin, 1789)",match with annexspecies
+bern_2,Hydroprogne caspia,"Hydroprogne caspia (Pallas, 1770)",match with annexspecies
+bern_2,Larus melanocephalus,"Larus melanocephalus Temminck, 1820",match with annexspecies
+bern_2,Larus minutus,"Larus minutus Pallas, 1776",match with annexspecies
+bern_2,Larus (Xenia) sabini,"Larus sabini Sabine, 1819",match with annexspecies
+bern_2,Pagophila eburnea,"Pagophila eburnea (Phipps, 1774)",match with annexspecies
+bern_2,Sterna albifrons,"Sterna albifrons Pallas, 1764",match with annexspecies
+bern_2,Sterna dougallii,"Sterna dougallii Montagu, 1813",match with annexspecies
+bern_2,Sterna hirundo,"Sterna hirundo Linnaeus, 1758",match with annexspecies
+bern_2,Sterna paradisaea (macrura),"Sterna paradisaea Pontoppidan, 1763",match with annexspecies
+bern_2,Sterna sandvicensis,"Sterna sandvicensis Latham, 1787",match with annexspecies
+bern_2,Clamator glandarius,"Clamator glandarius (Linnaeus, 1758)",match with annexspecies
+bern_2,Apus melba,"Apus melba (Linnaeus, 1758)",match with annexspecies
+bern_2,Alcedo atthis,"Alcedo atthis (Linnaeus, 1758)",match with annexspecies
+bern_2,Merops apiaster,"Merops apiaster Linnaeus, 1758",match with annexspecies
+bern_2,Coracias garrulus,"Coracias garrulus Linnaeus, 1758",match with annexspecies
+bern_2,Upopa epops,"Upupa epops Linnaeus, 1758",match with annexspecies
+bern_2,Calandrella brachydactyla,"Calandrella brachydactyla (Leisler, 1814)",match with annexspecies
+bern_2,Eremophila alpestris,"Eremophila alpestris Linnaeus, 1759",match with annexspecies
+bern_2,Melanocorypha calandra,"Melanocorypha calandra (Linnaeus, 1766)",match with annexspecies
+bern_2,Bombycilla garrulus,"Bombycilla garrulus (Linnaeus, 1758)",match with annexspecies
+bern_2,Cinclus cinclus,"Cinclus cinclus (Linnaeus, 1758)",match with annexspecies
+bern_2,Troglodytes troglodytes,"Troglodytes troglodytes (Linnaeus, 1758)",match with annexspecies
+bern_2,Erithacus rubecula,"Erithacus rubecula (Linnaeus, 1758)",match with annexspecies
+bern_2,Irania gutturalis,"Irania gutturalis (Guerin-Meneville, 1843)",match with annexspecies
+bern_2,Luscinia luscinia,"Luscinia luscinia (Linnaeus, 1758)",match with annexspecies
+bern_2,Luscinia megarhynchos,"Luscinia megarhynchos C.L.Brehm, 1831",match with annexspecies
+bern_2,Luscinia (Cyanosylvia) svecica,"Luscinia svecica (Linnaeus, 1758)",match with annexspecies
+bern_2,Monticola saxatilis,"Monticola saxatilis (Linnaeus, 1766)",match with annexspecies
+bern_2,Oenanthe hispanica,"Oenanthe hispanica (Linnaeus, 1758)",match with annexspecies
+bern_2,Oenanthe isabellina,"Oenanthe isabellina (Temminck, 1829)",match with annexspecies
+bern_2,Oenanthe oenanthe,"Oenanthe oenanthe (Linnaeus, 1758)",match with annexspecies
+bern_2,Oenanthe pleschanka (leucomela),"Oenanthe pleschanka (Lepechin, 1770)",match with annexspecies
+bern_2,Phoenicurus ochruros,"Phoenicurus ochruros (S.G.Gmelin, 1774)",match with annexspecies
+bern_2,Phoenicurus phoenicurus,"Phoenicurus phoenicurus (Linnaeus, 1758)",match with annexspecies
+bern_2,Saxicola rubetra,"Saxicola rubetra (Linnaeus, 1758)",match with annexspecies
+bern_2,Saxicola torquata,"Saxicola torquatus (Linnaeus, 1766)",match with annexspecies
+bern_2,Tarsiger cyanurus,"Tarsiger cyanurus (Pallas, 1773)",match with annexspecies
+bern_2,Turdus torquatus,"Turdus torquatus Linnaeus, 1758",match with annexspecies
+bern_2,Panurus biarmicus,"Panurus biarmicus (Linnaeus, 1758)",match with annexspecies
+bern_2,Calcarius lapponicus,"Calcarius lapponicus (Linnaeus, 1758)",match with annexspecies
+bern_2,Emberiza aureola,"Emberiza aureola Pallas, 1773",match with annexspecies
+bern_2,Emberiza caesia,"Emberiza caesia Cretzschmar, 1827",match with annexspecies
+bern_2,Emberiza cirlus,"Emberiza cirlus Linnaeus, 1766",match with annexspecies
+bern_2,Emberiza citrinella,"Emberiza citrinella Linnaeus, 1758",match with annexspecies
+bern_2,Emberiza leucocephala,"Emberiza leucocephala S.G.Gmelin, 1771",match with annexspecies
+bern_2,Emberiza melanocephala,"Emberiza melanocephala Scopoli, 1769",match with annexspecies
+bern_2,Emberiza pusilla,"Emberiza pusilla Pallas, 1776",match with annexspecies
+bern_2,Emberiza rustica,"Emberiza rustica Pallas, 1776",match with annexspecies
+bern_2,Emberiza schoeniclus,"Emberiza schoeniclus (Linnaeus, 1758)",match with annexspecies
+bern_2,Plectrophenax nivalis,"Plectrophenax nivalis (Linnaeus, 1758)",match with annexspecies
+bern_2,Carduelis cannabina,"Carduelis cannabina (Linnaeus, 1758)",match with annexspecies
+bern_2,Carduelis carduelis,"Carduelis carduelis (Linnaeus, 1758)",match with annexspecies
+bern_2,Carduelis chloris,"Carduelis chloris (Linnaeus, 1758)",match with annexspecies
+bern_2,Carduelis chloris,"Carduelis chloris (Linnaeus, 1758)",match with annexspecies
+bern_2,Carduelis flammea,"Carduelis flammea (Linnaeus, 1758)",match with annexspecies
+bern_2,Carduelis flavirostris,"Carduelis flavirostris (Linnaeus, 1758)",match with annexspecies
+bern_2,Carduelis hornemanni,"Carduelis hornemanni (Holböll, 1843)",match with annexspecies
+bern_2,Carduelis spinus,"Carduelis spinus (Linnaeus, 1758)",match with annexspecies
+bern_2,Carpodacus erythrinus,"Carpodacus erythrinus (Pallas, 1770)",match with annexspecies
+bern_2,Coccothraustes coccothraustes,"Coccothraustes coccothraustes (Linnaeus, 1758)",match with annexspecies
+bern_2,Loxia curvirostra,"Loxia curvirostra Linnaeus, 1758",match with annexspecies
+bern_2,Loxia leucoptera,"Loxia leucoptera J.F.Gmelin, 1789",match with annexspecies
+bern_2,Loxia pityopsittacus,"Loxia pytyopsittacus von Borkhausen, 1793",match with annexspecies
+bern_2,Pinicola enucleator,"Pinicola enucleator (Linnaeus, 1758)",match with annexspecies
+bern_2,Serinus serinus,"Serinus serinus (Linnaeus, 1766)",match with annexspecies
+bern_2,Sturnus roseus,"Sturnus roseus (Linnaeus, 1758)",match with annexspecies
+bern_2,Oriolus oriolus,"Oriolus oriolus (Linnaeus, 1758)",match with annexspecies
+bern_2,Nucifraga caryocatactes,"Nucifraga caryocatactes (Linnaeus, 1758)",match with annexspecies
+bern_2,Testudo graeca,"Testudo graeca Linnaeus, 1758",match with annexspecies
+bern_2,Emys orbicularis,"Emys orbicularis (Linnaeus, 1758)",match with annexspecies
+bern_2,Dermochelys coriacea,"Dermochelys coriacea (Vandelli, 1761)",match with annexspecies
+bern_2,Caretta caretta,"Caretta caretta (Linnaeus, 1758)",match with annexspecies
+bern_2,Chelonia mydas,"Chelonia mydas (Linnaeus, 1758)",match with annexspecies
+bern_2,Eretmochelys imbricata,"Eretmochelys imbricata (Linnaeus, 1766)",match with annexspecies
+bern_2,Lepidochelys kempii,"Lepidochelys kempii Garman, 1880",match with annexspecies
+bern_2,Lacerta agilis,"Lacerta agilis Linnaeus, 1758",match with annexspecies
+bern_2,Podarcis muralis,"Podarcis muralis (Laurenti, 1768)",match with annexspecies
+bern_2,Coronella austriaca,"Coronella austriaca Laurenti, 1768",match with annexspecies
+bern_2,Natrix megalocephala,"Natrix megalocephala Orlov & Tuniyev, 1987",match with annexspecies
+bern_2,Triturus carnifex,"Triturus carnifex (Laurenti, 1768)",match with annexspecies
+bern_2,Triturus cristatus,"Triturus cristatus (Laurenti, 1768)",match with annexspecies
+bern_2,Alytes obstetricans,"Alytes obstetricans (Laurenti, 1768)",match with annexspecies
+bern_2,Bombina variegata,"Bombina variegata (Linnaeus, 1758)",match with annexspecies
+bern_2,Pelobates fuscus,"Pelobates fuscus (Laurenti, 1768)",match with annexspecies
+bern_2,Bufo calamita,"Bufo calamita Laurenti, 1768",match with annexspecies
+bern_2,Hyla arborea,"Hyla arborea (Linnaeus, 1758)",match with annexspecies
+bern_2,Hyla meridionalis,"Hyla meridionalis Boettger, 1874",match with annexspecies
+bern_2,Rana arvalis,"Rana arvalis Nilsson, 1842",match with annexspecies
+bern_2,Rana dalmatina,"Rana dalmatina Fitzinger, 1839",match with annexspecies
+bern_2,Cetorhinus maximus,"Cetorhinus maximus (Gunnerus, 1765)",match with annexspecies
+bern_2,Acipenser sturio,"Acipenser sturio Linnaeus, 1758",match with annexspecies
+bern_2,Hippocampus hippocampus,"Hippocampus hippocampus (Linnaeus, 1758)",match with annexspecies
+bern_2,Hippocampus ramulosus,"Hippocampus ramulosus Leach, 1814",match with annexspecies
+bern_2,Palingenia longicauda,"Palingenia longicauda (Olivier, 1791)",match with annexspecies
+bern_2,Aeshna viridis,"Aeshna viridis Eversmann, 1836",match with annexspecies
+bern_2,Coenagrion mercuriale,"Coenagrion mercuriale Charpentier, 1840",match with annexspecies
+bern_2,Leucorrhinia albifrons,"Leucorrhinia albifrons Burmeister, 1839",match with annexspecies
+bern_2,Leucorrhinia caudalis,"Leucorrhinia caudalis Charpentier, 1840",match with annexspecies
+bern_2,Leucorrhinia pectoralis,"Leucorrhinia pectoralis Charpentier, 1825",match with annexspecies
+bern_2,Ophiogomphus cecilia,"Ophiogomphus cecilia Fourcroy, 1785",match with annexspecies
+bern_2,Oxygastra curtisii,"Oxygastra curtisii Dale, 1834",match with annexspecies
+bern_2,Sympecma braueri,"Sympecma braueri Yakobson & Bianki, 1904",match with annexspecies
+bern_2,Cerambyx cerdo,"Cerambyx cerdo Linnaeus, 1758",match with annexspecies
+bern_2,Dytiscus latissimus,"Dytiscus latissimus Linnaeus, 1758",match with annexspecies
+bern_2,Graphoderus bilineatus,"Graphoderus bilineatus (De Geer, 1774)",match with annexspecies
+bern_2,Osmoderma eremita,"Osmoderma eremita (Scopoli, 1763)",match with annexspecies
+bern_2,Coenonympha hero,"Coenonympha hero (Linnaeus, 1761)",match with annexspecies
+bern_2,Eriogaster catax,"Eriogaster catax (Linnaeus, 1758)",match with annexspecies
+bern_2,Euphydryas (Eurodryas) aurinia,"Euphydryas aurinia (Rottemburg, 1775)",match with annexspecies
+bern_2,Lopinga achine,"Lopinga achine (Scopoli, 1763)",match with annexspecies
+bern_2,Lycaena dispar,"Lycaena dispar (Haworth, 1802)",match with annexspecies
+bern_2,Maculinea arion,"Maculinea arion (Linnaeus, 1758)",match with annexspecies
+bern_2,Maculinea nausithous,"Maculinea nausithous (Bergsträsser, 1779)",match with annexspecies
+bern_2,Maculinea teleius,"Maculinea teleius (Bergsträsser, 1779)",match with annexspecies
+bern_2,Parnassius apollo,"Parnassius apollo (Linnaeus, 1758)",match with annexspecies
+bern_3,Erinaceus europaeus,"Erinaceus europaeus Linnaeus, 1758",match with annexspecies
+bern_3,Pipistrellus pipistrellus,"Pipistrellus pipistrellus (Schreber, 1774)",match with annexspecies
+bern_3,Lepus capensis (europaeus),"Lepus capensis Linnaeus, 1758",match with annexspecies
+bern_3,Lepus timidus,"Lepus timidus Linnaeus, 1758",match with annexspecies
+bern_3,Sciurus vulgaris,"Sciurus vulgaris Linnaeus, 1758",match with annexspecies
+bern_3,Castor fiber,"Castor fiber Linnaeus, 1758",match with annexspecies
+bern_3,Microtus nivalis (lebrunii),"Microtus nivalis (Martins, 1842)",match with annexspecies
+bern_3,Martes foina,"Martes foina Erxleben, 1777",match with annexspecies
+bern_3,Martes martes,"Martes martes (Linnaeus, 1758)",match with annexspecies
+bern_3,Meles meles,"Meles meles (Linnaeus, 1758)",match with annexspecies
+bern_3,Mustela erminea,"Mustela erminea Linnaeus, 1758",match with annexspecies
+bern_3,Mustela nivalis,"Mustela nivalis Linnaeus, 1766",match with annexspecies
+bern_3,Lynx lynx,"Lynx lynx (Linnaeus, 1758)",match with annexspecies
+bern_3,Cystophora cristata,"Cystophora cristata (Erxleben, 1777)",match with annexspecies
+bern_3,Erignathus barbatus,"Erignathus barbatus (Erxleben, 1777)",match with annexspecies
+bern_3,Pagophilus groenlandicus (Phoca groenlandica),Pagophilus groenlandicus groenlandicus,match with annexspecies
+bern_3,Phoca vitulina,"Phoca vitulina Linnaeus, 1758",match with annexspecies
+bern_3,Halichoerus grypus,"Halichoerus grypus (Fabricius, 1791)",match with annexspecies
+bern_3,Bison bonasus,"Bison bonasus (Linnaeus, 1758)",match with annexspecies
+bern_3,Capra ibex,"Capra ibex Linnaeus, 1758",match with annexspecies
+bern_3,"Ovis aries (musimon, ammon)","Ovis aries Linnaeus, 1758",match with annexspecies
+bern_3,Rupicapra rupicapra,"Rupicapra rupicapra (Linnaeus, 1758)",match with annexspecies
+bern_3,Lamna nasus (Med.),"Lamna nasus (Bonnaterre, 1788)",match with annexspecies
+bern_3,Prionace glauca (Med.),"Prionace glauca (Linnaeus, 1758)",match with annexspecies
+bern_3,Squatina squatina (Med.),"Squatina squatina (Linnaeus, 1758)",match with annexspecies
+bern_3,Lampetra fluviatilis,"Lampetra fluviatilis (Linnaeus, 1758)",match with annexspecies
+bern_3,Lampetra planeri,"Lampetra planeri (Bloch, 1784)",match with annexspecies
+bern_3,Petromyzon marinus,"Petromyzon marinus Linnaeus, 1758",match with annexspecies
+bern_3,Alosa alosa,"Alosa alosa (Linnaeus, 1758)",match with annexspecies
+bern_3,Alosa fallox,"Alosa fallax (Lacepède, 1803)",match with annexspecies
+bern_3,Thymallus thymallus,"Thymallus thymallus (Linnaeus, 1758)",match with annexspecies
+bern_3,Alburnoides bipunctatus,"Alburnoides bipunctatus (Bloch, 1782)",match with annexspecies
+bern_3,Aspius aspius,"Aspius aspius (Linnaeus, 1758)",match with annexspecies
+bern_3,Chondrostoma nasus,"Chondrostoma nasus (Linnaeus, 1758)",match with annexspecies
+bern_3,Leucaspius delineatus,"Leucaspius delineatus (Heckel, 1843)",match with annexspecies
+bern_3,Rhodeus sericeus,"Rhodeus sericeus (Pallas, 1776)",match with annexspecies
+bern_3,Cobitis taenia,"Cobitis taenia Linnaeus, 1758",match with annexspecies
+bern_3,Pomatoschistus microps,"Pomatoschistus microps (Krøyer, 1838)",match with annexspecies
+bern_3,Pomatoschistus minutus,"Pomatoschistus minutus (Pallas, 1770)",match with annexspecies
+bern_3,Lucanus cervus,"Lucanus cervus (Linnaeus, 1758)",match with annexspecies
+bern_3,Astacus astacus,"Astacus astacus (Linnaeus, 1758)",match with annexspecies
+bern_3,Homarus gammarus (Med.),"Homarus gammarus (Linnaeus, 1758)",match with annexspecies
+bern_3,Helix pomatia,"Helix pomatia Linnaeus, 1758",match with annexspecies
+bern_3,Hirudo medicinalis,"Hirudo medicinalis Linnaeus, 1758",match with annexspecies
+bonn_1,Eubalaena glacialis,"Eubalaena glacialis (Müller, 1776)",match with annexspecies
+bonn_1,Balaenoptera borealis,"Balaenoptera borealis Lesson, 1828",match with annexspecies
+bonn_1,Balaenoptera physalus,"Balaenoptera physalus (Linnaeus, 1758)",match with annexspecies
+bonn_1,Balaenoptera musculus,"Balaenoptera musculus (Linnaeus, 1758)",match with annexspecies
+bonn_1,Megaptera novaeangliae,"Megaptera novaeangliae (Borowski, 1781)",match with annexspecies
+bonn_1,Delphinus delphis,"Delphinus delphis Linnaeus, 1758",match with annexspecies
+bonn_1,Physeter macrocephalus,"Physeter macrocephalus Linnaeus, 1758",match with annexspecies
+bonn_1,Oxyura leucocephala,"Oxyura leucocephala (Scopoli, 1769)",match with annexspecies
+bonn_1,Branta ruficollis,"Branta ruficollis Pallas, 1769",match with annexspecies
+bonn_1,Anser erythropus,"Anser erythropus (Linnaeus, 1758)",match with annexspecies
+bonn_1,Polysticta stelleri,"Polysticta stelleri (Pallas, 1769)",match with annexspecies
+bonn_1,Aythya nyroca,"Aythya nyroca (Güldenstädt, 1770)",match with annexspecies
+bonn_1,Sibirionetta formosa,"Sibirionetta formosa (Georgi, 1775)",match with annexspecies
+bonn_1,Otis tarda,"Otis tarda Linnaeus, 1758",match with annexspecies
+bonn_1,Puffinus mauretanicus,"Puffinus mauretanicus Lowe, 1921",match with annexspecies
+bonn_1,Pelecanus crispus,"Pelecanus crispus Bruch, 1832",match with annexspecies
+bonn_1,Pelecanus onocrotalus,"Pelecanus onocrotalus Linnaeus, 1758",match with annexspecies
+bonn_1,Vanellus gregarius,"Vanellus gregarius (Pallas, 1771)",match with annexspecies
+bonn_1,Numenius tenuirostris,"Numenius tenuirostris Vieillot, 1817",match with annexspecies
+bonn_1,Calidris subruficollis,"Calidris subruficollis (Vieillot, 1819)",match with annexspecies
+bonn_1,Clanga clanga,"Clanga clanga (Pallas, 1811)",match with annexspecies
+bonn_1,Haliaeetus leucoryphus,"Haliaeetus leucoryphus (Pallas, 1771)",match with annexspecies
+bonn_1,Haliaeetus albicilla,"Haliaeetus albicilla (Linnaeus, 1758)",match with annexspecies
+bonn_1,Falco naumanni,"Falco naumanni Fleischer, 1818",match with annexspecies
+bonn_1,Acrocephalus paludicola,"Acrocephalus paludicola (Vieillot, 1817)",match with annexspecies
+bonn_1,Chelonia mydas,"Chelonia mydas (Linnaeus, 1758)",match with annexspecies
+bonn_1,Caretta caretta,"Caretta caretta (Linnaeus, 1758)",match with annexspecies
+bonn_1,Eretmochelys imbricata,"Eretmochelys imbricata (Linnaeus, 1766)",match with annexspecies
+bonn_1,Lepidochelys kempii,"Lepidochelys kempii Garman, 1880",match with annexspecies
+bonn_1,Lepidochelys olivacea,"Lepidochelys olivacea (Eschscholtz, 1829)",match with annexspecies
+bonn_1,Dermochelys coriacea,"Dermochelys coriacea (Vandelli, 1761)",match with annexspecies
+bonn_1,Cetorhinus maximus,"Cetorhinus maximus (Gunnerus, 1765)",match with annexspecies
+bonn_1,Acipenser sturio,"Acipenser sturio Linnaeus, 1758",match with annexspecies
+bonn_2,Halichoerus grypus,"Halichoerus grypus (Fabricius, 1791)",match with annexspecies
+bonn_2,Phoca vitulina,"Phoca vitulina Linnaeus, 1758",match with annexspecies
+bonn_2,Balaenoptera borealis,"Balaenoptera borealis Lesson, 1828",match with annexspecies
+bonn_2,Balaenoptera physalus,"Balaenoptera physalus (Linnaeus, 1758)",match with annexspecies
+bonn_2,Lagenorhynchus albirostris,"Lagenorhynchus albirostris (Gray, 1846)",match with annexspecies
+bonn_2,Lagenorhynchus acutus,"Lagenorhynchus acutus (Gray, 1828)",match with annexspecies
+bonn_2,Grampus griseus,"Grampus griseus (G.Cuvier, 1812)",match with annexspecies
+bonn_2,Tursiops truncatus,"Tursiops truncatus (Montagu, 1821)",match with annexspecies
+bonn_2,Stenella coeruleoalba,"Stenella coeruleoalba (Meyen, 1833)",match with annexspecies
+bonn_2,Delphinus delphis,"Delphinus delphis Linnaeus, 1758",match with annexspecies
+bonn_2,Orcinus orca,"Orcinus orca (Linnaeus, 1758)",match with annexspecies
+bonn_2,Globicephala melas,"Globicephala melas (Traill, 1809)",match with annexspecies
+bonn_2,Delphinapterus leucas,"Delphinapterus leucas (Pallas, 1776)",match with annexspecies
+bonn_2,Monodon monoceros,"Monodon monoceros Linnaeus, 1758",match with annexspecies
+bonn_2,Phocoena phocoena,"Phocoena phocoena (Linnaeus, 1758)",match with annexspecies
+bonn_2,Physeter macrocephalus,"Physeter macrocephalus Linnaeus, 1758",match with annexspecies
+bonn_2,Hyperoodon ampullatus,"Hyperoodon ampullatus (Forster, 1770)",match with annexspecies
+bonn_2,Podiceps auritus,"Podiceps auritus (Linnaeus, 1758)",match with annexspecies
+bonn_2,Crex crex,"Crex crex (Linnaeus, 1758)",match with annexspecies
+bonn_2,Porzana porzana,"Porzana porzana Linnaeus, 1758",match with annexspecies
+bonn_2,Zapornia parva,"Zapornia parva (Scopoli, 1769)",match with annexspecies
+bonn_2,Otis tarda,"Otis tarda Linnaeus, 1758",match with annexspecies
+bonn_2,Gavia stellata,"Gavia stellata (Pontoppidan, 1763)",match with annexspecies
+bonn_2,Gavia immer,"Gavia immer (Brunnich, 1764)",match with annexspecies
+bonn_2,Gavia adamsii,"Gavia adamsii (G.R.Gray, 1859)",match with annexspecies
+bonn_2,Ciconia nigra,"Ciconia nigra (Linnaeus, 1758)",match with annexspecies
+bonn_2,Ciconia ciconia,"Ciconia ciconia (Linnaeus, 1758)",match with annexspecies
+bonn_2,Platalea leucorodia,"Platalea leucorodia Linnaeus, 1758",match with annexspecies
+bonn_2,Threskiornis aethiopicus,"Threskiornis aethiopicus (Latham, 1790)",match with annexspecies
+bonn_2,Plegadis falcinellus,"Plegadis falcinellus (Linnaeus, 1766)",match with annexspecies
+bonn_2,Pelecanus crispus,"Pelecanus crispus Bruch, 1832",match with annexspecies
+bonn_2,Pelecanus onocrotalus,"Pelecanus onocrotalus Linnaeus, 1758",match with annexspecies
+bonn_2,Burhinus oedicnemus,"Burhinus oedicnemus (Linnaeus, 1758)",match with annexspecies
+bonn_2,Glareola pratincola,"Glareola pratincola (Linnaeus, 1766)",match with annexspecies
+bonn_2,Glareola nordmanni,"Glareola nordmanni Fischer von Waldheim, 1842",match with annexspecies
+bonn_2,Larus ichthyaetus,"Larus ichthyaetus Pallas, 1773",match with annexspecies
+bonn_2,Larus melanocephalus,"Larus melanocephalus Temminck, 1820",match with annexspecies
+bonn_2,Sternula albifrons,"Sternula albifrons (Pallas, 1764)",match with annexspecies
+bonn_2,Hydroprogne caspia,"Hydroprogne caspia (Pallas, 1770)",match with annexspecies
+bonn_2,Chlidonias leucopterus,"Chlidonias leucopterus (Temminck, 1815)",match with annexspecies
+bonn_2,Sterna dougallii,"Sterna dougallii Montagu, 1813",match with annexspecies
+bonn_2,Sterna paradisaea,"Sterna paradisaea Pontoppidan, 1763",match with annexspecies
+bonn_2,Pandion haliaetus,"Pandion haliaetus (Linnaeus, 1758)",match with annexspecies
+bonn_2,Merops apiaster,"Merops apiaster Linnaeus, 1758",match with annexspecies
+bonn_2,Coracias garrulus,"Coracias garrulus Linnaeus, 1758",match with annexspecies
+bonn_2,Cetorhinus maximus,"Cetorhinus maximus (Gunnerus, 1765)",match with annexspecies
+bonn_2,Acipenser sturio,"Acipenser sturio Linnaeus, 1758",match with annexspecies
+bonn_2,Danaus plexippus,"Danaus plexippus (Linnaeus, 1758)",match with annexspecies
+hab_2,Rhinolophus ferrumequinum,"Rhinolophus ferrumequinum (Schreber, 1774)",match with annexspecies
+hab_2,Barbastella barbastellus,"Barbastella barbastellus (Schreber, 1774)",match with annexspecies
+hab_2,Myotis bechsteinii,"Myotis bechsteinii (Kuhl, 1817)",match with annexspecies
+hab_2,Myotis dasycneme,"Myotis dasycneme (Boie, 1825)",match with annexspecies
+hab_2,Myotis emarginatus,"Myotis emarginatus (E.Geoffroy, 1806)",match with annexspecies
+hab_2,Myotis myotis,"Myotis myotis (Borkhausen, 1797)",match with annexspecies
+hab_2,Lutra lutra,"Lutra lutra (Linnaeus, 1758)",match with annexspecies
+hab_2,Triturus cristatus (Triturus cristatus cristatus),"Triturus cristatus (Laurenti, 1768)",match with annexspecies
+hab_2,Lampetra fluviatilis (except the Finnish and Swedish populations),"Lampetra fluviatilis (Linnaeus, 1758)",match with annexspecies
+hab_2,"Lampetra planeri (except the Estonian, Finnish, and Swedish populations)","Lampetra planeri (Bloch, 1784)",match with annexspecies
+hab_2,Cobitis taenia (except the Finnish populations),"Cobitis taenia Linnaeus, 1758",match with annexspecies
+hab_2,Cottus gobio (except the Finnish populations),"Cottus gobio Linnaeus, 1758",match with annexspecies
+hab_2,Lucanus cervus,"Lucanus cervus (Linnaeus, 1758)",match with annexspecies
+hab_2,Leucorrhinia pectoralis,"Leucorrhinia pectoralis Charpentier, 1825",match with annexspecies
+hab_2,Vertigo angustior,"Vertigo angustior Jeffreys, 1830",match with annexspecies
+hab_2,Vertigo moulinsiana,"Vertigo moulinsiana (Dupuy, 1849)",match with annexspecies
+hab_2,Luronium natans (L.) Raf.,Luronium natans Raf.,match with annexspecies
+hab_2,Liparis loeselii (L.) Rich.,Liparis loeselii (L.) Rich.,match with annexspecies
+hab_2,Apium repens (Jacq.) Lag.,Apium repens (Jacq.) Lag.,match with annexspecies
+hab_4,Cricetus cricetus (except the Hungarian populations),"Cricetus cricetus (Linnaeus, 1758)",match with annexspecies
+hab_4,Lutra lutra,"Lutra lutra (Linnaeus, 1758)",match with annexspecies
+hab_4,Coronella austriaca,"Coronella austriaca Laurenti, 1768",match with annexspecies
+hab_4,Triturus cristatus (Triturus cristatus cristatus),"Triturus cristatus (Laurenti, 1768)",match with annexspecies
+hab_4,Alytes obstetricans,"Alytes obstetricans (Laurenti, 1768)",match with annexspecies
+hab_4,Rana arvalis,"Rana arvalis Nilsson, 1842",match with annexspecies
+hab_4,Pelobates fuscus,"Pelobates fuscus (Laurenti, 1768)",match with annexspecies
+hab_4,Bufo calamita,"Bufo calamita Laurenti, 1768",match with annexspecies
+hab_4,Hyla arborea,"Hyla arborea (Linnaeus, 1758)",match with annexspecies
+hab_4,Leucorrhinia pectoralis,"Leucorrhinia pectoralis Charpentier, 1825",match with annexspecies
+hab_4,Luronium natans (L.) Raf.,Luronium natans Raf.,match with annexspecies
+hab_4,Liparis loeselii (L.) Rich.,Liparis loeselii (L.) Rich.,match with annexspecies
+hab_4,Apium repens (Jacq.) Lag.,Apium repens (Jacq.) Lag.,match with annexspecies
+bird_1,Gavia stellata,"Gavia stellata (Pontoppidan, 1763)",match with annexspecies
+bird_1,Gavia arctica,"Gavia arctica (Linnaeus, 1758)",match with annexspecies
+bird_1,Gavia immer,"Gavia immer (Brunnich, 1764)",match with annexspecies
+bird_1,Podiceps auritus,"Podiceps auritus (Linnaeus, 1758)",match with annexspecies
+bird_1,Botaurus stellaris,"Botaurus stellaris (Linnaeus, 1758)",match with annexspecies
+bird_1,Ixobrychus minutus,"Ixobrychus minutus (Linnaeus, 1766)",match with annexspecies
+bird_1,Nycticorax nycticorax,"Nycticorax nycticorax (Linnaeus, 1758)",match with annexspecies
+bird_1,Egretta garzetta,"Egretta garzetta (Linnaeus, 1766)",match with annexspecies
+bird_1,Egretta alba (Ardea alba),"Egretta alba (Linnaeus, 1758)",match with annexspecies
+bird_1,Ardea purpurea,"Ardea purpurea Linnaeus, 1766",match with annexspecies
+bird_1,Ciconia nigra,"Ciconia nigra (Linnaeus, 1758)",match with annexspecies
+bird_1,Ciconia ciconia,"Ciconia ciconia (Linnaeus, 1758)",match with annexspecies
+bird_1,Platalea leucorodia,"Platalea leucorodia Linnaeus, 1758",match with annexspecies
+bird_1,Cygnus cygnus,"Cygnus cygnus (Linnaeus, 1758)",match with annexspecies
+bird_1,Anser erythropus,"Anser erythropus (Linnaeus, 1758)",match with annexspecies
+bird_1,Branta leucopsis,"Branta leucopsis (Bechstein, 1803)",match with annexspecies
+bird_1,Branta ruficollis,"Branta ruficollis Pallas, 1769",match with annexspecies
+bird_1,Aythya nyroca,"Aythya nyroca (Güldenstädt, 1770)",match with annexspecies
+bird_1,Mergus albellus (Mergellus albellus),"Mergus albellus Linnaeus, 1758",match with annexspecies
+bird_1,Pandion haliaetus,"Pandion haliaetus (Linnaeus, 1758)",match with annexspecies
+bird_1,Pernis apivorus,"Pernis apivorus (Linnaeus, 1758)",match with annexspecies
+bird_1,Milvus migrans,"Milvus migrans (Boddaert, 1783)",match with annexspecies
+bird_1,Milvus milvus,"Milvus milvus (Linnaeus, 1758)",match with annexspecies
+bird_1,Haliaeetus albicilla,"Haliaeetus albicilla (Linnaeus, 1758)",match with annexspecies
+bird_1,Circus cyaneus,"Circus cyaneus (Linnaeus, 1766)",match with annexspecies
+bird_1,Circus pygargus,"Circus pygargus (Linnaeus, 1758)",match with annexspecies
+bird_1,Falco columbarius,"Falco columbarius Linnaeus, 1758",match with annexspecies
+bird_1,Falco peregrinus,"Falco peregrinus, 1771",match with annexspecies
+bird_1,Tetrao tetrix tetrix,Tetrao tetrix tetrix,match with annexspecies
+bird_1,Grus grus,"Grus grus (Linnaeus, 1758)",match with annexspecies
+bird_1,Porzana porzana,"Porzana porzana Linnaeus, 1758",match with annexspecies
+bird_1,Porzana pusilla,"Porzana pusilla (Pallas, 1776)",match with annexspecies
+bird_1,Crex crex,"Crex crex (Linnaeus, 1758)",match with annexspecies
+bird_1,Himantopus himantopus,"Himantopus himantopus (Linnaeus, 1758)",match with annexspecies
+bird_1,Charadrius morinellus (Eudromias morinellus),"Charadrius morinellus Linnaeus, 1758",match with annexspecies
+bird_1,Pluvialis apricaria,"Pluvialis apricaria (Linnaeus, 1758)",match with annexspecies
+bird_1,Philomachus pugnax,"Philomachus pugnax (Linnaeus, 1758)",match with annexspecies
+bird_1,Gallinago media,"Gallinago media (Latham, 1787)",match with annexspecies
+bird_1,Limosa lapponica,"Limosa lapponica (Linnaeus, 1758)",match with annexspecies
+bird_1,Tringa glareola,"Tringa glareola Linnaeus, 1758",match with annexspecies
+bird_1,Phalaropus lobatus,"Phalaropus lobatus (Linnaeus, 1758)",match with annexspecies
+bird_1,Larus melanocephalus,"Larus melanocephalus Temminck, 1820",match with annexspecies
+bird_1,Sterna sandvicensis,"Sterna sandvicensis Latham, 1787",match with annexspecies
+bird_1,Sterna dougallii,"Sterna dougallii Montagu, 1813",match with annexspecies
+bird_1,Sterna hirundo,"Sterna hirundo Linnaeus, 1758",match with annexspecies
+bird_1,Sterna paradisaea,"Sterna paradisaea Pontoppidan, 1763",match with annexspecies
+bird_1,Sterna albifrons,"Sterna albifrons Pallas, 1764",match with annexspecies
+bird_1,Chlidonias niger,"Chlidonias niger (Linnaeus, 1758)",match with annexspecies
+bird_1,Asio flammeus,"Asio flammeus (Pontoppidan, 1763)",match with annexspecies
+bird_1,Caprimulgus europaeus,"Caprimulgus europaeus Linnaeus, 1758",match with annexspecies
+bird_1,Alcedo atthis,"Alcedo atthis (Linnaeus, 1758)",match with annexspecies
+bird_1,Dryocopus martius,"Dryocopus martius (Linnaeus, 1758)",match with annexspecies
+bird_1,Lullula arborea,"Lullula arborea (Linnaeus, 1758)",match with annexspecies
+bird_1,Anthus campestris,"Anthus campestris (Linnaeus, 1758)",match with annexspecies
+bird_1,Luscinia svecica,"Luscinia svecica (Linnaeus, 1758)",match with annexspecies
+bird_1,Acrocephalus paludicola,"Acrocephalus paludicola (Vieillot, 1817)",match with annexspecies
+bird_1,Sylvia nisoria,"Sylvia nisoria (Bechstein, 1792)",match with annexspecies
+bird_1,Ficedula parva,"Ficedula parva (Bechstein, 1792)",match with annexspecies
+bird_1,Lanius collurio,"Lanius collurio Linnaeus, 1758",match with annexspecies
+bird_1,Emberiza hortulana,"Emberiza hortulana Linnaeus, 1758",match with annexspecies

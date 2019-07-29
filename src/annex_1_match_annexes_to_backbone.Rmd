@@ -104,7 +104,7 @@ Scan `scientific_name_original` for obvious errors and correct. Rematch `scienti
 ```{r}
 annexes <-
   annexes %>% 
-    select(scientific_name_corrected, annex_code) %>% 
+    select(scientific_name_original, scientific_name_corrected, annex_code) %>% 
     gbif_species_name_match(
       name = "scientific_name_corrected",
       gbif_terms = gbif_terms,
@@ -125,7 +125,7 @@ Save non-matching taxa as a separate dataframe for later:
 unmatchted_annex_taxa <- 
   annexes %>% 
     filter(matchType == "NONE") %>% 
-    select(annex_code, scientific_name_corrected)
+    select(annex_code, scientific_name_original, scientific_name_corrected)
 ```
 
 Export as `unmatched_taxa_annexes.csv`
@@ -139,8 +139,6 @@ Remove non-matching taxa from dataset:
 ```{r}
 annexes %<>% filter(matchType != "NONE") 
 ```
-
-Find GBIF **accepted** scientific names of `scientific_name_corrected` and add them as new column, `gbif_accepted_name`:
 
 Find GBIF **accepted** (scientific) names of `scientific_name_corrected` in `annexes`. Add them in column `gbif_accepted_name`. For accepted taxa, `gbif_accepted_name` will be equal to `gbif_scientificname`:
 
@@ -158,6 +156,37 @@ annexes <-
       }
     })
 )
+```
+
+Keep columns of interest:
+
+```{r select_cols_of_interest}
+annexes <- 
+  annexes %>%
+    select(annex_code,
+           scientific_name_original,
+           scientific_name_corrected, 
+           scientificName, 
+           canonicalName, 
+           gbif_accepted_name,
+           kingdom, 
+           phylum, 
+           order, 
+           family, 
+           genus)
+```
+
+Rename columns:
+- `scientific_name_corrected` to `annex_scientificName`
+- `scientificName` to `gbif_scientificName`
+- `canonical` to `gbif_canonicalName`
+
+```{r rename_cols_scientificnames}
+annexes <- 
+  annexes %>%  
+  rename("gbif_scientificName" = "scientificName") %>% 
+  rename("annex_scientificName" = "scientific_name_corrected") %>%
+  rename("gbif_canonicalName" = "canonicalName")
 ```
 
 Export as `annexes_gbif_match.csv`
