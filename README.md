@@ -1,6 +1,6 @@
-# ibge-bim-species
+# ibge-bim-species (archived)
 
-Validation of species list of Brussels Environment Departement
+Validation of species list of Brussels Environment Departement. This project has been closed and the repository archived.
 
 ## Appendix 1. Test connectivity
 
