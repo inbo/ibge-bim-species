@@ -219,6 +219,7 @@ get_summarize_unverifiables <- function(unverifiables, name, rank){
                rank_col <- paste0("gbif_", rank)
                unverifiables %>%
                  filter(!!sym(rank_col) == name) %>%
+                 drop_na() %>%
                  summarize(number_of_taxa = n()) %>% 
                  mutate(records = name) %>% 
                  select(records, number_of_taxa)
@@ -604,6 +605,7 @@ n_taxa_annex <- map(annex,
                       function(df){
                         suppressMessages(
                           df %>% 
+                            drop_na() %>%
                             summarize(number_of_taxa = n()) %>% 
                             mutate(data = "GBIF matched records annex list") %>% 
                             select(data, number_of_taxa)
@@ -621,9 +623,10 @@ n_taxa_unmatched_annex <- map(unmatched_annex_taxa,
                               function(df){
                                   suppressMessages(
                                     df %>% 
-                                    summarize(number_of_taxa = n()) %>% 
-                                    mutate(data = "GBIF unmatched records annex list") %>% 
-                                    select(data, number_of_taxa)
+                                      drop_na() %>%
+                                      summarize(number_of_taxa = n()) %>% 
+                                      mutate(data = "GBIF unmatched records annex list") %>% 
+                                      select(data, number_of_taxa)
                                   )
                               })
 names(n_taxa_unmatched_annex) <- annexcode
@@ -638,9 +641,10 @@ n_taxa_bim_annex <- map(bim_annex,
                       function(df){
                         suppressMessages(
                           df %>% 
-                          summarize(number_of_taxa = n()) %>% 
-                          mutate(data = "GBIF matched records BIM database") %>% 
-                          select(data, number_of_taxa)
+                            drop_na() %>%
+                            summarize(number_of_taxa = n()) %>% 
+                            mutate(data = "GBIF matched records BIM database") %>% 
+                            select(data, number_of_taxa)
                         )
                       })
 ```
@@ -654,10 +658,11 @@ n_taxa_full_match <- map2(
   annex, bim_annex, function(df1, df2){
     suppressMessages(
       df1 %>% 
-      inner_join(df2, by = "gbif_accepted_name") %>% 
-      summarize(number_of_taxa = n()) %>% 
-      mutate(data = "Full match") %>% 
-      select(data, number_of_taxa)
+        inner_join(df2, by = "gbif_accepted_name") %>% 
+        drop_na() %>%
+        summarize(number_of_taxa = n()) %>% 
+        mutate(data = "Full match") %>% 
+        select(data, number_of_taxa)
     )
 })
 ```
@@ -671,7 +676,8 @@ n_taxa_bim_not_in_annex <- map2(
   bim_annex, annex, function(df1, df2){
     suppressMessages(
       df1 %>% 
-        anti_join(df2, by = c("gbif_accepted_name")) %>%   
+        anti_join(df2, by = c("gbif_accepted_name")) %>%
+        drop_na() %>%
         summarize(number_of_taxa = n()) %>% 
         mutate(data = "BIM not in annex") %>% 
         select(data, number_of_taxa)
@@ -688,7 +694,8 @@ n_taxa_annex_not_in_bim <- map2(
   annex, bim_annex, function(df1, df2){
     suppressMessages(
       df1 %>% 
-        anti_join(df2, by = c("gbif_accepted_name")) %>%   
+        anti_join(df2, by = c("gbif_accepted_name")) %>%
+        drop_na() %>%
         summarize(number_of_taxa = n()) %>% 
         mutate(data = "Annex not in BIM") %>% 
         select(data, number_of_taxa)
@@ -831,7 +838,6 @@ Summary:
 summaries$hab_4
 ```
 
-
 # Bird Habitat annex
 
 ## Annex I 
@@ -973,7 +979,6 @@ taxa_not_in_annex %>%
   write_csv(path = here("data", "interim", "taxa_bim_not_in_annex.csv"),
             na = "")
 ```
-
 
 # Save unverifiable taxa in bim list
 
